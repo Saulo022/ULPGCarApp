@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.saulo.ulpgcarapp.ui.theme.Orange400
 
 @Composable
 fun LoginBottomBar() {
@@ -21,7 +22,7 @@ fun LoginBottomBar() {
         Spacer(modifier = Modifier.width(10.dp))
         Text(
             text = "REGISTRATE AQUI",
-            color = Color.Red,
+            color = Orange400,
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold
         )

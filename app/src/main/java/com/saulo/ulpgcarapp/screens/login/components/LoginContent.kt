@@ -8,7 +8,7 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,10 +16,14 @@ import androidx.compose.ui.graphics.DefaultShadowColor
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saulo.ulpgcarapp.R
+import com.saulo.ulpgcarapp.components.DefaultButton
+import com.saulo.ulpgcarapp.components.DefaultTextField
 import com.saulo.ulpgcarapp.ui.theme.Blue200
+import com.saulo.ulpgcarapp.ui.theme.Blue400
 import com.saulo.ulpgcarapp.ui.theme.Orange200
 
 @Composable
@@ -38,7 +42,7 @@ fun BoxHeader() {
         modifier = Modifier
             .fillMaxWidth()
             .height(280.dp)
-            .background(Blue200)
+            .background(Blue400)
     ) {
 
         Column(
@@ -47,12 +51,21 @@ fun BoxHeader() {
         ) {
 
             Image(
-                modifier = Modifier.height(130.dp),
+                modifier = Modifier
+                    .height(140.dp)
+                    .padding(top = 30.dp),
                 painter = painterResource(id = R.drawable.user),
                 contentDescription = "Control de xbox 360"
             )
 
-            Text(text = "ULPGCar App")
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(
+                text = "ULPGCar App",
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
 
         }
     }
@@ -61,6 +74,11 @@ fun BoxHeader() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardForm() {
+
+    var email by remember { mutableStateOf("") }
+
+    var password by remember { mutableStateOf("") }
+
     Card(
         modifier = Modifier
             .padding(start = 40.dp, end = 40.dp, top = 200.dp)
@@ -84,43 +102,28 @@ fun CardForm() {
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(
-                value = "",
-                onValueChange = { },
-                label = { Text(text = "Correo Electronico") },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = "Email Icon",
-                        tint = Color.White
-                    )
-                }
+            DefaultTextField(
+                modifier = Modifier.padding(top = 25.dp),
+                value = email,
+                onValueChange = { email = it},
+                label = "Correo Electronico",
+                icon = Icons.Default.Email,
+                keyboardType = KeyboardType.Email
             )
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(
-                value = "",
-                onValueChange = { },
-                label = { Text(text = "Contraseña") },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Lock,
-                        contentDescription = "Password Icon",
-                        tint = Color.White
-                    )
-                }
+            DefaultTextField(
+                modifier = Modifier.padding(top = 5.dp),
+                value = password,
+                onValueChange = { password = it},
+                label = "Contraseña",
+                icon = Icons.Default.Lock,
+                hideText = true
             )
 
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 45.dp),
-                onClick = { }) {
-                Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "")
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(text = "INICIAR SESION")
-            }
+            DefaultButton(text = "INICIAR SESION", onClick = { })
+
         }
     }
 }
