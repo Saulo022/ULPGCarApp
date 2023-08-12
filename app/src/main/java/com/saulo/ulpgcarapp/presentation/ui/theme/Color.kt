@@ -1,4 +1,4 @@
-package com.saulo.ulpgcarapp.ui.theme
+package com.saulo.ulpgcarapp.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

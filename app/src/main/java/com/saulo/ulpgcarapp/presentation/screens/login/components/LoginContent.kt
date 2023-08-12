@@ -1,10 +1,9 @@
-package com.saulo.ulpgcarapp.screens.login.components
+package com.saulo.ulpgcarapp.presentation.screens.login.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.*
@@ -12,19 +11,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.DefaultShadowColor
-import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saulo.ulpgcarapp.R
-import com.saulo.ulpgcarapp.components.DefaultButton
-import com.saulo.ulpgcarapp.components.DefaultTextField
-import com.saulo.ulpgcarapp.ui.theme.Blue200
-import com.saulo.ulpgcarapp.ui.theme.Blue400
-import com.saulo.ulpgcarapp.ui.theme.Orange200
+import com.saulo.ulpgcarapp.presentation.components.DefaultButton
+import com.saulo.ulpgcarapp.presentation.components.DefaultTextField
+import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
 
 @Composable
 fun LoginContent() {

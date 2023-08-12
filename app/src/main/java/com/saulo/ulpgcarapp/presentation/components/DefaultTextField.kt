@@ -1,4 +1,4 @@
-package com.saulo.ulpgcarapp.components
+package com.saulo.ulpgcarapp.presentation.components
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon

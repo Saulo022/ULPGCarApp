@@ -1,4 +1,4 @@
-package com.saulo.ulpgcarapp.components
+package com.saulo.ulpgcarapp.presentation.components
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.saulo.ulpgcarapp.ui.theme.Blue400
+import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
 
 
 
