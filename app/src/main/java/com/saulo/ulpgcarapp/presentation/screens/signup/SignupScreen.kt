@@ -6,15 +6,25 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import com.saulo.ulpgcarapp.presentation.components.DefaultTopBar
+import com.saulo.ulpgcarapp.presentation.screens.signup.components.SignupContent
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SignupScreen(navController: NavHostController) {
 
     Scaffold(
-        topBar = { },
-        content = { Text(text = "SignupScreen") },
+        topBar = {
+            DefaultTopBar(
+                title = "Nuevo usuario",
+                upAvailable = true,
+                navController = navController
+            )
+        },
+        content = {
+            SignupContent(paddingValues = it)
+                  },
         bottomBar = { }
     )
 

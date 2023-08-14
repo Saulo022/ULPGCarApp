@@ -21,6 +21,7 @@ import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
 
 @Composable
 fun DefaultButton(
+    modifier: Modifier,
     text: String,
     onClick: () -> Unit,
     color: Color = Blue400,

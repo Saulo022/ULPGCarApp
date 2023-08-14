@@ -1,4 +1,4 @@
-package com.saulo.ulpgcarapp.presentation.screens.login.components
+package com.saulo.ulpgcarapp.presentation.screens.signup.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,9 +23,10 @@ import com.saulo.ulpgcarapp.presentation.components.DefaultButton
 import com.saulo.ulpgcarapp.presentation.components.DefaultTextField
 import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
 
+
 @Composable
-fun LoginContent() {
-    Box(modifier = Modifier.fillMaxWidth()) {
+fun SignupContent(paddingValues: PaddingValues) {
+    Box(modifier = Modifier.fillMaxWidth().padding(top = paddingValues.calculateTopPadding())) {
 
         BoxHeader()
         CardForm()
@@ -36,7 +39,7 @@ fun BoxHeader() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(280.dp)
+            .height(260.dp)
             .background(Blue400)
     ) {
 
@@ -45,44 +48,38 @@ fun BoxHeader() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            Spacer(modifier = Modifier.height(20.dp))
+
             Image(
-                modifier = Modifier
-                    .height(140.dp)
-                    .padding(top = 30.dp),
+                modifier = Modifier.height(110.dp),
                 painter = painterResource(id = R.drawable.user),
-                contentDescription = "Control de xbox 360"
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Text(
-                text = "ULPGCar App",
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+                contentDescription = "Imagen de Usuario"
             )
 
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardForm() {
+
+    var username by remember { mutableStateOf("") }
 
     var email by remember { mutableStateOf("") }
 
     var password by remember { mutableStateOf("") }
 
+    var confirmPassword by remember { mutableStateOf("") }
+
     Card(
         modifier = Modifier
-            .padding(start = 40.dp, end = 40.dp, top = 200.dp)
+            .padding(start = 40.dp, end = 40.dp, top = 150.dp)
     ) {
         Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
             Text(
                 modifier = Modifier.padding(top = 30.dp),
-                text = "LOGIN",
+                text = "REGISTRO",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -90,18 +87,27 @@ fun CardForm() {
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
-                text = "Por favor inicia sesión para continuar",
+                text = "Por favor rellena estos datos para continuar",
                 fontSize = 12.sp,
                 color = Color.Gray
             )
 
+            DefaultTextField(
+                modifier = Modifier.padding(top = 5.dp),
+                value = username,
+                onValueChange = { username = it},
+                label = "Nombre de usuario",
+                icon = Icons.Default.Person
+            )
+
+
             Spacer(modifier = Modifier.height(10.dp))
 
             DefaultTextField(
-                modifier = Modifier.padding(top = 25.dp),
+                modifier = Modifier.padding(top = 5.dp),
                 value = email,
                 onValueChange = { email = it},
-                label = "Correo Electronico",
+                label = "Correo electronico",
                 icon = Icons.Default.Email,
                 keyboardType = KeyboardType.Email
             )
@@ -117,9 +123,22 @@ fun CardForm() {
                 hideText = true
             )
 
-            DefaultButton(modifier = Modifier
+            Spacer(modifier = Modifier.height(10.dp))
+
+            DefaultTextField(
+                modifier = Modifier.padding(top = 5.dp),
+                value = confirmPassword,
+                onValueChange = { confirmPassword = it},
+                label = "Confirmar contraseña",
+                icon = Icons.Outlined.Lock,
+                hideText = true
+            )
+
+            DefaultButton(
+                modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 35.dp), text = "INICIAR SESION", onClick = { })
+                .padding(vertical = 35.dp), text = "REGISTRARSE", onClick = { })
+
 
         }
     }
