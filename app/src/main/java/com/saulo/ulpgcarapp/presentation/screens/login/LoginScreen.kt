@@ -9,13 +9,14 @@ import com.saulo.ulpgcarapp.presentation.screens.login.components.LoginBottomBar
 import com.saulo.ulpgcarapp.presentation.screens.login.components.LoginContent
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavHostController) {
 
     Scaffold(
         topBar = {},
-        content = { LoginContent() },
+        content = {
+            LoginContent()
+        },
         bottomBar = {
             LoginBottomBar(navController)
         }

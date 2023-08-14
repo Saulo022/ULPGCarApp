@@ -12,7 +12,9 @@ import androidx.navigation.compose.rememberNavController
 import com.saulo.ulpgcarapp.presentation.navigation.AppNavigation
 import com.saulo.ulpgcarapp.presentation.screens.login.LoginScreen
 import com.saulo.ulpgcarapp.presentation.ui.theme.ULPGCarAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
