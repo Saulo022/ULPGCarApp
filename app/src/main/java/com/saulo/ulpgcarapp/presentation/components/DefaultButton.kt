@@ -1,9 +1,6 @@
 package com.saulo.ulpgcarapp.presentation.components
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
@@ -18,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
 
 
-
 @Composable
 fun DefaultButton(
     modifier: Modifier,
@@ -26,15 +22,15 @@ fun DefaultButton(
     onClick: () -> Unit,
     color: Color = Blue400,
     icon: ImageVector = Icons.Default.ArrowForward,
-    mainColor: Color = Color.White
+    mainColor: Color = Color.White,
+    enabled: Boolean = true
 ) {
 
     Button(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 45.dp),
+        modifier = modifier,
         onClick = { onClick() },
-        colors = ButtonDefaults.buttonColors(containerColor = color)
+        colors = ButtonDefaults.buttonColors(containerColor = color),
+        enabled = enabled
     ) {
         Icon(imageVector = icon, contentDescription = "", tint = mainColor)
         Spacer(modifier = Modifier.width(10.dp))

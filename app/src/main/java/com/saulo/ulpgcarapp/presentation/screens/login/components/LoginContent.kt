@@ -81,18 +81,18 @@ fun LoginContent(viewModel: LoginViewModel = hiltViewModel()) {
                     color = Color.Gray
                 )
 
-                Spacer(modifier = Modifier.height(10.dp))
-
                 DefaultTextField(
                     modifier = Modifier.padding(top = 25.dp),
                     value = viewModel.email.value,
                     onValueChange = { viewModel.email.value = it },
                     label = "Correo Electronico",
                     icon = Icons.Default.Email,
-                    keyboardType = KeyboardType.Email
+                    keyboardType = KeyboardType.Email,
+                    errorMsg = viewModel.emailErrMsg.value,
+                    validateField = {
+                        viewModel.validateEmail()
+                    }
                 )
-
-                Spacer(modifier = Modifier.height(10.dp))
 
                 DefaultTextField(
                     modifier = Modifier.padding(top = 5.dp),
@@ -100,7 +100,11 @@ fun LoginContent(viewModel: LoginViewModel = hiltViewModel()) {
                     onValueChange = { viewModel.password.value = it },
                     label = "Contraseña",
                     icon = Icons.Default.Lock,
-                    hideText = true
+                    hideText = true,
+                    errorMsg = viewModel.passwordErrMsg.value,
+                    validateField = {
+                        viewModel.validatePassword()
+                    }
                 )
 
                 DefaultButton(modifier = Modifier
@@ -110,7 +114,8 @@ fun LoginContent(viewModel: LoginViewModel = hiltViewModel()) {
                     onClick = {
                         Log.d("LoginContent", "Email: ${viewModel.email.value}")
                         Log.d("LoginContent", "Email: ${viewModel.password.value}")
-                    }
+                    },
+                    enabled = viewModel.isEnabledLoginButton
                 )
             }
         }
