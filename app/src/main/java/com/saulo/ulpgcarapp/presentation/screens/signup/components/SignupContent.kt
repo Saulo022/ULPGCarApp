@@ -150,6 +150,7 @@ fun SignupContent(
 
             is Response.Success -> {
                 LaunchedEffect(Unit) {
+                    viewModel.createUser()
                     navController.popBackStack(AppScreen.Login.route, true)
                     navController.navigate(route = AppScreen.Profile.route)
                 }

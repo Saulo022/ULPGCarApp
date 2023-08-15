@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.saulo.ulpgcarapp.domain.model.Response
 import com.saulo.ulpgcarapp.domain.model.User
 import com.saulo.ulpgcarapp.domain.use_cases.auth.AuthUseCases
+import com.saulo.ulpgcarapp.domain.use_cases.users.UsersUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +17,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignupViewModel @Inject constructor(private val authUseCases: AuthUseCases) : ViewModel() {
+class SignupViewModel @Inject constructor(
+    private val authUseCases: AuthUseCases,
+    private val usersUseCases: UsersUseCases
+) : ViewModel() {
 
     //USERNAME
     var username: MutableState<String> = mutableStateOf("")
@@ -44,14 +48,21 @@ class SignupViewModel @Inject constructor(private val authUseCases: AuthUseCases
     private val _signupFlow = MutableStateFlow<Response<FirebaseUser>?>(null)
     val signupFlow: StateFlow<Response<FirebaseUser>?> = _signupFlow
 
+    var user = User()
+
     fun onSignup() {
-        val user = User(
-            username = username.value,
-            email = email.value,
-            password = password.value
-        )
+        user.username = username.value
+        user.email = email.value
+        user.password = password.value
 
         signup(user)
+    }
+
+    fun createUser() {
+        viewModelScope.launch {
+            user.id = authUseCases.getCurrentUser()!!.uid
+            usersUseCases.create(user)
+        }
     }
 
     fun signup(user: User) {
@@ -65,9 +76,9 @@ class SignupViewModel @Inject constructor(private val authUseCases: AuthUseCases
     fun enabledLoginButton() {
         isEnabledLoginButton =
             isEmailValid.value &&
-            isPasswordValid.value &&
-            isUsernameValid.value &&
-            isConfirmPasswordValid.value
+                    isPasswordValid.value &&
+                    isUsernameValid.value &&
+                    isConfirmPasswordValid.value
     }
 
 
