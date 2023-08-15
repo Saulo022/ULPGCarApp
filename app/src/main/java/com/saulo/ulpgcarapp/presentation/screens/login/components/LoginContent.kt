@@ -1,6 +1,7 @@
 package com.saulo.ulpgcarapp.presentation.screens.login.components
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -12,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -19,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.saulo.ulpgcarapp.R
+import com.saulo.ulpgcarapp.domain.model.Response
 import com.saulo.ulpgcarapp.presentation.components.DefaultButton
 import com.saulo.ulpgcarapp.presentation.components.DefaultTextField
 import com.saulo.ulpgcarapp.presentation.screens.login.LoginViewModel
@@ -26,6 +29,9 @@ import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
 
 @Composable
 fun LoginContent(viewModel: LoginViewModel = hiltViewModel()) {
+
+    val loginFlow = viewModel.loginFlow.collectAsState()
+
     Box(modifier = Modifier.fillMaxWidth()) {
 
         Box(
@@ -112,13 +118,36 @@ fun LoginContent(viewModel: LoginViewModel = hiltViewModel()) {
                     .padding(vertical = 35.dp),
                     text = "INICIAR SESION",
                     onClick = {
-                        Log.d("LoginContent", "Email: ${viewModel.email.value}")
-                        Log.d("LoginContent", "Email: ${viewModel.password.value}")
+                        viewModel.login()
                     },
                     enabled = viewModel.isEnabledLoginButton
                 )
             }
         }
     }
+
+    loginFlow.value.let {
+        when(it) {
+
+            //MOSTRAR QUE SE ESTA REALIZANDO LA PETICION Y TODAVIA ESTA EN PROCESO
+            Response.Loading -> {
+                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                    CircularProgressIndicator()
+                }
+            }
+            is Response.Success -> {
+
+                Toast.makeText(LocalContext.current, "Usuario Logueado", Toast.LENGTH_LONG).show()
+            }
+
+            is Response.Failure -> {
+
+                Toast.makeText(LocalContext.current, it.exception?.message ?: "Error desconocido", Toast.LENGTH_LONG).show()
+            }
+
+            else -> {}
+        }
+    }
+
 }
 
