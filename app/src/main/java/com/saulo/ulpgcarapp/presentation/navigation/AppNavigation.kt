@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.saulo.ulpgcarapp.presentation.screens.login.LoginScreen
+import com.saulo.ulpgcarapp.presentation.screens.profile.ProfileScreen
 import com.saulo.ulpgcarapp.presentation.screens.signup.SignupScreen
 
 
@@ -19,6 +20,10 @@ fun AppNavigation(navController: NavHostController) {
 
         composable(route = AppScreen.Signup.route) {
             SignupScreen(navController)
+        }
+
+        composable(route = AppScreen.Profile.route) {
+            ProfileScreen(navController)
         }
 
     }

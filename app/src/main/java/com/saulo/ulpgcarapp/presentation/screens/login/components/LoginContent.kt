@@ -20,15 +20,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.saulo.ulpgcarapp.R
 import com.saulo.ulpgcarapp.domain.model.Response
 import com.saulo.ulpgcarapp.presentation.components.DefaultButton
 import com.saulo.ulpgcarapp.presentation.components.DefaultTextField
+import com.saulo.ulpgcarapp.presentation.navigation.AppScreen
 import com.saulo.ulpgcarapp.presentation.screens.login.LoginViewModel
 import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
 
 @Composable
-fun LoginContent(viewModel: LoginViewModel = hiltViewModel()) {
+fun LoginContent(navController: NavHostController, viewModel: LoginViewModel = hiltViewModel()) {
 
     val loginFlow = viewModel.loginFlow.collectAsState()
 
@@ -136,7 +138,9 @@ fun LoginContent(viewModel: LoginViewModel = hiltViewModel()) {
                 }
             }
             is Response.Success -> {
-
+                LaunchedEffect(Unit) {
+                    navController.navigate(route = AppScreen.Profile.route)
+                }
                 Toast.makeText(LocalContext.current, "Usuario Logueado", Toast.LENGTH_LONG).show()
             }
 
