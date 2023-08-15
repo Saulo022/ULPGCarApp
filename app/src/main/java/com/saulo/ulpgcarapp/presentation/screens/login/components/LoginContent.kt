@@ -139,9 +139,12 @@ fun LoginContent(navController: NavHostController, viewModel: LoginViewModel = h
             }
             is Response.Success -> {
                 LaunchedEffect(Unit) {
-                    navController.navigate(route = AppScreen.Profile.route)
+                    navController.navigate(route = AppScreen.Profile.route) {
+                        //ESTO ES PARA QUE UNA VEZ INICIEMOS SESION BORRE ESTA PANTALLA
+                        // DE LA PILA DE PANTALLAS ANTERIORES
+                        popUpTo(AppScreen.Login.route) { inclusive = true }
+                    }
                 }
-                Toast.makeText(LocalContext.current, "Usuario Logueado", Toast.LENGTH_LONG).show()
             }
 
             is Response.Failure -> {
