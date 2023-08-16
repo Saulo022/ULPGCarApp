@@ -16,50 +16,64 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val authUseCases: AuthUseCases): ViewModel() {
 
+    //STATE FORM
+    var state by mutableStateOf(LoginState())
+        private set
+
     //EMAIL
-    var email: MutableState<String> = mutableStateOf("")
-    var isEmailValid: MutableState<Boolean> = mutableStateOf(false)
-    var emailErrMsg: MutableState<String> = mutableStateOf("")
+    var isEmailValid by mutableStateOf(false)
+        private set
+    var emailErrMsg by mutableStateOf("")
+        private set
 
     //PASSWORD
-    var password: MutableState<String> = mutableStateOf("")
-    var isPasswordValid: MutableState<Boolean> = mutableStateOf(false)
-    var passwordErrMsg: MutableState<String> = mutableStateOf("")
+    var isPasswordValid by mutableStateOf(false)
+        private set
+    var passwordErrMsg by mutableStateOf("")
+        private set
 
     //BUTTON
     var isEnabledLoginButton = false
 
-    private val _loginFlow = MutableStateFlow<Response<FirebaseUser>?>(null)
-    val loginFlow: StateFlow<Response<FirebaseUser>?> = _loginFlow
+    //LOGIN RESPONSE
+    var loginResponse by mutableStateOf<Response<FirebaseUser>?>(null)
 
     val currentUSer = authUseCases.getCurrentUser()
     init {
         if (currentUSer != null) { //SESION INICIADA
-            _loginFlow.value = Response.Success(currentUSer)
+            loginResponse = Response.Success(currentUSer)
         }
+    }
+
+    fun onEmailInput(email: String) {
+        state = state.copy(email = email)
+    }
+
+    fun onPasswordInput(password: String) {
+        state = state.copy(password = password)
     }
 
     fun login() {
         viewModelScope.launch {
-            _loginFlow.value = Response.Loading
-            val result = authUseCases.login(email.value, password.value)
-            _loginFlow.value = result
+            loginResponse = Response.Loading
+            val result = authUseCases.login(state.email, state.password)
+            loginResponse = result
         }
     }
 
     fun enabledLoginButton() {
-        isEnabledLoginButton = isEmailValid.value && isPasswordValid.value
+        isEnabledLoginButton = isEmailValid && isPasswordValid
     }
 
     fun validateEmail() {
 
         //ES UN EMAIL VALIDO
-        if (Patterns.EMAIL_ADDRESS.matcher(email.value).matches()) {
-            isEmailValid.value = true
-            emailErrMsg.value = ""
+        if (Patterns.EMAIL_ADDRESS.matcher(state.email).matches()) {
+            isEmailValid = true
+            emailErrMsg = ""
         } else {
-            isEmailValid.value = false
-            emailErrMsg.value = "El email no es valido"
+            isEmailValid = false
+            emailErrMsg = "El email no es valido"
         }
 
         enabledLoginButton()
@@ -67,12 +81,12 @@ class LoginViewModel @Inject constructor(private val authUseCases: AuthUseCases)
 
 
     fun validatePassword() {
-        if (password.value.length >= 6) {
-            isPasswordValid.value = true
-            passwordErrMsg.value = ""
+        if (state.password.length >= 6) {
+            isPasswordValid = true
+            passwordErrMsg = ""
         } else {
-            isPasswordValid.value = false
-            passwordErrMsg.value = "Al menos 6 caracteres"
+            isPasswordValid = false
+            passwordErrMsg = "Al menos 6 caracteres"
         }
 
         enabledLoginButton()

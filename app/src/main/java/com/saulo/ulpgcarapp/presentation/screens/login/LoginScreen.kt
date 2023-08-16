@@ -5,6 +5,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import com.saulo.ulpgcarapp.presentation.screens.login.components.Login
 import com.saulo.ulpgcarapp.presentation.screens.login.components.LoginBottomBar
 import com.saulo.ulpgcarapp.presentation.screens.login.components.LoginContent
 
@@ -21,5 +22,8 @@ fun LoginScreen(navController: NavHostController) {
             LoginBottomBar(navController)
         }
     )
+
+    //MANEJAR EL ESTADO DE LA PETICION DE LOGIN
+    Login(navController = navController)
 
 }
