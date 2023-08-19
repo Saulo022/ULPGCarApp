@@ -24,7 +24,10 @@ import com.saulo.ulpgcarapp.R
 import com.saulo.ulpgcarapp.presentation.ui.theme.Orange400
 
 @Composable
-fun ProfileContent(navController: NavHostController, viewModel: ProfileViewModel = hiltViewModel()) {
+fun ProfileContent(
+    navController: NavHostController,
+    viewModel: ProfileViewModel = hiltViewModel()
+) {
 
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -77,7 +80,12 @@ fun ProfileContent(navController: NavHostController, viewModel: ProfileViewModel
             mainColor = Color.Black,
             color = Orange400,
             icon = Icons.Default.Edit,
-            onClick = { })
+            onClick = {
+                navController.navigate(
+                    route = AppScreen.ProfileEdit.passUser(viewModel.userData.toJson())
+                )
+            }
+        )
 
         Spacer(modifier = Modifier.height(10.dp))
 
