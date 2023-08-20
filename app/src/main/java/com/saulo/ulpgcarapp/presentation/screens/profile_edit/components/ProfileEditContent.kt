@@ -12,10 +12,13 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +33,7 @@ import com.saulo.ulpgcarapp.presentation.screens.profile_edit.ProfileEditViewMod
 import com.saulo.ulpgcarapp.presentation.ui.theme.Red500
 import com.saulo.ulpgcarapp.presentation.utils.ComposeFileProvider
 import com.saulo.ulpgcarapp.R
+import com.saulo.ulpgcarapp.presentation.components.DialogCapturePicture
 import com.saulo.ulpgcarapp.presentation.ui.theme.Orange400
 
 
@@ -41,22 +45,14 @@ fun ProfileEditContent(
 
     val state = viewModel.state
 
-    val imagePicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri ->
-            uri?.let { viewModel.onGalleryResult(it) }
-        }
+    viewModel.resultingActivityHandler.handle()
+    val dialogState = remember { mutableStateOf(false) }
+
+    DialogCapturePicture(
+        status = dialogState,
+        takePhoto = { viewModel.takePhoto() },
+        pickImage = { viewModel.pickImage() }
     )
-
-    val cameraLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicture(),
-        onResult = { hasImage ->
-            viewModel.onCameraResult(hasImage)
-        }
-    )
-
-    val context = LocalContext.current
-
 
     Box(modifier = Modifier.fillMaxWidth()) {
 
@@ -74,25 +70,23 @@ fun ProfileEditContent(
 
                 Spacer(modifier = Modifier.height(80.dp))
 
-                if (viewModel.hasImage && viewModel.imageUri != null) {
+                if (viewModel.imageUri != "") {
                     AsyncImage(
                         modifier = Modifier
-                            .height(100.dp)
-                            .clip(CircleShape),
+                            .height(150.dp)
+                            .width(150.dp)
+                            .clip(CircleShape)
+                            .clickable { dialogState.value = true },
                         model = viewModel.imageUri,
-                        contentDescription = "Selected image"
+                        contentDescription = "Selected image",
+                        contentScale = ContentScale.Crop
                     )
                 } else {
 
                     Image(
                         modifier = Modifier
                             .height(120.dp)
-                            .clickable {
-                                //imagePicker.launch("image/*")
-                                val uri = ComposeFileProvider.getImageUri(context)
-                                viewModel.imageUri = uri
-                                cameraLauncher.launch(uri)
-                            },
+                            .clickable {  dialogState.value = true },
                         painter = painterResource(id = R.drawable.user),
                         contentDescription = "Imagen de Usuario"
                     )
