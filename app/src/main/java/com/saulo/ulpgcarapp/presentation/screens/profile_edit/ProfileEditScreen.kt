@@ -6,7 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.saulo.ulpgcarapp.presentation.components.DefaultTopBar
 import com.saulo.ulpgcarapp.presentation.screens.profile_edit.components.ProfileEditContent
+import com.saulo.ulpgcarapp.presentation.screens.profile_edit.components.SaveImage
 import com.saulo.ulpgcarapp.presentation.screens.profile_edit.components.Update
+
 
 @Composable
 fun ProfileEditScreen(navController: NavHostController, user: String) {
@@ -26,5 +28,6 @@ fun ProfileEditScreen(navController: NavHostController, user: String) {
         },
         bottomBar = {}
     )
+    SaveImage()
     Update()
 }

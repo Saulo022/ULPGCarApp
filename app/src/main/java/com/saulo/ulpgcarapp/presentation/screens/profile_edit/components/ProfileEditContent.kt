@@ -30,8 +30,6 @@ import coil.compose.AsyncImage
 import com.saulo.ulpgcarapp.presentation.components.DefaultButton
 import com.saulo.ulpgcarapp.presentation.components.DefaultTextField
 import com.saulo.ulpgcarapp.presentation.screens.profile_edit.ProfileEditViewModel
-import com.saulo.ulpgcarapp.presentation.ui.theme.Red500
-import com.saulo.ulpgcarapp.presentation.utils.ComposeFileProvider
 import com.saulo.ulpgcarapp.R
 import com.saulo.ulpgcarapp.presentation.components.DialogCapturePicture
 import com.saulo.ulpgcarapp.presentation.ui.theme.Orange400
@@ -70,14 +68,14 @@ fun ProfileEditContent(
 
                 Spacer(modifier = Modifier.height(80.dp))
 
-                if (viewModel.imageUri != "") {
+                if (viewModel.state.image != "") {
                     AsyncImage(
                         modifier = Modifier
                             .height(150.dp)
                             .width(150.dp)
                             .clip(CircleShape)
                             .clickable { dialogState.value = true },
-                        model = viewModel.imageUri,
+                        model = viewModel.state.image,
                         contentDescription = "Selected image",
                         contentScale = ContentScale.Crop
                     )
@@ -134,7 +132,7 @@ fun ProfileEditContent(
                         .fillMaxWidth()
                         .padding(top = 20.dp, bottom = 40.dp),
                     text = "ACTUALIZAR DATOS",
-                    onClick = { viewModel.onUpdate() },
+                    onClick = { viewModel.saveImage() },
                 )
 
 

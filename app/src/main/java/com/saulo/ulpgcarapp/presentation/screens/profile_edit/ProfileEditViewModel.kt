@@ -16,6 +16,7 @@ import com.saulo.ulpgcarapp.presentation.utils.ResultingActivityHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,6 +34,7 @@ class ProfileEditViewModel @Inject constructor(
     var usernameErrMsg by mutableStateOf("")
         private set
 
+    //ARGUMENTS
     val data = savedStateHandle.get<String>("user")
     val user = User.fromJson(data!!)
 
@@ -44,20 +46,37 @@ class ProfileEditViewModel @Inject constructor(
     var updateResponse by mutableStateOf<Response<Boolean>?>(null)
         private set
 
-    //IMAGE
-    var imageUri by mutableStateOf("")
+    var saveImageResponse by mutableStateOf<Response<String>?>(null)
+        private set
+
+    //FILE
+    var file: File? = null
 
     val resultingActivityHandler = ResultingActivityHandler()
 
     init {
-        state = state.copy(username = user.username)
+        state = state.copy(
+            username = user.username,
+            image = user.image
+        )
+    }
+
+    fun saveImage() {
+        viewModelScope.launch {
+            if (file != null) {
+                saveImageResponse = Response.Loading
+                val result = usersUseCases.saveImage(file!!)
+                saveImageResponse = result
+            }
+        }
     }
 
     fun pickImage() {
         viewModelScope.launch {
             val result = resultingActivityHandler.getContent("image/*")
             if (result != null) {
-                imageUri = result.toString()
+                file = ComposeFileProvider.createFileFromUri(context, result)
+                state = state.copy(image = result.toString())
             }
         }
     }
@@ -66,36 +85,37 @@ class ProfileEditViewModel @Inject constructor(
         viewModelScope.launch {
             val result = resultingActivityHandler.takePicturePreview()
             if (result != null) {
-                imageUri = ComposeFileProvider.getPathFromBitmap(context, result)
+                state = state.copy(image = ComposeFileProvider.getPathFromBitmap(context, result))
+                file = File(state.image)
             }
         }
     }
 
-        fun onUpdate() {
-            val myUser = User(
-                id = user.id,
-                username = state.username,
-                image = ""
-            )
-            update(myUser)
+    fun onUpdate(url: String) {
+        val myUser = User(
+            id = user.id,
+            username = state.username,
+            image = url
+        )
+        update(myUser)
+    }
+
+    fun update(user: User) {
+        viewModelScope.launch {
+            updateResponse = Response.Loading
+            val result = usersUseCases.update(user)
+            updateResponse = result
         }
+    }
 
-        fun update(user: User) {
-            viewModelScope.launch {
-                updateResponse = Response.Loading
-                val result = usersUseCases.update(user)
-                updateResponse = result
-            }
-        }
+    fun validateUsername() {
 
-        fun validateUsername() {
-
-            if (state.username.length >= 5) {
-                usernameErrMsg = ""
-            } else {
-                usernameErrMsg = "Al menos 5 caracteres"
-            }
-
+        if (state.username.length >= 5) {
+            usernameErrMsg = ""
+        } else {
+            usernameErrMsg = "Al menos 5 caracteres"
         }
 
     }
+
+}

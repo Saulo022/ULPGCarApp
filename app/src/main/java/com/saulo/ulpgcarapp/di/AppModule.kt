@@ -5,16 +5,15 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.saulo.ulpgcarapp.core.Constants.USERS
 import com.saulo.ulpgcarapp.data.repository.AuthRepositoryImpl
 import com.saulo.ulpgcarapp.data.repository.UsersRepositoryImpl
 import com.saulo.ulpgcarapp.domain.repository.AuthRepository
 import com.saulo.ulpgcarapp.domain.repository.UsersRepository
 import com.saulo.ulpgcarapp.domain.use_cases.auth.*
-import com.saulo.ulpgcarapp.domain.use_cases.users.Create
-import com.saulo.ulpgcarapp.domain.use_cases.users.GetUserById
-import com.saulo.ulpgcarapp.domain.use_cases.users.Update
-import com.saulo.ulpgcarapp.domain.use_cases.users.UsersUseCases
+import com.saulo.ulpgcarapp.domain.use_cases.users.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,6 +25,12 @@ object AppModule {
 
     @Provides
     fun provideFirebaseFirestore(): FirebaseFirestore = Firebase.firestore
+
+    @Provides
+    fun provideFirebaseStorage(): FirebaseStorage = FirebaseStorage.getInstance()
+
+    @Provides
+    fun provideStorageUsersRed(storage: FirebaseStorage): StorageReference = storage.reference.child(USERS)
 
     @Provides
     fun provideUsersRef(db: FirebaseFirestore): CollectionReference = db.collection(USERS)
@@ -51,7 +56,8 @@ object AppModule {
     fun provideUsersUseCases(repository: UsersRepository) = UsersUseCases(
         create = Create(repository),
         getUserById = GetUserById(repository),
-        update = Update(repository)
+        update = Update(repository),
+        saveImage = SaveImage(repository)
     )
 
 }
