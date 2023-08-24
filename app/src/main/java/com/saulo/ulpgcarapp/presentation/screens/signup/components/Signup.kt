@@ -8,7 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.saulo.ulpgcarapp.domain.model.Response
 import com.saulo.ulpgcarapp.presentation.components.ProgressBar
-import com.saulo.ulpgcarapp.presentation.navigation.AppScreen
+import com.saulo.ulpgcarapp.presentation.navigation.Graph
 import com.saulo.ulpgcarapp.presentation.screens.signup.SignupViewModel
 
 @Composable
@@ -21,8 +21,8 @@ fun Signup(navController: NavHostController, viewModel: SignupViewModel = hiltVi
         is Response.Success -> {
             LaunchedEffect(Unit) {
                 viewModel.createUser()
-                navController.popBackStack(AppScreen.Login.route, true)
-                navController.navigate(route = AppScreen.Profile.route)
+                navController.popBackStack(Graph.AUTHENTICATION, true)
+                navController.navigate(route = Graph.HOME)
             }
         }
         is Response.Failure -> {

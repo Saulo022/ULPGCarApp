@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.saulo.ulpgcarapp.presentation.navigation.AppScreen
+import com.saulo.ulpgcarapp.presentation.navigation.AuthScreen
 import com.saulo.ulpgcarapp.presentation.ui.theme.Orange400
 
 @Composable
@@ -29,7 +29,7 @@ fun LoginBottomBar(navController: NavHostController) {
         )
         Spacer(modifier = Modifier.width(10.dp))
         Text(
-            modifier = Modifier.clickable { navController.navigate(route = AppScreen.Signup.route) },
+            modifier = Modifier.clickable { navController.navigate(route = AuthScreen.Signup.route) },
             text = "REGISTRATE AQUI",
             color = Orange400,
             fontSize = 14.sp,

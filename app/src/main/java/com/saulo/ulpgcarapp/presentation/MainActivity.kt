@@ -9,8 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.saulo.ulpgcarapp.presentation.navigation.AppNavigation
-import com.saulo.ulpgcarapp.presentation.screens.login.LoginScreen
+import com.saulo.ulpgcarapp.presentation.navigation.RootNavGraph
 import com.saulo.ulpgcarapp.presentation.ui.theme.ULPGCarAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     navController = rememberNavController()
-                    AppNavigation(navController = navController)
+                    RootNavGraph(navController = navController)
                 }
             }
         }
