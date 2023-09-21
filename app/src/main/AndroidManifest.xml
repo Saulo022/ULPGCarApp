@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission
         android:name="android.permission.CAMERA"
         android:required="true"
@@ -22,6 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ULPGCarApp"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyALFu7egKJNykpKR6A6RJMdg10ckaEfuPs"/>
+
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true"
