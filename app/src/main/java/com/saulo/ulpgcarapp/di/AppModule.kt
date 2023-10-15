@@ -16,10 +16,7 @@ import com.saulo.ulpgcarapp.domain.repository.AuthRepository
 import com.saulo.ulpgcarapp.domain.repository.PublishRepository
 import com.saulo.ulpgcarapp.domain.repository.UsersRepository
 import com.saulo.ulpgcarapp.domain.use_cases.auth.*
-import com.saulo.ulpgcarapp.domain.use_cases.publish.GetPublishRides
-import com.saulo.ulpgcarapp.domain.use_cases.publish.GetPublishRidesById
-import com.saulo.ulpgcarapp.domain.use_cases.publish.PublishRide
-import com.saulo.ulpgcarapp.domain.use_cases.publish.PublishUseCases
+import com.saulo.ulpgcarapp.domain.use_cases.publish.*
 import com.saulo.ulpgcarapp.domain.use_cases.users.*
 import dagger.Module
 import dagger.Provides
@@ -81,7 +78,8 @@ object AppModule {
     fun providePublishUseCases(repository: PublishRepository) = PublishUseCases(
         publish = PublishRide(repository),
         getPublishRides = GetPublishRides(repository),
-        getPublishRidesById = GetPublishRidesById(repository)
+        getPublishRidesById = GetPublishRidesById(repository),
+        deletePublishRide = DeletePublishRide(repository)
     )
 
 

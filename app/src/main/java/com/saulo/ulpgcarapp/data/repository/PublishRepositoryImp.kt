@@ -30,6 +30,17 @@ class PublishRepositoryImp @Inject constructor(
         }
     }
 
+    override suspend fun delete(idPublishRide: String): Response<Boolean> {
+        return try {
+            publishRef.document(idPublishRide).delete().await()
+            Response.Success(true)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Response.Failure(e)
+        }
+    }
+
     @OptIn(DelicateCoroutinesApi::class)
     override fun getPublishRides(): Flow<Response<List<Publish>>> = callbackFlow {
 
@@ -79,7 +90,9 @@ class PublishRepositoryImp @Inject constructor(
 
             val publishResponse = if (snapshot != null) {
                 val publications = snapshot.toObjects(Publish::class.java)
-
+                snapshot.documents.forEachIndexed { index, document ->
+                    publications[index].id = document.id
+                }
                 Response.Success(publications)
             } else {
                 Response.Failure(e)

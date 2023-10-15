@@ -20,12 +20,20 @@ class PublishRideViewModel @Inject constructor(
 ) : ViewModel() {
 
     var publishRidesResponse by mutableStateOf<Response<List<Publish>>?>(null)
+    var deleteResponse by mutableStateOf<Response<Boolean>?>(null)
     val currentUser = authUseCases.getCurrentUser()
 
     init {
         getPublisRides()
     }
 
+    fun delete(idPost: String) {
+        viewModelScope.launch {
+            deleteResponse = Response.Loading
+            val result = publishUseCases.deletePublishRide(idPost)
+            deleteResponse = result
+        }
+    }
     fun getPublisRides() {
         viewModelScope.launch {
             publishRidesResponse = Response.Loading
