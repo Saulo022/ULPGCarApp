@@ -46,11 +46,17 @@ class PublishNewRideViewModel @Inject constructor(
     //CLOCK
     var timeChoose = ""
 
-    //BUTTON
+    //STATE BUTTON ADD PASSENGER
     var isEnabledAddPassengerButton = true
 
-    //BUTTON
+    //STATE BUTTON REMOVE PASSENGER
     var isEnabledRemovePassengerButton = false
+
+    //STATE BUTTON UP PRICE
+    var isEnabledUpPriceButton = true
+
+    //STATE BUTTON LOWER PRICE
+    var isEnabledLowerPriceButton = false
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -126,6 +132,7 @@ class PublishNewRideViewModel @Inject constructor(
             fecha = state.dateChoose,
             hora = state.timeChoose,
             numeroPasajeros = state.passengers,
+            precio = state.price,
             idUser = currentUser?.uid ?: ""
         )
         publishARide(publish)
@@ -137,7 +144,8 @@ class PublishNewRideViewModel @Inject constructor(
             searchReturn = "",
             timeChoose = "",
             dateChoose = "",
-            passengers = 1
+            passengers = 1,
+            price = "1"
         )
         publishARideResponse = null
     }
@@ -173,5 +181,21 @@ class PublishNewRideViewModel @Inject constructor(
         }
     }
 
+    //Metodos para el precio del viaje
+    fun upPrice() {
+        val price = state.price.toInt() + 1
+        state = state.copy(price = price.toString())
+        if (state.price.toInt() > 1) {
+            isEnabledLowerPriceButton = true
+        }
+    }
+
+    fun lowerPrice() {
+        val price = state.price.toInt() - 1
+        state = state.copy(price = price.toString())
+        if (state.price.toInt() == 1) {
+            isEnabledLowerPriceButton = false
+        }
+    }
 
 }

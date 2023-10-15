@@ -17,6 +17,7 @@ import com.saulo.ulpgcarapp.domain.repository.PublishRepository
 import com.saulo.ulpgcarapp.domain.repository.UsersRepository
 import com.saulo.ulpgcarapp.domain.use_cases.auth.*
 import com.saulo.ulpgcarapp.domain.use_cases.publish.GetPublishRides
+import com.saulo.ulpgcarapp.domain.use_cases.publish.GetPublishRidesById
 import com.saulo.ulpgcarapp.domain.use_cases.publish.PublishRide
 import com.saulo.ulpgcarapp.domain.use_cases.publish.PublishUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.users.*
@@ -79,7 +80,8 @@ object AppModule {
     @Provides
     fun providePublishUseCases(repository: PublishRepository) = PublishUseCases(
         publish = PublishRide(repository),
-        getPublishRides = GetPublishRides(repository)
+        getPublishRides = GetPublishRides(repository),
+        getPublishRidesById = GetPublishRidesById(repository)
     )
 
 

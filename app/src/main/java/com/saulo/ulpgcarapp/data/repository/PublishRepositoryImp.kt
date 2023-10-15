@@ -50,7 +50,8 @@ class PublishRepositoryImp @Inject constructor(
 
                     idUserList.map { id ->
                         async {
-                            val user = usersRef.document(id).get().await().toObject(User::class.java)!!
+                            val user =
+                                usersRef.document(id).get().await().toObject(User::class.java)!!
                             publications.forEach { publish ->
                                 if (publish.idUser == id) {
                                     publish.user = user
@@ -67,6 +68,24 @@ class PublishRepositoryImp @Inject constructor(
                 }
                 trySend(publishResponse)
             }
+        }
+        awaitClose {
+            snapshotListener.remove()
+        }
+    }
+
+    override fun getPublishRidesByUserId(idUser: String): Flow<Response<List<Publish>>> = callbackFlow {
+        val snapshotListener = publishRef.whereEqualTo("idUser", idUser).addSnapshotListener { snapshot, e ->
+
+            val publishResponse = if (snapshot != null) {
+                val publications = snapshot.toObjects(Publish::class.java)
+
+                Response.Success(publications)
+            } else {
+                Response.Failure(e)
+            }
+            trySend(publishResponse)
+
         }
         awaitClose {
             snapshotListener.remove()

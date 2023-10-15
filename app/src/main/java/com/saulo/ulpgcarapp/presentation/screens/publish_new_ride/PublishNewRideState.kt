@@ -12,7 +12,8 @@ data class PublishNewRideState (
     var searchReturnList: List<Feature> = emptyList(),
     var timeChoose: String = "",
     var dateChoose: String = "",
-    var passengers: Int = 1
+    var passengers: Int = 1,
+    var price: String = "1"
 )
 
 /*

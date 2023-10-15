@@ -26,7 +26,9 @@ fun RidesCard(publishRide: Publish) {
 
     Card(elevation = CardDefaults.cardElevation(), shape = RoundedCornerShape(20.dp), modifier = Modifier.padding(bottom = 10.dp)) {
         Column(modifier = Modifier.padding(all = 10.dp)) {
+            /*
             Row(verticalAlignment = Alignment.CenterVertically) {
+
                 if (publishRide.user?.image != "") {
                     AsyncImage(
                         modifier = Modifier
@@ -47,8 +49,8 @@ fun RidesCard(publishRide: Publish) {
 
                 Text(text = publishRide.user?.username ?: "", fontWeight = FontWeight.Bold, fontStyle = FontStyle.Italic, fontSize = 20.sp)
             }
-
-            Text(text = "Fecha y hora", fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 10.dp))
+                 */
+                Text(text = "Fecha y hora", fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 10.dp))
 
             Row() {
                 Text(text = publishRide.fecha)
@@ -71,7 +73,7 @@ fun RidesCard(publishRide: Publish) {
             }
 
             Row(modifier = Modifier.fillMaxWidth().padding(all = 5.dp), horizontalArrangement = Arrangement.End) {
-                Text(text = publishRide.precio)
+                Text(text = publishRide.precio + "€")
             }
 
         }

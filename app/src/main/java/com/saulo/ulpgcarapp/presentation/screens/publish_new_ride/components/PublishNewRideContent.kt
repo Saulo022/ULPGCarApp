@@ -43,11 +43,6 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
 
     val state = viewModel.state
 
-    /*val stateList = viewModel.stateList
-    val stateReturn = viewModel.stateReturn
-    val stateReturnList = viewModel.stateReturnList*/
-
-
     Box(modifier = Modifier.fillMaxWidth()) {
 
         Box(
@@ -70,7 +65,7 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                     contentDescription = "Publish Ride Image"
                 )
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(5.dp))
 
                 Text(
                     text = "Publish a ride",
@@ -82,9 +77,10 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
             }
         }
 
+
         Card(
             modifier = Modifier
-                .padding(start = 10.dp, end = 10.dp, top = 120.dp)
+                .padding(start = 10.dp, end = 10.dp, top = 105.dp, bottom = 10.dp)
         ) {
             Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
@@ -271,8 +267,6 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
 
                 }
 
-
-
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Row(
@@ -305,10 +299,49 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                         enabled = viewModel.isEnabledAddPassengerButton
                     )
                 }
+
+                Text(
+                    text = "Elige un precio para tu viaje",
+                    fontSize = 12.sp,
+                    color = Color.Gray
+                )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(bottom = 20.dp)
+                ) {
+                    DefaultButton(
+                        modifier = Modifier
+                            .height(50.dp)
+                            .width(70.dp),
+                        text = "",
+                        onClick = { viewModel.lowerPrice() },
+                        icon = Icons.Default.Remove,
+                        enabled = viewModel.isEnabledLowerPriceButton
+                    )
+
+                    Spacer(modifier = Modifier.width(20.dp))
+
+                    Text(text = viewModel.state.price + "€")
+
+                    Spacer(modifier = Modifier.width(20.dp))
+
+                    DefaultButton(
+                        modifier = Modifier
+                            .height(50.dp)
+                            .width(70.dp),
+                        text = "",
+                        onClick = { viewModel.upPrice() },
+                        icon = Icons.Default.Add,
+                        enabled = viewModel.isEnabledUpPriceButton
+                    )
+                }
             }
 
             Column(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 DefaultButton(

@@ -8,5 +8,6 @@ interface PublishRepository {
 
     suspend fun create(publish: Publish): Response<Boolean>
     fun getPublishRides(): Flow<Response<List<Publish>>>
+    fun getPublishRidesByUserId(idUser: String): Flow<Response<List<Publish>>>
 
 }
