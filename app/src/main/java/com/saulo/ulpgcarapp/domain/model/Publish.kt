@@ -14,5 +14,5 @@ data class Publish(
     var fecha: String = "",
     var hora: String = "",
     var idUser: String = "",
-    var user: User = User()
+    var user: User? = null
 )

@@ -39,11 +39,23 @@ class PublishRepositoryImp @Inject constructor(
 
                 val publishResponse = if (snapshot != null) {
                     val publications = snapshot.toObjects(Publish::class.java)
+                    val idUserArray = ArrayList<String>()
 
-                    publications.map {
+                    publications.forEach {
+                        idUserArray.add(it.idUser)
+                    }
+
+                    //IDs SIN REPETIR
+                    val idUserList = idUserArray.toSet().toList()
+
+                    idUserList.map { id ->
                         async {
-                            it.user = usersRef.document(it.idUser).get().await()
-                                .toObject(User::class.java)!!
+                            val user = usersRef.document(id).get().await().toObject(User::class.java)!!
+                            publications.forEach { publish ->
+                                if (publish.idUser == id) {
+                                    publish.user = user
+                                }
+                            }
                         }
                     }.forEach {
                         it.await()
