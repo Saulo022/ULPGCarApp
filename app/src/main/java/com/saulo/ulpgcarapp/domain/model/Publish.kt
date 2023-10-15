@@ -13,5 +13,6 @@ data class Publish(
     var estado: String = "",
     var fecha: String = "",
     var hora: String = "",
-    var idUser: String = ""
+    var idUser: String = "",
+    var user: User = User()
 )
