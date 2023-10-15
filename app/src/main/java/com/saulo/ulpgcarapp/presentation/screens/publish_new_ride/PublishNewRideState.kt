@@ -1,10 +1,10 @@
-package com.saulo.ulpgcarapp.presentation.screens.publish_a_ride
+package com.saulo.ulpgcarapp.presentation.screens.publish_new_ride
 
 import com.saulo.ulpgcarapp.data.network.response.Feature
 
 
 
-data class PublishRideState (
+data class PublishNewRideState (
     var search: String = "",
     var searchList: List<Feature> = emptyList(),
     var municipality: String = "",
