@@ -3,6 +3,7 @@ package com.saulo.ulpgcarapp.data.repository
 import android.net.Uri
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.storage.StorageReference
+import com.saulo.ulpgcarapp.core.Constants
 import com.saulo.ulpgcarapp.domain.model.Response
 import com.saulo.ulpgcarapp.domain.model.User
 import com.saulo.ulpgcarapp.domain.repository.UsersRepository
@@ -12,10 +13,11 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import java.io.File
 import javax.inject.Inject
+import javax.inject.Named
 
 class UsersRepositoryImpl @Inject constructor(
-    private val usersRef: CollectionReference,
-    private val storageUsersRef: StorageReference
+    @Named(Constants.USERS) private val usersRef: CollectionReference,
+    @Named(Constants.USERS) private val storageUsersRef: StorageReference
 ): UsersRepository {
 
     override suspend fun create(user: User): Response<Boolean> {

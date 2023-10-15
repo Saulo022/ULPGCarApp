@@ -3,6 +3,19 @@ package com.saulo.ulpgcarapp.presentation.screens.publish_a_ride
 import com.saulo.ulpgcarapp.data.network.response.Feature
 
 
+
+data class PublishRideState (
+    var search: String = "",
+    var searchList: List<Feature> = emptyList(),
+    var municipality: String = "",
+    var searchReturn: String = "",
+    var searchReturnList: List<Feature> = emptyList(),
+    var timeChoose: String = "",
+    var dateChoose: String = "",
+    var passengers: Int = 1
+)
+
+/*
 data class PublishRideSearchState (
     var search: String = ""
 )
@@ -18,3 +31,13 @@ data class PublishRideSearchReturnState (
 data class PublishRideSearchReturnListState (
     var searchReturnList: List<Feature> = emptyList()
 )
+
+data class PublishRideDateTimeState (
+    var timeChoose: String = "",
+    var dateChoose: String = ""
+)
+
+data class PublishRidePassengersState (
+    var passengers: Int = 1
+)
+ */

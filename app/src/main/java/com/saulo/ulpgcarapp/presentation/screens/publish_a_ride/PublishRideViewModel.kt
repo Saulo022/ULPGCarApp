@@ -1,6 +1,7 @@
 package com.saulo.ulpgcarapp.presentation.screens.publish_a_ride
 
 import android.util.Log
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,29 +9,52 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.maxkeppeker.sheets.core.models.base.rememberSheetState
+import com.maxkeppeler.sheets.clock.ClockDialog
+import com.maxkeppeler.sheets.clock.models.ClockSelection
+import com.saulo.ulpgcarapp.core.Constants.API_KEY
+import com.saulo.ulpgcarapp.core.Constants.COUNTRY
+import com.saulo.ulpgcarapp.core.Constants.LATITUDE
+import com.saulo.ulpgcarapp.core.Constants.LONGITUDE
+import com.saulo.ulpgcarapp.core.Constants.RADIUS
+import com.saulo.ulpgcarapp.domain.model.Publish
+import com.saulo.ulpgcarapp.domain.model.Response
+import com.saulo.ulpgcarapp.domain.use_cases.auth.AuthUseCases
+import com.saulo.ulpgcarapp.domain.use_cases.publish.PublishUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.searches.SearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PublishRideViewModel @Inject constructor(private val searchUseCase: SearchUseCase) : ViewModel() {
+class PublishRideViewModel @Inject constructor(
+    private val searchUseCase: SearchUseCase,
+    private val publishUseCases: PublishUseCases,
+    private val authUseCases: AuthUseCases
+) :
+    ViewModel() {
 
-    //STATE SEARCH FORM
-    var state by mutableStateOf(PublishRideSearchState())
+    //STATE PUBLISH SCREEN
+    var state by mutableStateOf(PublishRideState())
         private set
 
-    //STATE SEARCH LIST FORM
-    var stateList by mutableStateOf(PublishRideSearchListState())
+    var publishARideResponse by mutableStateOf<Response<Boolean>?>(null)
         private set
 
-    //STATE SEARCH FORM
-    var stateReturn by mutableStateOf(PublishRideSearchReturnState())
-        private set
+    //USER SESSION
+    val currentUser = authUseCases.getCurrentUser()
 
-    //STATE SEARCH LIST FORM
-    var stateReturnList by mutableStateOf(PublishRideSearchReturnListState())
-        private set
+    //CALENDAR
+    var dateChoose = ""
+
+    //CLOCK
+    var timeChoose = ""
+
+    //BUTTON
+    var isEnabledAddPassengerButton = true
+
+    //BUTTON
+    var isEnabledRemovePassengerButton = false
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -39,6 +63,12 @@ class PublishRideViewModel @Inject constructor(private val searchUseCase: Search
     //Metodos de ida
     fun onSearchInput(search: String) {
         state = state.copy(search = search)
+        Log.d("Publish2", "PublishRideContent + $state")
+    }
+
+    fun onMunicipalityInput(localadmin: String) {
+        state = state.copy(municipality = localadmin)
+        Log.d("Publish2", "PublishRideContent + $state")
     }
 
     fun onSearchDelete() {
@@ -48,40 +78,104 @@ class PublishRideViewModel @Inject constructor(private val searchUseCase: Search
     fun onSearchSelected() {
         viewModelScope.launch {
             val result = searchUseCase(
-                apiKey = "5b3ce3597851110001cf6248430006dcbe134f72aea0f41e3b68d35b",
+                apiKey = API_KEY,
                 text = state.search,
-                long = "-15.4134300",
-                lat = "28.0997300",
-                radius = 50,
-                country = "ES"
+                long = LONGITUDE,
+                lat = LATITUDE,
+                radius = RADIUS,
+                country = COUNTRY
             )
-            stateList = stateList.copy(searchList = result)
+            state = state.copy(searchList = result)
             Log.d("Saulo", "onSearchSelected: OK + $result")
         }
     }
 
     //Metodos de vuelta
     fun onSearchReturnInput(returnSearch: String) {
-        stateReturn = stateReturn.copy(searchReturn = returnSearch)
+        state = state.copy(searchReturn = returnSearch)
     }
 
     fun onSearchReturnDelete() {
-        stateReturn = stateReturn.copy(searchReturn = "")
+        state = state.copy(searchReturn = "")
     }
 
     fun onSearchReturnSelected() {
         viewModelScope.launch {
             val result = searchUseCase(
-                apiKey = "5b3ce3597851110001cf6248430006dcbe134f72aea0f41e3b68d35b",
-                text = stateReturn.searchReturn,
-                long = "-15.4134300",
-                lat = "28.0997300",
-                radius = 50,
-                country = "ES"
+                apiKey = API_KEY,
+                text = state.searchReturn,
+                long = LONGITUDE,
+                lat = LATITUDE,
+                radius = RADIUS,
+                country = COUNTRY
             )
-            stateReturnList = stateReturnList.copy(searchReturnList = result)
+            state = state.copy(searchReturnList = result)
             Log.d("Saulo", "onSearchSelected: OK + $result")
         }
     }
+
+    fun publishARide(publish: Publish) {
+        viewModelScope.launch {
+            publishARideResponse = Response.Loading
+            val result = publishUseCases.publish(publish)
+            publishARideResponse = result
+        }
+    }
+
+    fun onNewRide() {
+        val publish = Publish(
+            origen = state.search,
+            municipio = state.municipality,
+            destino = state.searchReturn,
+            fecha = state.dateChoose,
+            hora = state.timeChoose,
+            numeroPasajeros = state.passengers,
+            idUser = currentUser?.uid ?: ""
+        )
+        publishARide(publish)
+    }
+
+    fun clearForm() {
+        state = state.copy(
+            search = "",
+            searchReturn = "",
+            timeChoose = "",
+            dateChoose = "",
+            passengers = 1
+        )
+        publishARideResponse = null
+    }
+
+    //Metodo para elegir fecha del viaje
+    fun onDateSelected(dateChoose: String) {
+        state = state.copy(dateChoose = dateChoose)
+    }
+
+    //Metodo para elegir hora del viaje
+    fun onClockSelected(timeChoose: String) {
+        state = state.copy(timeChoose = timeChoose)
+    }
+
+    //Metodos para el numero de pasajeros
+    fun addPassenger() {
+        state = state.copy(passengers = state.passengers + 1)
+        if (state.passengers > 1) {
+            isEnabledRemovePassengerButton = true
+        }
+        if (state.passengers == 5) {
+            isEnabledAddPassengerButton = false
+        }
+    }
+
+    fun removePassenger() {
+        state = state.copy(passengers = state.passengers - 1)
+        if (state.passengers < 5) {
+            isEnabledAddPassengerButton = true
+        }
+        if (state.passengers == 1) {
+            isEnabledRemovePassengerButton = false
+        }
+    }
+
 
 }

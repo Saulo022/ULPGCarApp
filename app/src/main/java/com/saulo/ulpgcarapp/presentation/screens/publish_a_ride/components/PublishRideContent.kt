@@ -1,5 +1,6 @@
 package com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.components
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,9 +28,9 @@ import com.maxkeppeler.sheets.clock.ClockDialog
 import com.maxkeppeler.sheets.clock.models.ClockSelection
 import com.saulo.ulpgcarapp.R
 import com.saulo.ulpgcarapp.presentation.components.DefaultButton
-import com.saulo.ulpgcarapp.presentation.components.DefaultTextField
 import com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.PublishRideViewModel
 import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
+import com.saulo.ulpgcarapp.presentation.ui.theme.Orange400
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,29 +43,10 @@ fun PublishRideContent(viewModel: PublishRideViewModel = hiltViewModel()) {
     val ctx = LocalContext.current
 
     val state = viewModel.state
-    val stateList = viewModel.stateList
 
+    /*val stateList = viewModel.stateList
     val stateReturn = viewModel.stateReturn
-    val stateReturnList = viewModel.stateReturnList
-
-    val calendarState = rememberSheetState()
-
-    var dateChoose by remember { mutableStateOf("") }
-
-    CalendarDialog(state = calendarState, selection = CalendarSelection.Date { date ->
-        dateChoose = date.toString()
-    })
-
-
-    val clockState = rememberSheetState()
-
-    var timeChoose by remember { mutableStateOf("") }
-
-    ClockDialog(state = clockState, selection = ClockSelection.HoursMinutes { hours, minutes ->
-        timeChoose = "$hours:" + "$minutes"
-    })
-
-    var pickerValue by remember { mutableStateOf(0) }
+    val stateReturnList = viewModel.stateReturnList*/
 
 
     Box(modifier = Modifier.fillMaxWidth()) {
@@ -84,10 +65,10 @@ fun PublishRideContent(viewModel: PublishRideViewModel = hiltViewModel()) {
 
                 Image(
                     modifier = Modifier
-                        .height(80.dp)
+                        .height(70.dp)
                         .padding(top = 30.dp),
                     painter = painterResource(id = R.drawable.configcar),
-                    contentDescription = "Control de xbox 360"
+                    contentDescription = "Publish Ride Image"
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -104,18 +85,18 @@ fun PublishRideContent(viewModel: PublishRideViewModel = hiltViewModel()) {
 
         Card(
             modifier = Modifier
-                .padding(start = 10.dp, end = 10.dp, top = 140.dp)
+                .padding(start = 10.dp, end = 10.dp, top = 120.dp)
         ) {
             Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
                 Text(
-                    modifier = Modifier.padding(top = 30.dp),
+                    modifier = Modifier.padding(top = 20.dp),
                     text = "Publish",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(5.dp))
 
                 Text(
                     text = "Rellene los siguientes datos",
@@ -130,8 +111,6 @@ fun PublishRideContent(viewModel: PublishRideViewModel = hiltViewModel()) {
                         viewModel.onSearchSelected()
                     },
                     onSearch = {
-                        Toast.makeText(ctx, state.search, Toast.LENGTH_LONG).show()
-                        //searchViewModel.onSearchSelected()
                         active = false
                     },
                     active = active,
@@ -143,12 +122,17 @@ fun PublishRideContent(viewModel: PublishRideViewModel = hiltViewModel()) {
                             Icon(imageVector = Icons.Default.Close, contentDescription = null)
                         }
                     },
-                    trailingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "") }
+                    trailingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = ""
+                        )
+                    }
                 ) {
 
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
 
-                        val filteredSearchs = stateList.searchList.filter {
+                        val filteredSearchs = state.searchList.filter {
                             it.properties.label.contains(state.search, true)
                         }
 
@@ -158,17 +142,8 @@ fun PublishRideContent(viewModel: PublishRideViewModel = hiltViewModel()) {
                                 modifier = Modifier
                                     .padding(8.dp)
                                     .clickable {
-                                        Toast
-                                            .makeText(ctx, result.properties.label, Toast.LENGTH_LONG)
-                                            .show()
-                                        Toast
-                                            .makeText(
-                                                ctx,
-                                                result.geometry.coordinates.toString(),
-                                                Toast.LENGTH_LONG
-                                            )
-                                            .show()
                                         viewModel.onSearchInput(result.properties.label)
+                                        viewModel.onMunicipalityInput(result.properties.localadmin)
                                         active = false
                                     },
                             )
@@ -177,16 +152,16 @@ fun PublishRideContent(viewModel: PublishRideViewModel = hiltViewModel()) {
 
                 }
 
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 SearchBar(
-                    query = stateReturn.searchReturn,
+                    query = state.searchReturn,
                     onQueryChange = {
                         viewModel.onSearchReturnInput(it)
                         viewModel.onSearchReturnSelected()
                     },
                     onSearch = {
-                        Toast.makeText(ctx, stateReturn.searchReturn, Toast.LENGTH_LONG).show()
+                        Toast.makeText(ctx, state.searchReturn, Toast.LENGTH_LONG).show()
                         active2 = false
                     },
                     active = active2,
@@ -197,13 +172,18 @@ fun PublishRideContent(viewModel: PublishRideViewModel = hiltViewModel()) {
                             Icon(imageVector = Icons.Default.Close, contentDescription = null)
                         }
                     },
-                    trailingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "") }
+                    trailingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = ""
+                        )
+                    }
                 ) {
 
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
 
-                        val filteredReturnSearchs = stateReturnList.searchReturnList.filter {
-                            it.properties.label.contains(stateReturn.searchReturn, true)
+                        val filteredReturnSearchs = state.searchReturnList.filter {
+                            it.properties.label.contains(state.searchReturn, true)
                         }
 
                         items(filteredReturnSearchs) { result ->
@@ -212,27 +192,16 @@ fun PublishRideContent(viewModel: PublishRideViewModel = hiltViewModel()) {
                                 modifier = Modifier
                                     .padding(8.dp)
                                     .clickable {
-                                        Toast
-                                            .makeText(ctx, result.properties.label, Toast.LENGTH_LONG)
-                                            .show()
-                                        Toast
-                                            .makeText(
-                                                ctx,
-                                                result.geometry.coordinates.toString(),
-                                                Toast.LENGTH_LONG
-                                            )
-                                            .show()
                                         viewModel.onSearchReturnInput(result.properties.label)
                                         active2 = false
                                     },
                             )
                         }
                     }
-
                 }
 
                 Text(
-                    modifier = Modifier.padding(top = 15.dp),
+                    modifier = Modifier.padding(top = 20.dp),
                     text = "Salida",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -241,7 +210,7 @@ fun PublishRideContent(viewModel: PublishRideViewModel = hiltViewModel()) {
                 Spacer(modifier = Modifier.height(5.dp))
 
                 Text(
-                    text = "Elige fecha, hora y numero de pasajeros",
+                    text = "Elige fecha, hora y número de pasajeros",
                     fontSize = 12.sp,
                     color = Color.Gray
                 )
@@ -249,6 +218,15 @@ fun PublishRideContent(viewModel: PublishRideViewModel = hiltViewModel()) {
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
+
+                    val calendarState = rememberSheetState()
+
+                    CalendarDialog(
+                        state = calendarState,
+                        selection = CalendarSelection.Date { date ->
+                            viewModel.dateChoose = date.toString()
+                            viewModel.onDateSelected(viewModel.dateChoose)
+                        })
 
                     DefaultButton(
                         modifier = Modifier
@@ -261,12 +239,22 @@ fun PublishRideContent(viewModel: PublishRideViewModel = hiltViewModel()) {
 
                     Spacer(modifier = Modifier.width(10.dp))
 
-                    Text(text = dateChoose)
+                    Text(text = viewModel.state.dateChoose)
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
 
+
                 Row(verticalAlignment = Alignment.CenterVertically) {
+
+                    val clockState = rememberSheetState()
+
+                    ClockDialog(
+                        state = clockState,
+                        selection = ClockSelection.HoursMinutes { hours, minutes ->
+                            viewModel.timeChoose = "$hours:" + "$minutes"
+                            viewModel.onClockSelected(viewModel.timeChoose)
+                        })
 
                     DefaultButton(
                         modifier = Modifier
@@ -277,24 +265,61 @@ fun PublishRideContent(viewModel: PublishRideViewModel = hiltViewModel()) {
                         icon = Icons.Default.Timer
                     )
 
+
                     Spacer(modifier = Modifier.width(10.dp))
 
-                    Text(text = timeChoose)
+                    Text(text = viewModel.state.timeChoose)
+
                 }
+
+
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                DefaultTextField(
-                    modifier = Modifier.padding(top = 0.dp),
-                    value = "",
-                    onValueChange = { },
-                    label = "Numero de pasajeros",
-                    icon = Icons.Default.Person,
-                    keyboardType = KeyboardType.Number,
-                    errorMsg = "",
-                    validateField = { }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(bottom = 20.dp)
+                ) {
+                    DefaultButton(
+                        modifier = Modifier
+                            .height(50.dp)
+                            .width(70.dp),
+                        text = "",
+                        onClick = { viewModel.removePassenger() },
+                        icon = Icons.Default.Remove,
+                        enabled = viewModel.isEnabledRemovePassengerButton
+                    )
+
+                    Spacer(modifier = Modifier.width(20.dp))
+
+                    Text(text = viewModel.state.passengers.toString())
+
+                    Spacer(modifier = Modifier.width(20.dp))
+
+                    DefaultButton(
+                        modifier = Modifier
+                            .height(50.dp)
+                            .width(70.dp),
+                        text = "",
+                        onClick = { viewModel.addPassenger() },
+                        icon = Icons.Default.Add,
+                        enabled = viewModel.isEnabledAddPassengerButton
+                    )
+                }
+            }
+
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                DefaultButton(
+                    modifier = Modifier.width(300.dp),
+                    text = "Crear Viaje",
+                    onClick = { viewModel.onNewRide() },
+                    color = Orange400
                 )
             }
+
         }
     }
 }
