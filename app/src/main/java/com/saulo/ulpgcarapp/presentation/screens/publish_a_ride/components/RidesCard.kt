@@ -23,16 +23,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.saulo.ulpgcarapp.R
 import com.saulo.ulpgcarapp.domain.model.Publish
+import com.saulo.ulpgcarapp.presentation.navigation.DetailsScreen
 import com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.PublishRideViewModel
 import com.saulo.ulpgcarapp.presentation.ui.theme.Red200
 
 @Composable
-fun RidesCard(publishRide: Publish, viewModel: PublishRideViewModel = hiltViewModel()) {
+fun RidesCard(
+    publishRide: Publish,
+    navController: NavHostController,
+    viewModel: PublishRideViewModel = hiltViewModel()
+) {
 
-    Card(elevation = CardDefaults.cardElevation(), shape = RoundedCornerShape(20.dp), modifier = Modifier.padding(bottom = 10.dp)) {
+    Card(
+        elevation = CardDefaults.cardElevation(),
+        shape = RoundedCornerShape(20.dp),
+        modifier = Modifier
+            .padding(bottom = 10.dp)
+            .clickable { navController.navigate(route = DetailsScreen.UpdatePublishRide.passPublishRide(publishRide.toJson())) }
+    ) {
         Column(modifier = Modifier.padding(all = 10.dp)) {
             /*
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -64,11 +76,17 @@ fun RidesCard(publishRide: Publish, viewModel: PublishRideViewModel = hiltViewMo
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(top = 10.dp)
                 )
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 5.dp), horizontalArrangement = Arrangement.End) {
-                    Image(imageVector = Icons.Default.Delete, contentDescription = "", colorFilter = ColorFilter.tint(
-                        Color.Red), modifier = Modifier.clickable { viewModel.delete(publishRide.id)  })
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 5.dp), horizontalArrangement = Arrangement.End
+                ) {
+                    Image(imageVector = Icons.Default.Delete,
+                        contentDescription = "",
+                        colorFilter = ColorFilter.tint(
+                            Color.Red
+                        ),
+                        modifier = Modifier.clickable { viewModel.delete(publishRide.id) })
                 }
             }
 
@@ -80,23 +98,35 @@ fun RidesCard(publishRide: Publish, viewModel: PublishRideViewModel = hiltViewMo
                 Text(text = publishRide.hora)
             }
 
-            Text(text = "Origen", fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 10.dp))
+            Text(
+                text = "Origen",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 10.dp)
+            )
 
             Text(text = publishRide.origen)
 
-            Text(text = "Destino", fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 10.dp))
-            
+            Text(
+                text = "Destino",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 10.dp)
+            )
+
             Text(text = publishRide.destino)
 
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 5.dp), horizontalArrangement = Arrangement.End) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 5.dp), horizontalArrangement = Arrangement.End
+            ) {
                 Text(text = "Precio", fontWeight = FontWeight.Bold)
             }
 
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 5.dp), horizontalArrangement = Arrangement.End) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 5.dp), horizontalArrangement = Arrangement.End
+            ) {
                 Text(text = publishRide.precio + "€")
             }
 

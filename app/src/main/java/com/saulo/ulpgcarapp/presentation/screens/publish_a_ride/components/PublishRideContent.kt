@@ -8,14 +8,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.saulo.ulpgcarapp.domain.model.Publish
 
 @Composable
-fun PublishRideContent(publishRides: List<Publish>) {
+fun PublishRideContent(publishRides: List<Publish>, navController: NavHostController) {
     
     LazyColumn(modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 75.dp)) {
         items(items = publishRides) {
-            RidesCard(publishRide = it)
+            RidesCard(navController = navController,publishRide = it)
         }
     }
     

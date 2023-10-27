@@ -22,7 +22,7 @@ fun PublishRideScreen(navController: NavHostController, viewModel: PublishRideVi
 
     Scaffold(
         content = {
-            GetPublishRides()
+            GetPublishRides(navController)
         },
         floatingActionButton = {
             FloatingActionButton(
