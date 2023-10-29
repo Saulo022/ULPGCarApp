@@ -58,7 +58,7 @@ class UpdatePublishRideViewModel @Inject constructor(
     var isEnabledUpPriceButton = true
 
     //STATE BUTTON LOWER PRICE
-    var isEnabledLowerPriceButton = false
+    var isEnabledLowerPriceButton = true
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -71,8 +71,12 @@ class UpdatePublishRideViewModel @Inject constructor(
             timeChoose = publish.hora,
             dateChoose = publish.fecha,
             passengers = publish.numeroPasajeros,
-            price = publish.precio
+            price = publish.precioViaje
         )
+
+        if (state.price == 1) {
+            isEnabledLowerPriceButton = false
+        }
     }
 
     //Metodos de ida
@@ -129,26 +133,27 @@ class UpdatePublishRideViewModel @Inject constructor(
         }
     }
 
-    fun publishARide(publish: Publish) {
+    fun updatePublishRide(publish: Publish) {
         viewModelScope.launch {
             updatePublishRideResponse = Response.Loading
-            val result = publishUseCases.publish(publish)
+            val result = publishUseCases.updatePublishRide(publish)
             updatePublishRideResponse = result
         }
     }
 
-    fun onNewRide() {
+    fun onUpdateRide() {
         val publish = Publish(
+            id = publish.id,
             origen = state.search,
             municipio = state.municipality,
             destino = state.searchReturn,
             fecha = state.dateChoose,
             hora = state.timeChoose,
             numeroPasajeros = state.passengers,
-            precio = state.price,
+            precioViaje = state.price,
             idUser = currentUser?.uid ?: ""
         )
-        publishARide(publish)
+        updatePublishRide(publish)
     }
 
     fun clearForm() {
@@ -197,20 +202,20 @@ class UpdatePublishRideViewModel @Inject constructor(
     }
 
     //Metodos para el precio del viaje
+
     fun upPrice() {
-        val price = state.price.toInt() + 1
-        state = state.copy(price = price.toString())
-        if (state.price.toInt() > 1) {
+        state = state.copy(price = state.price + 1)
+        if (state.price > 1) {
             isEnabledLowerPriceButton = true
         }
     }
 
     fun lowerPrice() {
-        val price = state.price.toInt() - 1
-        state = state.copy(price = price.toString())
-        if (state.price.toInt() == 1) {
+        state = state.copy(price = state.price - 1)
+        if (state.price == 1) {
             isEnabledLowerPriceButton = false
         }
     }
+
 
 }

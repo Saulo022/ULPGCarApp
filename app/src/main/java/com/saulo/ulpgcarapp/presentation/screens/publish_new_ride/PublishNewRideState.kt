@@ -13,32 +13,6 @@ data class PublishNewRideState (
     var timeChoose: String = "",
     var dateChoose: String = "",
     var passengers: Int = 1,
-    var price: String = "1"
+    var price: Int = 1
 )
 
-/*
-data class PublishRideSearchState (
-    var search: String = ""
-)
-
-data class PublishRideSearchListState (
-    var searchList: List<Feature> = emptyList()
-)
-
-data class PublishRideSearchReturnState (
-    var searchReturn: String = ""
-)
-
-data class PublishRideSearchReturnListState (
-    var searchReturnList: List<Feature> = emptyList()
-)
-
-data class PublishRideDateTimeState (
-    var timeChoose: String = "",
-    var dateChoose: String = ""
-)
-
-data class PublishRidePassengersState (
-    var passengers: Int = 1
-)
- */

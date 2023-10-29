@@ -35,15 +35,15 @@ import com.saulo.ulpgcarapp.presentation.ui.theme.Red200
 fun RidesCard(
     publishRide: Publish,
     navController: NavHostController,
-    viewModel: PublishRideViewModel = hiltViewModel()
+    viewModel: PublishRideViewModel = hiltViewModel(),
+    modifier: Modifier
 ) {
 
     Card(
         elevation = CardDefaults.cardElevation(),
         shape = RoundedCornerShape(20.dp),
-        modifier = Modifier
+        modifier = modifier
             .padding(bottom = 10.dp)
-            .clickable { navController.navigate(route = DetailsScreen.UpdatePublishRide.passPublishRide(publishRide.toJson())) }
     ) {
         Column(modifier = Modifier.padding(all = 10.dp)) {
             /*
@@ -127,7 +127,7 @@ fun RidesCard(
                     .fillMaxWidth()
                     .padding(all = 5.dp), horizontalArrangement = Arrangement.End
             ) {
-                Text(text = publishRide.precio + "€")
+                Text(text = "${publishRide.precioViaje}" + "€")
             }
 
         }

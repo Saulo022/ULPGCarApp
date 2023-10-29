@@ -4,5 +4,7 @@ data class PublishUseCases(
     val publish: PublishRide,
     val getPublishRides: GetPublishRides,
     val getPublishRidesById: GetPublishRidesById,
-    val deletePublishRide: DeletePublishRide
+    val getPublishRidesByMunicipality: GetPublishRidesByMunicipality,
+    val deletePublishRide: DeletePublishRide,
+    val updatePublishRide: UpdatePublishRide
 )

@@ -24,7 +24,7 @@ fun SearchScreen(navController: NavHostController) {
 
     Scaffold(
         content = {
-            SearchBarContent()
+            SearchBarContent(navController)
         }
     )
 }

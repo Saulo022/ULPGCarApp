@@ -21,7 +21,5 @@ fun UpdatePublishRideScreen(navController: NavHostController, publishRide: Strin
             UpdatePublishRideContent()
         }
     )
-
     UpdatePublishRide()
-
 }

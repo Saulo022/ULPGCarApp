@@ -316,14 +316,15 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                                 .height(50.dp)
                                 .width(70.dp),
                             text = "",
-                            onClick = { viewModel.lowerPrice() },
+                            onClick = { viewModel.lowerPrice()
+                                      },
                             icon = Icons.Default.Remove,
                             enabled = viewModel.isEnabledLowerPriceButton
                         )
 
                         Spacer(modifier = Modifier.width(20.dp))
 
-                        Text(text = viewModel.state.price + "€")
+                        Text(text = viewModel.state.price.toString() + "€")
 
                         Spacer(modifier = Modifier.width(20.dp))
 
@@ -332,7 +333,8 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                                 .height(50.dp)
                                 .width(70.dp),
                             text = "",
-                            onClick = { viewModel.upPrice() },
+                            onClick = { viewModel.upPrice()
+                                 },
                             icon = Icons.Default.Add,
                             enabled = viewModel.isEnabledUpPriceButton
                         )

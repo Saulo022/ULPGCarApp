@@ -132,7 +132,7 @@ class PublishNewRideViewModel @Inject constructor(
             fecha = state.dateChoose,
             hora = state.timeChoose,
             numeroPasajeros = state.passengers,
-            precio = state.price,
+            precioViaje = state.price,
             idUser = currentUser?.uid ?: ""
         )
         publishARide(publish)
@@ -145,7 +145,7 @@ class PublishNewRideViewModel @Inject constructor(
             timeChoose = "",
             dateChoose = "",
             passengers = 1,
-            price = "1"
+            price = 1
         )
         publishARideResponse = null
     }
@@ -182,20 +182,22 @@ class PublishNewRideViewModel @Inject constructor(
     }
 
     //Metodos para el precio del viaje
+
     fun upPrice() {
-        val price = state.price.toInt() + 1
-        state = state.copy(price = price.toString())
-        if (state.price.toInt() > 1) {
+        val price = state.price + 1
+        state = state.copy(price = price)
+        if (state.price > 1) {
             isEnabledLowerPriceButton = true
         }
     }
 
     fun lowerPrice() {
-        val price = state.price.toInt() - 1
-        state = state.copy(price = price.toString())
-        if (state.price.toInt() == 1) {
+        val price = state.price - 1
+        state = state.copy(price = price)
+        if (state.price == 1) {
             isEnabledLowerPriceButton = false
         }
     }
+
 
 }

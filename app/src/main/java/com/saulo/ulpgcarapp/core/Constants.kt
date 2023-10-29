@@ -15,5 +15,28 @@ object Constants {
 
     const val COUNTRY = "ES"
 
-
+    //list of municipalities in las palmas
+    val municipalities  = listOf(
+        "Agaete",
+        "Agüimes",
+        "Artenara",
+        "Arucas",
+        "Firgas",
+        "Gáldar",
+        "Ingenio",
+        "Las Palmas de Gran Canaria",
+        "Mogán",
+        "Moya",
+        "San Bartolomé de Tirajana",
+        "La Aldea de San Nicolás",
+        "Santa Brígida",
+        "Santa Lucía",
+        "Santa María de Guía",
+        "Vega de San Mateo",
+        "Tejeda",
+        "Telde",
+        "Teror",
+        "Valleseco",
+        "Valsequillo"
+    )
 }

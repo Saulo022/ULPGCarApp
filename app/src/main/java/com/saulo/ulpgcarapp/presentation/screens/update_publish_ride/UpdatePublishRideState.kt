@@ -11,6 +11,6 @@ data class UpdatePublishRideState (
     var timeChoose: String = "",
     var dateChoose: String = "",
     var passengers: Int = 1,
-    var price: String = "1"
+    var price: Int = 1
 )
 

@@ -10,9 +10,9 @@ data class Publish(
     var destino: String = "",
     var municipio: String = "",
     var numeroPasajeros: Int = 1,
+    var precioViaje: Int = 1,
     var paradas: List<String> = emptyList(),
     var pasajeros: List<String> = emptyList(),
-    var precio: String = "",
     var valoracion: String = "",
     var estado: String = "",
     var fecha: String = "",
@@ -23,7 +23,7 @@ data class Publish(
 ) {
 
 fun toJson(): String = Gson().toJson(Publish(
-    id, origen, destino, municipio, numeroPasajeros, paradas, pasajeros, precio, valoracion, estado, fecha, hora,idUser,
+    id, origen, destino, municipio, numeroPasajeros, precioViaje, paradas, pasajeros, valoracion, estado, fecha, hora,idUser,
     User(
         id = user?.id ?: "",
         username = user?.username ?: "",

@@ -41,6 +41,26 @@ class PublishRepositoryImp @Inject constructor(
         }
     }
 
+    override suspend fun update(publish: Publish): Response<Boolean> {
+        return try {
+
+            val map: MutableMap<String, Any> = HashMap()
+            map["origen"] = publish.origen
+            map["destino"] = publish.destino
+            map["fecha"] = publish.fecha
+            map["hora"] = publish.hora
+            map["numeroPasajeros"] = publish.numeroPasajeros
+            map["precioViaje"] = publish.precioViaje
+
+            publishRef.document(publish.id).update(map).await()
+            Response.Success(true)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Response.Failure(e)
+        }
+    }
+
     @OptIn(DelicateCoroutinesApi::class)
     override fun getPublishRides(): Flow<Response<List<Publish>>> = callbackFlow {
 
@@ -99,6 +119,49 @@ class PublishRepositoryImp @Inject constructor(
             }
             trySend(publishResponse)
 
+        }
+        awaitClose {
+            snapshotListener.remove()
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    override fun getPublishRidesByMunicipality(municipality: String): Flow<Response<List<Publish>>> = callbackFlow {
+        val snapshotListener = publishRef.whereEqualTo("municipio", municipality).addSnapshotListener { snapshot, e ->
+
+            GlobalScope.launch(Dispatchers.IO) {
+
+                val publishResponse = if (snapshot != null) {
+                    val publications = snapshot.toObjects(Publish::class.java)
+                    val idUserArray = ArrayList<String>()
+
+                    publications.forEach {
+                        idUserArray.add(it.idUser)
+                    }
+
+                    //IDs SIN REPETIR
+                    val idUserList = idUserArray.toSet().toList()
+
+                    idUserList.map { id ->
+                        async {
+                            val user =
+                                usersRef.document(id).get().await().toObject(User::class.java)!!
+                            publications.forEach { publish ->
+                                if (publish.idUser == id) {
+                                    publish.user = user
+                                }
+                            }
+                        }
+                    }.forEach {
+                        it.await()
+                    }
+
+                    Response.Success(publications)
+                } else {
+                    Response.Failure(e)
+                }
+                trySend(publishResponse)
+            }
         }
         awaitClose {
             snapshotListener.remove()
