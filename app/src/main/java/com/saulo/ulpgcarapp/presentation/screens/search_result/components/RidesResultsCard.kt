@@ -1,4 +1,4 @@
-package com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.components
+package com.saulo.ulpgcarapp.presentation.screens.search_result.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -32,7 +32,7 @@ import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
 import com.saulo.ulpgcarapp.presentation.ui.theme.Red200
 
 @Composable
-fun RidesCard(
+fun RidesResultsCard(
     publishRide: Publish,
     navController: NavHostController,
     viewModel: PublishRideViewModel = hiltViewModel(),
