@@ -21,7 +21,7 @@ fun DefaultButton(
     text: String,
     onClick: () -> Unit,
     color: Color = Blue400,
-    icon: ImageVector = Icons.Default.ArrowForward,
+    icon: ImageVector? = Icons.Default.ArrowForward,
     mainColor: Color = Color.White,
     enabled: Boolean = true
 ) {
@@ -32,7 +32,9 @@ fun DefaultButton(
         colors = ButtonDefaults.buttonColors(containerColor = color),
         enabled = enabled
     ) {
-        Icon(imageVector = icon, contentDescription = "", tint = mainColor)
+        if (icon != null) {
+            Icon(imageVector = icon, contentDescription = "", tint = mainColor)
+        }
         Spacer(modifier = Modifier.width(10.dp))
         Text(text = text, color = mainColor)
     }

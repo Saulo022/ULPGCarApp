@@ -2,6 +2,7 @@ package com.saulo.ulpgcarapp.data.repository
 
 import com.google.firebase.firestore.CollectionReference
 import com.saulo.ulpgcarapp.core.Constants
+import com.saulo.ulpgcarapp.domain.model.Passenger
 import com.saulo.ulpgcarapp.domain.model.Publish
 import com.saulo.ulpgcarapp.domain.model.Response
 import com.saulo.ulpgcarapp.domain.model.User
@@ -22,6 +23,7 @@ class PublishRepositoryImp @Inject constructor(
     override suspend fun create(publish: Publish): Response<Boolean> {
         return try {
             publishRef.add(publish).await()
+
             Response.Success(true)
 
         } catch (e: Exception) {
@@ -45,11 +47,13 @@ class PublishRepositoryImp @Inject constructor(
         return try {
 
             val map: MutableMap<String, Any> = HashMap()
+            map["id"] = publish.id
             map["origen"] = publish.origen
             map["destino"] = publish.destino
             map["fecha"] = publish.fecha
             map["hora"] = publish.hora
             map["numeroPasajeros"] = publish.numeroPasajeros
+            map["pasajeros"] = publish.pasajeros
             map["precioViaje"] = publish.precioViaje
 
             publishRef.document(publish.id).update(map).await()
@@ -133,6 +137,9 @@ class PublishRepositoryImp @Inject constructor(
 
                 val publishResponse = if (snapshot != null) {
                     val publications = snapshot.toObjects(Publish::class.java)
+                    snapshot.documents.forEachIndexed { index, document ->
+                        publications[index].id = document.id
+                    }
                     val idUserArray = ArrayList<String>()
 
                     publications.forEach {

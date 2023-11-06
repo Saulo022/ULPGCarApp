@@ -73,6 +73,7 @@ class UpdatePublishRideViewModel @Inject constructor(
             passengers = publish.numeroPasajeros,
             price = publish.precioViaje
         )
+        Log.d("Saulo", "onSearchSelected: OK +  ${publish.id}")
 
         if (state.price == 1) {
             isEnabledLowerPriceButton = false

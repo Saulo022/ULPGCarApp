@@ -1,5 +1,6 @@
 package com.saulo.ulpgcarapp.domain.repository
 
+import com.saulo.ulpgcarapp.domain.model.Passenger
 import com.saulo.ulpgcarapp.domain.model.Publish
 import com.saulo.ulpgcarapp.domain.model.Response
 import kotlinx.coroutines.flow.Flow

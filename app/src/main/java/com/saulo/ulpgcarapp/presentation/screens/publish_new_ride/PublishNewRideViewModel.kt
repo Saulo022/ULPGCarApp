@@ -30,7 +30,7 @@ class PublishNewRideViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    //STATE PUBLISH SCREEN
+    //STATE NEW PUBLISH SCREEN
     var state by mutableStateOf(PublishNewRideState())
         private set
 
@@ -65,12 +65,10 @@ class PublishNewRideViewModel @Inject constructor(
     //Metodos de ida
     fun onSearchInput(search: String) {
         state = state.copy(search = search)
-        Log.d("Publish2", "PublishRideContent + $state")
     }
 
     fun onMunicipalityInput(localadmin: String) {
         state = state.copy(municipality = localadmin)
-        Log.d("Publish2", "PublishRideContent + $state")
     }
 
     fun onSearchDelete() {
@@ -88,7 +86,6 @@ class PublishNewRideViewModel @Inject constructor(
                 country = COUNTRY
             )
             state = state.copy(searchList = result)
-            Log.d("Saulo", "onSearchSelected: OK + $result")
         }
     }
 

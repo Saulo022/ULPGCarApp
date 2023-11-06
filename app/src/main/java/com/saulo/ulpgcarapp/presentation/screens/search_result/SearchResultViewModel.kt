@@ -26,6 +26,8 @@ class SearchResultViewModel @Inject constructor(private val publishUseCases: Pub
 
     var publishRidesResponse by mutableStateOf<Response<List<Publish>>?>(null)
 
+    var updatePublishRideResponse by mutableStateOf<Response<Boolean>?>(null)
+        private set
 
     init {
         state = state.copy(

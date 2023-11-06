@@ -1,5 +1,7 @@
 package com.saulo.ulpgcarapp.presentation.screens.search_result.components
 
+import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -25,19 +28,23 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.saulo.ulpgcarapp.R
 import com.saulo.ulpgcarapp.domain.model.Publish
+import com.saulo.ulpgcarapp.presentation.components.DefaultButton
 import com.saulo.ulpgcarapp.presentation.components.InformationPill
 import com.saulo.ulpgcarapp.presentation.navigation.DetailsScreen
 import com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.PublishRideViewModel
+import com.saulo.ulpgcarapp.presentation.screens.search_result.SearchResultViewModel
 import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
 import com.saulo.ulpgcarapp.presentation.ui.theme.Red200
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun RidesResultsCard(
     publishRide: Publish,
     navController: NavHostController,
-    viewModel: PublishRideViewModel = hiltViewModel(),
+    viewModel: SearchResultViewModel = hiltViewModel(),
     modifier: Modifier
 ) {
+    val ctx = LocalContext.current
 
     Card(
         elevation = CardDefaults.cardElevation(),
@@ -88,7 +95,7 @@ fun RidesResultsCard(
                         colorFilter = ColorFilter.tint(
                             Color.Red
                         ),
-                        modifier = Modifier.clickable { viewModel.delete(publishRide.id) })
+                        modifier = Modifier.clickable {  })
                 }
             }
 
@@ -115,13 +122,14 @@ fun RidesResultsCard(
 
                 Spacer(modifier = Modifier.width(10.dp))
 
-               InformationPill(text = publishRide.hora)
+                InformationPill(text = publishRide.hora)
             }
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 0.dp, end = 5.dp, top = 3.dp, bottom = 0.dp), horizontalArrangement = Arrangement.Start
+                    .padding(start = 0.dp, end = 5.dp, top = 3.dp, bottom = 0.dp),
+                horizontalArrangement = Arrangement.Start
             ) {
                 Text(
                     text = "Precio",
@@ -136,7 +144,7 @@ fun RidesResultsCard(
                     color = Color.Black
                 )
                 Text(
-                    text = "Pasajeros",
+                    text = "Plazas disponibles",
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(all = 10.dp)
                 )
@@ -153,6 +161,29 @@ fun RidesResultsCard(
                 )
                 Spacer(modifier = Modifier.width(40.dp))
                 InformationPill(text = "${publishRide.numeroPasajeros}")
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 30.dp, top = 5.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                DefaultButton(
+                    modifier = Modifier,
+                    text = if (publishRide.numeroPasajeros <= 1) "No hay plazas disponibles" else "Solicitar plaza",
+                    onClick = {
+                        if (publishRide.numeroPasajeros <= 1) {
+                        } else
+                            navController.navigate(
+                            route = DetailsScreen.RequestRide.passPublishRide(
+                                publishRide.toJson()
+                            )
+                        )
+                    },
+                    color = if (publishRide.numeroPasajeros <= 1) Color.Red else Color.Green,
+                    icon = null
+                )
             }
 
         }
