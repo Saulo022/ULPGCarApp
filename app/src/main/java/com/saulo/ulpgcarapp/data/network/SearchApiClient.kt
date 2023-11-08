@@ -1,5 +1,6 @@
 package com.saulo.ulpgcarapp.data.network
 
+import com.saulo.ulpgcarapp.data.network.response.RouteResponse
 import com.saulo.ulpgcarapp.data.network.response.SearchResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,5 +17,12 @@ interface SearchApiClient {
         @Query("boundary.circle.radius") radius: Int,
         @Query("boundary.country") country: String
     ) : Response<SearchResponse>
+
+    @GET("/v2/directions/driving-car")
+    suspend fun getRoute(
+        @Query("api_key") apiKey: String,
+        @Query("start") start: String,
+        @Query("end") end: String
+    ): Response<RouteResponse>
 
 }

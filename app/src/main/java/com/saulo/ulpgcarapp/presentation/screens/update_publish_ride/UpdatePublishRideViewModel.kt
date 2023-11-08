@@ -10,6 +10,7 @@ import com.saulo.ulpgcarapp.core.Constants.COUNTRY
 import com.saulo.ulpgcarapp.core.Constants.LATITUDE
 import com.saulo.ulpgcarapp.core.Constants.LONGITUDE
 import com.saulo.ulpgcarapp.core.Constants.RADIUS
+import com.saulo.ulpgcarapp.domain.model.Location
 import com.saulo.ulpgcarapp.domain.model.Publish
 import com.saulo.ulpgcarapp.domain.model.Response
 import com.saulo.ulpgcarapp.domain.use_cases.auth.AuthUseCases
@@ -65,8 +66,8 @@ class UpdatePublishRideViewModel @Inject constructor(
 
     init {
         state = state.copy(
-            search = publish.origen,
-            searchReturn = publish.destino,
+            search = publish.origin,
+            searchReturn = publish.destination,
             municipality = publish.municipio,
             timeChoose = publish.hora,
             dateChoose = publish.fecha,
@@ -81,8 +82,9 @@ class UpdatePublishRideViewModel @Inject constructor(
     }
 
     //Metodos de ida
-    fun onSearchInput(search: String) {
-        state = state.copy(search = search)
+    fun onSearchInput(label:String, longitude: String, latitude: String) {
+        val location = Location(label, longitude, latitude)
+        state = state.copy(search = location)
         Log.d("Publish2", "PublishRideContent + $state")
     }
 
@@ -92,14 +94,14 @@ class UpdatePublishRideViewModel @Inject constructor(
     }
 
     fun onSearchDelete() {
-        state = state.copy(search = "")
+        state = state.copy(search = Location("","",""))
     }
 
     fun onSearchSelected() {
         viewModelScope.launch {
             val result = searchUseCase(
                 apiKey = API_KEY,
-                text = state.search,
+                text = state.search.label,
                 long = LONGITUDE,
                 lat = LATITUDE,
                 radius = RADIUS,
@@ -111,19 +113,20 @@ class UpdatePublishRideViewModel @Inject constructor(
     }
 
     //Metodos de vuelta
-    fun onSearchReturnInput(returnSearch: String) {
-        state = state.copy(searchReturn = returnSearch)
+    fun onSearchReturnInput(label:String, longitude: String, latitude: String) {
+        val location = Location(label, longitude, latitude)
+        state = state.copy(searchReturn = location)
     }
 
     fun onSearchReturnDelete() {
-        state = state.copy(searchReturn = "")
+        state = state.copy(searchReturn = Location("","",""))
     }
 
     fun onSearchReturnSelected() {
         viewModelScope.launch {
             val result = searchUseCase(
                 apiKey = API_KEY,
-                text = state.searchReturn,
+                text = state.searchReturn.label,
                 long = LONGITUDE,
                 lat = LATITUDE,
                 radius = RADIUS,
@@ -145,9 +148,9 @@ class UpdatePublishRideViewModel @Inject constructor(
     fun onUpdateRide() {
         val publish = Publish(
             id = publish.id,
-            origen = state.search,
+            origin = state.search,
             municipio = state.municipality,
-            destino = state.searchReturn,
+            destination = state.searchReturn,
             fecha = state.dateChoose,
             hora = state.timeChoose,
             numeroPasajeros = state.passengers,

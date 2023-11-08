@@ -101,9 +101,9 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                     )
 
                     SearchBar(
-                        query = state.search,
+                        query = state.search.label,
                         onQueryChange = {
-                            viewModel.onSearchInput(it)
+                            viewModel.onSearchInput(it,"","")
                             viewModel.onSearchSelected()
                         },
                         onSearch = {
@@ -129,7 +129,7 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                         LazyColumn(modifier = Modifier.fillMaxSize()) {
 
                             val filteredSearchs = state.searchList.filter {
-                                it.properties.label.contains(state.search, true)
+                                it.properties.label.contains(state.search.label, true)
                             }
 
                             items(filteredSearchs) { result ->
@@ -138,7 +138,12 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                                     modifier = Modifier
                                         .padding(8.dp)
                                         .clickable {
-                                            viewModel.onSearchInput(result.properties.label)
+
+                                            viewModel.onSearchInput(
+                                                result.properties.label,
+                                                result.geometry.coordinates[0].toString(),
+                                                result.geometry.coordinates[1].toString()
+                                            )
                                             viewModel.onMunicipalityInput(result.properties.localadmin)
                                             active = false
                                         },
@@ -151,13 +156,13 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                     Spacer(modifier = Modifier.height(10.dp))
 
                     SearchBar(
-                        query = state.searchReturn,
+                        query = state.searchReturn.label,
                         onQueryChange = {
-                            viewModel.onSearchReturnInput(it)
+                            viewModel.onSearchReturnInput(it,"","")
                             viewModel.onSearchReturnSelected()
                         },
                         onSearch = {
-                            Toast.makeText(ctx, state.searchReturn, Toast.LENGTH_LONG).show()
+                            Toast.makeText(ctx, state.searchReturn.label, Toast.LENGTH_LONG).show()
                             active2 = false
                         },
                         active = active2,
@@ -179,7 +184,7 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                         LazyColumn(modifier = Modifier.fillMaxSize()) {
 
                             val filteredReturnSearchs = state.searchReturnList.filter {
-                                it.properties.label.contains(state.searchReturn, true)
+                                it.properties.label.contains(state.searchReturn.label, true)
                             }
 
                             items(filteredReturnSearchs) { result ->
@@ -188,7 +193,10 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                                     modifier = Modifier
                                         .padding(8.dp)
                                         .clickable {
-                                            viewModel.onSearchReturnInput(result.properties.label)
+                                            viewModel.onSearchReturnInput(
+                                                result.properties.label,
+                                                result.geometry.coordinates[0].toString(),
+                                                result.geometry.coordinates[1].toString())
                                             active2 = false
                                         },
                                 )
@@ -316,8 +324,9 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                                 .height(50.dp)
                                 .width(70.dp),
                             text = "",
-                            onClick = { viewModel.lowerPrice()
-                                      },
+                            onClick = {
+                                viewModel.lowerPrice()
+                            },
                             icon = Icons.Default.Remove,
                             enabled = viewModel.isEnabledLowerPriceButton
                         )
@@ -333,8 +342,9 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                                 .height(50.dp)
                                 .width(70.dp),
                             text = "",
-                            onClick = { viewModel.upPrice()
-                                 },
+                            onClick = {
+                                viewModel.upPrice()
+                            },
                             icon = Icons.Default.Add,
                             enabled = viewModel.isEnabledUpPriceButton
                         )
@@ -343,7 +353,8 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
             }
 
             DefaultButton(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(horizontal = 20.dp),
                 text = "Crear Viaje",
                 onClick = { viewModel.onNewRide() },

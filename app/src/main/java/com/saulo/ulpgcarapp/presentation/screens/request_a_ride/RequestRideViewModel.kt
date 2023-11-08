@@ -42,8 +42,8 @@ class RequestRideViewModel @Inject constructor(
     init {
         state = state.copy(
             pasajeros = publish.pasajeros,
-            search = publish.origen,
-            searchReturn = publish.destino,
+            search = publish.origin,
+            searchReturn = publish.destination,
             municipality = publish.municipio,
             timeChoose = publish.hora,
             dateChoose = publish.fecha,
@@ -99,8 +99,8 @@ class RequestRideViewModel @Inject constructor(
         val publish = Publish(
             id = publish.id,
             pasajeros = state.pasajeros,
-            origen = publish.origen,
-            destino = publish.destino,
+            origin = publish.origin,
+            destination = publish.destination,
             municipio = publish.municipio,
             hora = publish.hora,
             fecha = publish.fecha,

@@ -6,8 +6,10 @@ import java.nio.charset.StandardCharsets
 
 data class Publish(
     var id: String = "",
-    var origen: String = "",
-    var destino: String = "",
+    //var origen: Location = Location(),
+    //var destino: Location = Location(),
+    var origin: Location = Location(),
+    var destination : Location = Location(),
     var municipio: String = "",
     var numeroPasajeros: Int = 1,
     var precioViaje: Int = 1,
@@ -22,7 +24,7 @@ data class Publish(
     var image: String = ""
 ) {
 fun toJson(): String = Gson().toJson(Publish(
-    id, origen, destino, municipio, numeroPasajeros, precioViaje, paradas, pasajeros, valoracion, estado, fecha, hora,idUser,
+    id, origin, destination, municipio, numeroPasajeros, precioViaje, paradas, pasajeros, valoracion, estado, fecha, hora,idUser,
     User(
         id = user?.id ?: "",
         username = user?.username ?: "",

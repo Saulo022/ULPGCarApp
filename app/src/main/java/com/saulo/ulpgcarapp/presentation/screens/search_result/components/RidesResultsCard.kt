@@ -99,7 +99,7 @@ fun RidesResultsCard(
                 }
             }
 
-            InformationPill(text = publishRide.origen)
+            InformationPill(text = publishRide.origin.label)
 
 
             Text(
@@ -108,7 +108,7 @@ fun RidesResultsCard(
                 modifier = Modifier.padding(all = 10.dp)
             )
 
-            InformationPill(text = publishRide.destino)
+            InformationPill(text = publishRide.destination.label)
 
             Text(
                 text = "Fecha y hora",

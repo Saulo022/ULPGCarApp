@@ -9,6 +9,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.saulo.ulpgcarapp.core.Constants.PUBLISH
 import com.saulo.ulpgcarapp.core.Constants.USERS
+import com.saulo.ulpgcarapp.data.network.SearchApiRepository
 import com.saulo.ulpgcarapp.data.repository.AuthRepositoryImpl
 import com.saulo.ulpgcarapp.data.repository.PublishRepositoryImp
 import com.saulo.ulpgcarapp.data.repository.UsersRepositoryImpl
@@ -17,6 +18,8 @@ import com.saulo.ulpgcarapp.domain.repository.PublishRepository
 import com.saulo.ulpgcarapp.domain.repository.UsersRepository
 import com.saulo.ulpgcarapp.domain.use_cases.auth.*
 import com.saulo.ulpgcarapp.domain.use_cases.publish.*
+import com.saulo.ulpgcarapp.domain.use_cases.routes.GetRouteUseCase
+import com.saulo.ulpgcarapp.domain.use_cases.routes.RoutesUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.users.*
 import dagger.Module
 import dagger.Provides
@@ -82,6 +85,11 @@ object AppModule {
         getPublishRidesByMunicipality = GetPublishRidesByMunicipality(repository),
         deletePublishRide = DeletePublishRide(repository),
         updatePublishRide = UpdatePublishRide(repository)
+    )
+
+    @Provides
+    fun provideRoutesUseCases(repository: SearchApiRepository) = RoutesUseCases(
+        getrouteUseCase = GetRouteUseCase(repository)
     )
 
 

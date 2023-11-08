@@ -48,8 +48,8 @@ class PublishRepositoryImp @Inject constructor(
 
             val map: MutableMap<String, Any> = HashMap()
             map["id"] = publish.id
-            map["origen"] = publish.origen
-            map["destino"] = publish.destino
+            map["origin"] = publish.origin
+            map["destination"] = publish.destination
             map["fecha"] = publish.fecha
             map["hora"] = publish.hora
             map["numeroPasajeros"] = publish.numeroPasajeros

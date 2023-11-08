@@ -1,6 +1,7 @@
 package com.saulo.ulpgcarapp.presentation.screens.request_a_ride
 
 import com.saulo.ulpgcarapp.data.network.response.Feature
+import com.saulo.ulpgcarapp.domain.model.Location
 import com.saulo.ulpgcarapp.domain.model.Passenger
 
 data class RequestRideState(
@@ -12,9 +13,9 @@ data class RequestRideState(
     var pasajeros: MutableList<Passenger> = mutableListOf(),
 
     //RECIEVE PARAMETERS
-    var search: String = "",
+    var search: Location = Location("","",""),
     var municipality: String = "",
-    var searchReturn: String = "",
+    var searchReturn: Location = Location("","",""),
     var timeChoose: String = "",
     var dateChoose: String = "",
     var passengers: Int = 1,

@@ -7,6 +7,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DirectionsCar
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -83,6 +85,16 @@ fun RidesCard(
                         .fillMaxWidth()
                         .padding(all = 5.dp), horizontalArrangement = Arrangement.End
                 ) {
+
+                    Image(imageVector = Icons.Default.DirectionsCar,
+                        contentDescription = "",
+                        colorFilter = ColorFilter.tint(
+                            Color.Green
+                        ),
+                        modifier = Modifier.clickable { navController.navigate(route = DetailsScreen.DriverRoute.passPublishRide(publishRide.toJson())) })
+
+                    Spacer(modifier = Modifier.width(10.dp))
+
                     Image(imageVector = Icons.Default.Delete,
                         contentDescription = "",
                         colorFilter = ColorFilter.tint(
@@ -92,7 +104,7 @@ fun RidesCard(
                 }
             }
 
-            InformationPill(text = publishRide.origen)
+            InformationPill(text = publishRide.origin.label)
 
 
             Text(
@@ -101,7 +113,7 @@ fun RidesCard(
                 modifier = Modifier.padding(all = 10.dp)
             )
 
-            InformationPill(text = publishRide.destino)
+            InformationPill(text = publishRide.destination.label)
 
             Text(
                 text = "Fecha y hora",
