@@ -2,6 +2,7 @@ package com.saulo.ulpgcarapp.data.network
 
 import com.saulo.ulpgcarapp.data.network.response.Feature
 import com.saulo.ulpgcarapp.data.network.response.Features
+import com.saulo.ulpgcarapp.data.network.response.RouteResponse
 import javax.inject.Inject
 
 class SearchApiRepository @Inject constructor(private val searchApiService: SearchApiService) {
@@ -10,7 +11,7 @@ class SearchApiRepository @Inject constructor(private val searchApiService: Sear
         return searchApiService.doSearch(apiKey, text, long, lat, radius, country)
     }
 
-    suspend fun doRoute(apiKey: String, start: String, end: String): List<Features> {
+    suspend fun doRoute(apiKey: String, start: String, end: String): RouteResponse {
         return searchApiService.doRoute(apiKey, start, end)
     }
 

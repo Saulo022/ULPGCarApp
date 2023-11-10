@@ -21,8 +21,8 @@ interface SearchApiClient {
     @GET("/v2/directions/driving-car")
     suspend fun getRoute(
         @Query("api_key") apiKey: String,
-        @Query("start") start: String,
-        @Query("end") end: String
+        @Query("start", encoded = true) start: String,
+        @Query("end", encoded = true) end: String
     ): Response<RouteResponse>
 
 }
