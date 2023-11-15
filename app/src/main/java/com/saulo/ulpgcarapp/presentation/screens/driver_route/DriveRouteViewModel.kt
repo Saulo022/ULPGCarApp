@@ -8,15 +8,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.PolylineOptions
-import com.google.maps.android.compose.Polyline
 import com.saulo.ulpgcarapp.core.Constants.API_KEY
+import com.saulo.ulpgcarapp.data.network.response.Matrix
 import com.saulo.ulpgcarapp.domain.model.Publish
 import com.saulo.ulpgcarapp.domain.model.Response
 import com.saulo.ulpgcarapp.domain.use_cases.routes.RoutesUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +21,7 @@ import javax.inject.Inject
 class DriveRouteViewModel @Inject constructor(
     private val routeUseCase: RoutesUseCases,
     private val savedStateHandle: SavedStateHandle
-): ViewModel() {
+) : ViewModel() {
 
     //STATE PUBLISH SCREEN
     var state by mutableStateOf(DriveRouteState())
@@ -44,15 +41,48 @@ class DriveRouteViewModel @Inject constructor(
             municipality = publish.municipio,
             timeChoose = publish.hora,
             dateChoose = publish.fecha,
+            passengersList = publish.pasajeros,
             passengers = publish.numeroPasajeros,
             price = publish.precioViaje
         )
-        Log.d("Saulo", "onDriveRouteViewModel: OK +  ${publish.id}")
         getRoute()
-        //drawRoute()
-        //createRoute()
+        getMatrixCoordinates()
+        getMatrix()
     }
 
+    fun getMatrixCoordinates() {
+        state.matrixCoordinates.add(
+            listOf(
+                state.origin.longitude.toDouble(),
+                state.origin.latitude.toDouble()
+            )
+        )
+        for (coordenadas in state.passengersList) {
+            state.matrixCoordinates.add(
+                listOf(
+                    coordenadas.longitude.toDouble(),
+                    coordenadas.latitude.toDouble()
+                )
+            )
+        }
+        Log.d("Saulo", "MatrixCoordinates + ${state.matrixCoordinates}")
+    }
+
+    fun getMatrix() {
+        viewModelScope.launch {
+            val result = routeUseCase.matrixUseCase(
+                matrix = Matrix(
+                    locations = listOf(
+                        listOf(9.70093, 48.477473),
+                        listOf(9.207916, 49.153868),
+                        listOf(37.573242, 55.801281),
+                        listOf(115.663757, 38.106467)
+                    )
+                )
+            )
+            state = state.copy(matrixTime = result[0])
+        }
+    }
 
     fun getRoute() {
         viewModelScope.launch {
@@ -62,8 +92,6 @@ class DriveRouteViewModel @Inject constructor(
                 end = "${state.destination.longitude},${state.destination.latitude}"
             )
             state = state.copy(route = result)
-            Log.d("Saulo", "onDriveRouteViewModel: OK +  ${state.route}")
-            Log.d("Saulo", "onDriveRouteViewModel: OK +  ${state.route.features.first().geometry.coordinates[0]}")
 
             val poly: MutableList<com.google.android.gms.maps.model.LatLng> = mutableListOf()
 
@@ -71,29 +99,7 @@ class DriveRouteViewModel @Inject constructor(
                 poly.add(LatLng(it[1], it[0]))
             }
             state = state.copy(polyline = poly)
-            Log.d("Saulo", "onDriveRouteViewModel: OK +  ${state.polyline}")
         }
     }
-    /*
-   fun createRoute() {
-       CoroutineScope(Dispatchers.IO).launch {
-           val result = routeUseCase.getrouteUseCase(
-               apiKey = API_KEY,
-               start = "${state.origin.longitude},${state.origin.latitude}",
-               end = "${state.destination.longitude},${state.destination.latitude}"
-           )
-           state = state.copy(route = result)
-           drawRoute()
-       }
-   }
 
-
-   fun drawRoute() {
-       val polyLineOptions = PolylineOptions()
-       state.route.features.first().geometry.coordinates.forEach {
-           polyLineOptions.add(LatLng(it[1], it[0]))
-       }
-   }
-
-    */
 }

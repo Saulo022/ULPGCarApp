@@ -1,5 +1,6 @@
 package com.saulo.ulpgcarapp.domain.use_cases.routes
 
 data class RoutesUseCases(
-    val getrouteUseCase: GetRouteUseCase
+    val getrouteUseCase: GetRouteUseCase,
+    val matrixUseCase: MatrixUseCase
 )

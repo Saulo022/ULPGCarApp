@@ -19,6 +19,7 @@ import com.saulo.ulpgcarapp.domain.repository.UsersRepository
 import com.saulo.ulpgcarapp.domain.use_cases.auth.*
 import com.saulo.ulpgcarapp.domain.use_cases.publish.*
 import com.saulo.ulpgcarapp.domain.use_cases.routes.GetRouteUseCase
+import com.saulo.ulpgcarapp.domain.use_cases.routes.MatrixUseCase
 import com.saulo.ulpgcarapp.domain.use_cases.routes.RoutesUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.users.*
 import dagger.Module
@@ -89,7 +90,8 @@ object AppModule {
 
     @Provides
     fun provideRoutesUseCases(repository: SearchApiRepository) = RoutesUseCases(
-        getrouteUseCase = GetRouteUseCase(repository)
+        getrouteUseCase = GetRouteUseCase(repository),
+        matrixUseCase = MatrixUseCase(repository)
     )
 
 

@@ -1,10 +1,11 @@
 package com.saulo.ulpgcarapp.data.network
 
+import com.saulo.ulpgcarapp.data.network.response.Matrix
+import com.saulo.ulpgcarapp.data.network.response.MatrixResponse
 import com.saulo.ulpgcarapp.data.network.response.RouteResponse
 import com.saulo.ulpgcarapp.data.network.response.SearchResponse
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface SearchApiClient {
 
@@ -25,4 +26,7 @@ interface SearchApiClient {
         @Query("end", encoded = true) end: String
     ): Response<RouteResponse>
 
+    @Headers("Authorization: 5b3ce3597851110001cf6248430006dcbe134f72aea0f41e3b68d35b")
+    @POST("/v2/matrix/driving-car")
+    suspend fun optimisedRoute(@Body matrix: Matrix) : Response<MatrixResponse>
 }

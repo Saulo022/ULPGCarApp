@@ -2,6 +2,7 @@ package com.saulo.ulpgcarapp.data.network
 
 import com.saulo.ulpgcarapp.data.network.response.Feature
 import com.saulo.ulpgcarapp.data.network.response.Features
+import com.saulo.ulpgcarapp.data.network.response.Matrix
 import com.saulo.ulpgcarapp.data.network.response.RouteResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,6 +21,13 @@ class SearchApiService @Inject constructor(private val searchApiClient: SearchAp
         return withContext(Dispatchers.IO){
             val response = searchApiClient.getRoute(apiKey, start, end)
             (response.body() ?: RouteResponse(emptyList()) as RouteResponse)
+        }
+    }
+
+    suspend fun doOptimisedRoute(matrix: Matrix) : List<List<Double>> {
+        return withContext(Dispatchers.IO){
+            val response = searchApiClient.optimisedRoute(matrix)
+            response.body()?.durations ?: emptyList()
         }
     }
 

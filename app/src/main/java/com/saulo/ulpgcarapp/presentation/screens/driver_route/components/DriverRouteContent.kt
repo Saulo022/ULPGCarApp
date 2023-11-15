@@ -1,12 +1,8 @@
 package com.saulo.ulpgcarapp.presentation.screens.driver_route.components
 
-import android.webkit.WebSettings.ZoomDensity
+
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,9 +11,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
-import com.saulo.ulpgcarapp.R
 import com.saulo.ulpgcarapp.presentation.screens.driver_route.DriveRouteViewModel
-import com.saulo.ulpgcarapp.presentation.screens.update_publish_ride.UpdatePublishRideViewModel
 
 @Composable
 fun DriverRouteContent(viewModel: DriveRouteViewModel = hiltViewModel()) {
