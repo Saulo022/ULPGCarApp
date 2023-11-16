@@ -70,28 +70,56 @@ class DriveRouteViewModel @Inject constructor(
 
     fun getMatrix() {
         viewModelScope.launch {
+            driveRouteResponse = Response.Loading
             val result = routeUseCase.matrixUseCase(
                 matrix = Matrix(
-                    locations = listOf(
-                        listOf(9.70093, 48.477473),
-                        listOf(9.207916, 49.153868),
-                        listOf(37.573242, 55.801281),
-                        listOf(115.663757, 38.106467)
-                    )
+                    locations = state.matrixCoordinates
                 )
             )
             state = state.copy(matrixTime = result[0])
+            Log.d("Saulo", "matrixTime + ${result[0]}")
+            driveRouteResponse = null
+            orderStops()
+        }
+    }
+
+    fun orderStops() {
+        if (state.passengersList.size >= 2) {
+            val sortList = state.matrixTime
+            var sortListIndex = 0
+            val listOrderedStops: MutableList<List<Double>> = mutableListOf()
+            var list: List<Double> = emptyList()
+
+
+            for (duration in sortList.sorted()) {
+                var notSortListIndex = 0
+                for (coordinates in state.matrixTime) {
+                    if (duration == coordinates && duration != 0.0) {
+                        notSortListIndex = notSortListIndex - 1
+                         list = listOf(
+                            state.passengersList[notSortListIndex].longitude.toDouble(),
+                            state.passengersList[notSortListIndex].latitude.toDouble()
+                        )
+                        listOrderedStops.add(list)
+                    }
+                    notSortListIndex = notSortListIndex + 1
+                }
+                sortListIndex = sortListIndex + 1
+            }
+            state = state.copy(listOrderedStops = listOrderedStops)
         }
     }
 
     fun getRoute() {
         viewModelScope.launch {
+            driveRouteResponse = Response.Loading
             val result = routeUseCase.getrouteUseCase(
                 apiKey = API_KEY,
                 start = "${state.origin.longitude},${state.origin.latitude}",
                 end = "${state.destination.longitude},${state.destination.latitude}"
             )
             state = state.copy(route = result)
+
 
             val poly: MutableList<com.google.android.gms.maps.model.LatLng> = mutableListOf()
 
@@ -100,6 +128,7 @@ class DriveRouteViewModel @Inject constructor(
             }
             state = state.copy(polyline = poly)
         }
+        driveRouteResponse = null
     }
 
 }

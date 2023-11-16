@@ -22,5 +22,6 @@ data class DriveRouteState (
     var route: RouteResponse = RouteResponse(emptyList()),
     var polyline: List<com.google.android.gms.maps.model.LatLng> = emptyList(),
     val matrixCoordinates: MutableList<List<Double>> = mutableListOf(),
-    val matrixTime: List<Double> = emptyList()
+    val matrixTime: List<Double> = emptyList(),
+    val listOrderedStops: MutableList<List<Double>> = mutableListOf()
 )
