@@ -19,6 +19,7 @@ data class RequestRideState(
     var timeChoose: String = "",
     var dateChoose: String = "",
     var passengers: Int = 1,
-    var price: Int = 1
+    var price: Int = 1,
+    var route: MutableList<String> = mutableListOf()
 
 )

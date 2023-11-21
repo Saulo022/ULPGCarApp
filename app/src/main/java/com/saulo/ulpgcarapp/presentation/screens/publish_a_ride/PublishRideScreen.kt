@@ -13,9 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.saulo.ulpgcarapp.domain.model.Publish
 import com.saulo.ulpgcarapp.presentation.navigation.DetailsScreen
 import com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.components.GetPublishRides
-import com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.components.PublishRideContent
+import com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.components.UpdateRoutePublishRide
+
 
 @Composable
 fun PublishRideScreen(navController: NavHostController, viewModel: PublishRideViewModel = hiltViewModel()) {
@@ -36,5 +38,5 @@ fun PublishRideScreen(navController: NavHostController, viewModel: PublishRideVi
             }
         }
     )
-
+    UpdateRoutePublishRide()
 }

@@ -1,6 +1,5 @@
 package com.saulo.ulpgcarapp.presentation.screens.driver_route
 
-import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,7 +9,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.saulo.ulpgcarapp.core.Constants.API_KEY
-import com.saulo.ulpgcarapp.data.network.response.Feature
 import com.saulo.ulpgcarapp.data.network.response.Matrix
 import com.saulo.ulpgcarapp.data.network.response.RouteResponse
 import com.saulo.ulpgcarapp.domain.model.Publish
@@ -50,13 +48,17 @@ class DriveRouteViewModel @Inject constructor(
             dateChoose = publish.fecha,
             passengersList = publish.pasajeros,
             passengers = publish.numeroPasajeros,
-            price = publish.precioViaje
+            optimalRoute = publish.route,
+            price = publish.precioViaje,
         )
-        //getRoute()
-        //getMatrixCoordinates()
-        //getMatrix()
-        viewModelScope.launch {
-            optimalRoute()
+
+        Log.d("Saulo", "PublishRideViewModelMatrixCoordinates999 + ${state.optimalRoute}")
+
+        if (publish.pasajeros.size != 0){
+
+            viewModelScope.launch {
+                optimalRoute()
+            }
         }
 
 
@@ -80,22 +82,19 @@ class DriveRouteViewModel @Inject constructor(
         Log.d("Saulo", "MatrixCoordinates + ${state.matrixCoordinates}")
     }
 
-    fun getMatrix() {
-        viewModelScope.launch {
+    suspend fun getMatrix( matrixCoordinates: MutableList<List<Double>>) {
             driveRouteResponse = Response.Loading
             val result = routeUseCase.matrixUseCase(
                 matrix = Matrix(
-                    locations = state.matrixCoordinates
+                    locations = matrixCoordinates
                 )
             )
             state = state.copy(matrixTime = result[0])
             Log.d("Saulo", "matrixTime + ${result[0]}")
             driveRouteResponse = null
-            orderStops()
-        }
     }
 
-    fun orderStops() {
+    fun orderStops(): MutableList<List<Double>> {
         if (state.passengersList.size >= 2) {
             val sortList = state.matrixTime
             var sortListIndex = 0
@@ -118,8 +117,12 @@ class DriveRouteViewModel @Inject constructor(
                 }
                 sortListIndex = sortListIndex + 1
             }
+            listOrderedStops.add(0, listOf(state.origin.longitude.toDouble(),state.origin.latitude.toDouble()))
+            listOrderedStops.add(listOf(state.destination.longitude.toDouble(),state.destination.latitude.toDouble()))
             state = state.copy(listOrderedStops = listOrderedStops)
+            Log.d("Saulo", "matrixTime2 + ${listOrderedStops}")
         }
+        return state.listOrderedStops
     }
 
     suspend fun getRoute(start: String, end: String): List<List<Double>> {
@@ -137,14 +140,20 @@ class DriveRouteViewModel @Inject constructor(
 
 
     suspend fun optimalRoute() {
-        //val routeList = RouteResponse(emptyList())
+        getMatrixCoordinates()
+        val f =  viewModelScope.async {
+            getMatrix(state.matrixCoordinates)
+        }
+        orderStops()
         val routeList : MutableList<List<Double>> = mutableListOf()
-        for (i in 0 until state.passengersList.size-1) {
+        for (i in 0 until state.optimalRoute.size-1) {
+            Log.d("Saulo", "HOLA i = + ${i}")
+            Log.d("Saulo", "HOLA i = + ${state.optimalRoute}")
             val h = viewModelScope.async {
                 driveRouteResponse = Response.Loading
             getRoute(
-                "${state.passengersList[i].longitude},${state.passengersList[i].latitude}",
-                "${state.passengersList[i+1].longitude},${state.passengersList[i+1].latitude}"
+                state.optimalRoute[i],
+                state.optimalRoute[i+1]
             )
             }
             routeList.addAll(h.await())

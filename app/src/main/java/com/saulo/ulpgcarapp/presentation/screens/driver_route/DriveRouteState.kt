@@ -1,14 +1,13 @@
 package com.saulo.ulpgcarapp.presentation.screens.driver_route
 
-import com.google.type.LatLng
+import com.google.android.gms.maps.model.LatLng
 import com.saulo.ulpgcarapp.data.network.response.Feature
-import com.saulo.ulpgcarapp.data.network.response.Features
 import com.saulo.ulpgcarapp.data.network.response.RouteResponse
 
 import com.saulo.ulpgcarapp.domain.model.Location
 import com.saulo.ulpgcarapp.domain.model.Passenger
 
-data class DriveRouteState (
+data class DriveRouteState(
     var origin: Location = Location("","",""),
     var searchList: List<Feature> = emptyList(),
     var municipality: String = "",
@@ -20,8 +19,9 @@ data class DriveRouteState (
     var passengers: Int = 1,
     var price: Int = 1,
     var route: RouteResponse = RouteResponse(emptyList()),
-    var polyline: List<com.google.android.gms.maps.model.LatLng> = emptyList(),
+    var polyline: List<LatLng> = emptyList(),
     val matrixCoordinates: MutableList<List<Double>> = mutableListOf(),
     val matrixTime: List<Double> = emptyList(),
-    val listOrderedStops: MutableList<List<Double>> = mutableListOf()
+    val listOrderedStops: MutableList<List<Double>> = mutableListOf(),
+    var optimalRoute: List<String> = emptyList()
 )

@@ -48,7 +48,8 @@ class RequestRideViewModel @Inject constructor(
             timeChoose = publish.hora,
             dateChoose = publish.fecha,
             passengers = publish.numeroPasajeros,
-            price = publish.precioViaje
+            price = publish.precioViaje,
+            route = publish.route
         )
     }
 
@@ -95,6 +96,8 @@ class RequestRideViewModel @Inject constructor(
                 )
 
         state.pasajeros.add(passenger)
+        state.route.add("${state.stopLongitude},${state.stopLatitude}")
+
 
         val publish = Publish(
             id = publish.id,
@@ -105,7 +108,8 @@ class RequestRideViewModel @Inject constructor(
             hora = publish.hora,
             fecha = publish.fecha,
             numeroPasajeros = publish.numeroPasajeros,
-            precioViaje = publish.precioViaje
+            precioViaje = publish.precioViaje,
+            route = state.route
         )
         updatePublishRide(publish)
     }

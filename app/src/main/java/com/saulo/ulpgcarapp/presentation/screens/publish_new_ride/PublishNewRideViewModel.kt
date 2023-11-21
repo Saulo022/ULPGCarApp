@@ -133,7 +133,8 @@ class PublishNewRideViewModel @Inject constructor(
             hora = state.timeChoose,
             numeroPasajeros = state.passengers,
             precioViaje = state.price,
-            idUser = currentUser?.uid ?: ""
+            idUser = currentUser?.uid ?: "",
+            route = state.optimalRoute as MutableList<String>
         )
         publishARide(publish)
     }

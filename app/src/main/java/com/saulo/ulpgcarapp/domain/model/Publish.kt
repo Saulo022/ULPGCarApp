@@ -9,11 +9,12 @@ data class Publish(
     //var origen: Location = Location(),
     //var destino: Location = Location(),
     var origin: Location = Location(),
-    var destination : Location = Location(),
+    var destination: Location = Location(),
     var municipio: String = "",
     var numeroPasajeros: Int = 1,
     var precioViaje: Int = 1,
-    var paradas: List<String> = emptyList(),
+    //var optimalRoute: List<String> = emptyList(),
+    var route: MutableList<String> = mutableListOf(),
     var pasajeros: MutableList<Passenger> = mutableListOf(),
     var valoracion: String = "",
     var estado: String = "",
@@ -24,7 +25,7 @@ data class Publish(
     var image: String = ""
 ) {
 fun toJson(): String = Gson().toJson(Publish(
-    id, origin, destination, municipio, numeroPasajeros, precioViaje, paradas, pasajeros, valoracion, estado, fecha, hora,idUser,
+    id, origin, destination, municipio, numeroPasajeros, precioViaje, route, pasajeros, valoracion, estado, fecha, hora,idUser,
     User(
         id = user?.id ?: "",
         username = user?.username ?: "",

@@ -18,59 +18,30 @@ import com.saulo.ulpgcarapp.presentation.screens.driver_route.DriveRouteViewMode
 @Composable
 fun DriverRouteContent(viewModel: DriveRouteViewModel = hiltViewModel()) {
 
-    /*
-    val startLocation = LatLng(
-        viewModel.state.origin.latitude.toDouble(),
-        viewModel.state.origin.longitude.toDouble()
-    )
-
-    val endLocation = LatLng(
-        viewModel.state.destination.latitude.toDouble(),
-        viewModel.state.destination.longitude.toDouble()
-    )
-         */
-
-    val firstLocation = LatLng(
-        27.99508,
-        -15.61543
-    )
-
-    val secondLocation = LatLng(
-        28.060615,
-        -15.545412
-    )
-    val thirdLocation = LatLng(
-        27.902829,
-        -15.446121
-    )
-
-
+    val latLngList: List<LatLng> = viewModel.state.optimalRoute.map { val (lat, lng) = it.split(",").map { it.toDouble() }
+    LatLng(lng, lat)}
 
     val cameraPositionState: CameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(firstLocation, 15f)
+        position = CameraPosition.fromLatLngZoom(latLngList[0], 15f)
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
         GoogleMap(
             cameraPositionState = cameraPositionState
         ) {
-            Marker(
-                state = MarkerState(firstLocation),
-                title = "Inicio del trayecto",
-                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
-            )
-            Polyline(points = viewModel.state.polyline, color = Color.Green)
-            Marker(
-                state = MarkerState(secondLocation),
-                title = "Inicio del trayecto",
-                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)
-            )
 
-            Marker(
-                state = MarkerState(thirdLocation),
-                title = "Inicio del trayecto",
-                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
-            )
+            for (latLng in latLngList){
+                Marker(
+                    state = MarkerState(latLng),
+                    title = "Inicio del trayecto",
+                    icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
+                )
+            }
+
+            Polyline(points = viewModel.state.polyline, color = Color.Green)
+
+
+
         }
 
         Column() {

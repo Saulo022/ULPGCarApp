@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.saulo.ulpgcarapp.R
@@ -91,7 +92,12 @@ fun RidesCard(
                         colorFilter = ColorFilter.tint(
                             Color.Green
                         ),
-                        modifier = Modifier.clickable { navController.navigate(route = DetailsScreen.DriverRoute.passPublishRide(publishRide.toJson())) })
+                        modifier = Modifier.clickable {
+                            if (publishRide.pasajeros.size != 0){
+                                viewModel.getMatrixCoordinates(publishRide.origin,publishRide.pasajeros,publishRide.destination,publishRide)
+                            }
+                            navController.navigate(route = DetailsScreen.DriverRoute.passPublishRide(publishRide.toJson()))
+                        })
 
                     Spacer(modifier = Modifier.width(10.dp))
 
