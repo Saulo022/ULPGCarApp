@@ -38,5 +38,5 @@ fun PublishRideScreen(navController: NavHostController, viewModel: PublishRideVi
             }
         }
     )
-    UpdateRoutePublishRide()
+    //UpdateRoutePublishRide()
 }

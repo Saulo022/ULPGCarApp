@@ -35,9 +35,7 @@ class PublishRideViewModel @Inject constructor(
     var updatePublishRideResponse by mutableStateOf<Response<Boolean>?>(null)
         private set
 
-
     val currentUser = authUseCases.getCurrentUser()
-
 
     var matrixTime: List<Double> = emptyList()
     var orderedStopsList: MutableList<String> = mutableListOf()
@@ -167,12 +165,6 @@ class PublishRideViewModel @Inject constructor(
                 )
             )
             Log.d("Saulo", "PublishRideViewModelMatrixCoordinates333 + ${listOrderedStops}")
-
-            /*
-            for (i in 0 until listOrderedStops.size){
-                orderedStopsList = listOf("${listOrderedStops[i][0]}"+","+"${listOrderedStops[i][1]}")
-            }
-            */
 
             orderedStopsList = listOrderedStops.map { "${it[0]},${it[1]}" } as MutableList<String>
 
