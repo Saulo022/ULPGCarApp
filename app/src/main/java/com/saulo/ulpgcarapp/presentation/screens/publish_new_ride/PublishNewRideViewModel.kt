@@ -125,6 +125,11 @@ class PublishNewRideViewModel @Inject constructor(
     }
 
     fun onNewRide() {
+        val locations: MutableList<String> = mutableListOf()
+        locations.add("${state.search.longitude},${state.search.latitude}")
+        locations.add("${state.searchReturn.longitude},${state.searchReturn.latitude}")
+        state = state.copy(optimalRoute = locations)
+
         val publish = Publish(
             origin = state.search,
             municipio = state.municipality,
@@ -134,7 +139,7 @@ class PublishNewRideViewModel @Inject constructor(
             numeroPasajeros = state.passengers,
             precioViaje = state.price,
             idUser = currentUser?.uid ?: "",
-            route = state.optimalRoute as MutableList<String>
+            route = state.optimalRoute
         )
         publishARide(publish)
     }

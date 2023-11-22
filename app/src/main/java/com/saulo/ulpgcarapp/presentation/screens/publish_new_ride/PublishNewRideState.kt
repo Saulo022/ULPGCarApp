@@ -14,6 +14,6 @@ data class PublishNewRideState (
     var dateChoose: String = "",
     var passengers: Int = 1,
     var price: Int = 1,
-    var optimalRoute: List<String> = mutableListOf()
+    var optimalRoute: MutableList<String> = mutableListOf()
 )
 
