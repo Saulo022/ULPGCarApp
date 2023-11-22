@@ -12,5 +12,6 @@ interface PublishRepository {
     suspend fun update(publish: Publish): Response<Boolean>
     fun getPublishRides(): Flow<Response<List<Publish>>>
     fun getPublishRidesByUserId(idUser: String): Flow<Response<List<Publish>>>
+    fun getPublishRidesByPassengerId(idUser: String): Flow<Response<List<Publish>>>
     fun getPublishRidesByMunicipality(municipality: String): Flow<Response<List<Publish>>>
 }

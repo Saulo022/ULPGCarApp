@@ -131,6 +131,34 @@ class PublishRepositoryImp @Inject constructor(
         }
     }
 
+    override fun getPublishRidesByPassengerId(idUser: String): Flow<Response<List<Publish>>> = callbackFlow {
+        val snapshotListener = publishRef.addSnapshotListener { snapshot, e ->
+
+            val publishResponse = if (snapshot != null) {
+                val publications = snapshot.toObjects(Publish::class.java)
+
+                val filteredPublish = publications.filter {
+                    it.pasajeros.any {
+                        it.idPassenger == idUser
+                    }
+                }
+
+                filteredPublish.forEachIndexed { index, document ->
+                    publications[index].id = document.id
+                }
+                Response.Success(filteredPublish)
+            } else {
+                Response.Failure(e)
+            }
+            trySend(publishResponse)
+
+        }
+        awaitClose {
+            snapshotListener.remove()
+        }
+    }
+
+
     @OptIn(DelicateCoroutinesApi::class)
     override fun getPublishRidesByMunicipality(municipality: String): Flow<Response<List<Publish>>> = callbackFlow {
         val snapshotListener = publishRef.whereEqualTo("municipio", municipality).addSnapshotListener { snapshot, e ->

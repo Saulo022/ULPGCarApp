@@ -83,6 +83,7 @@ object AppModule {
         publish = PublishRide(repository),
         getPublishRides = GetPublishRides(repository),
         getPublishRidesById = GetPublishRidesById(repository),
+        getPublishRidesByPassengerId = GetPublishRidesByPassengerId(repository),
         getPublishRidesByMunicipality = GetPublishRidesByMunicipality(repository),
         deletePublishRide = DeletePublishRide(repository),
         updatePublishRide = UpdatePublishRide(repository)
