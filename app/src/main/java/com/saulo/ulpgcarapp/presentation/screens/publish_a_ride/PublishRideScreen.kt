@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.saulo.ulpgcarapp.domain.model.Publish
+import com.saulo.ulpgcarapp.presentation.components.DefaultTopBar
 import com.saulo.ulpgcarapp.presentation.navigation.DetailsScreen
 import com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.components.GetPublishRides
 import com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.components.UpdateRoutePublishRide
@@ -23,6 +24,13 @@ import com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.components.Updat
 fun PublishRideScreen(navController: NavHostController, viewModel: PublishRideViewModel = hiltViewModel()) {
 
     Scaffold(
+        topBar = {
+            DefaultTopBar(
+                title = "Tus viajes publicados",
+                upAvailable = false,
+                navController = navController
+            )
+        },
         content = {
             GetPublishRides(navController)
         },

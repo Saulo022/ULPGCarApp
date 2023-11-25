@@ -65,7 +65,7 @@ fun SignupContent(
 
     Card(
         modifier = Modifier
-            .padding(start = 40.dp, end = 40.dp, top = 200.dp)
+            .padding(start = 20.dp, end = 20.dp, top = 200.dp, bottom = 40.dp)
     ) {
         Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
@@ -131,7 +131,7 @@ fun SignupContent(
             DefaultButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 35.dp),
+                    .padding(vertical = 2.dp,),
                 text = "REGISTRARSE",
                 onClick = { viewModel.onSignup() },
                 enabled = viewModel.isEnabledLoginButton

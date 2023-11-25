@@ -22,7 +22,7 @@ fun SearchResultContent(publishRides: List<Publish>, navController: NavHostContr
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 75.dp)
+            .padding(start = 10.dp, end = 10.dp, top = 70.dp, bottom = 15.dp)
     ) {
         items(items = publishRides) {
             RidesResultsCard(

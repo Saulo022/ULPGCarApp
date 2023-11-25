@@ -43,7 +43,7 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
 
     val state = viewModel.state
 
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Box(modifier = Modifier.fillMaxWidth().padding(top = 50.dp)) {
 
         Box(
             modifier = Modifier
@@ -59,20 +59,12 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
 
                 Image(
                     modifier = Modifier
-                        .height(70.dp)
-                        .padding(top = 30.dp),
+                        .height(65.dp)
+                        .padding(top = 15.dp),
                     painter = painterResource(id = R.drawable.configcar),
                     contentDescription = "Publish Ride Image"
                 )
 
-                Spacer(modifier = Modifier.height(5.dp))
-
-                Text(
-                    text = "Publish a ride",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                )
 
             }
         }
@@ -81,7 +73,7 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
 
             Card(
                 modifier = Modifier
-                    .padding(start = 10.dp, end = 10.dp, top = 105.dp, bottom = 10.dp)
+                    .padding(start = 10.dp, end = 10.dp, top = 75.dp, bottom = 10.dp)
             ) {
                 Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
