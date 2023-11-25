@@ -40,7 +40,7 @@ fun RequestRideContent(viewModel: RequestRideViewModel = hiltViewModel()) {
 
     val ctx = LocalContext.current
 
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Box(modifier = Modifier.fillMaxWidth().padding(top = 50.dp)) {
 
         Box(
             modifier = Modifier
@@ -56,19 +56,10 @@ fun RequestRideContent(viewModel: RequestRideViewModel = hiltViewModel()) {
 
                 Image(
                     modifier = Modifier
-                        .height(120.dp)
-                        .padding(top = 50.dp),
+                        .height(100.dp)
+                        .padding(top = 20.dp),
                     painter = painterResource(id = R.drawable.driverlesscar),
                     contentDescription = "Search Ride Image"
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    text = "Search a ride",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
                 )
 
             }
@@ -79,9 +70,9 @@ fun RequestRideContent(viewModel: RequestRideViewModel = hiltViewModel()) {
 
             Card(
                 modifier = Modifier
-                    .height(650.dp)
+                    .height(600.dp)
                     .width(400.dp)
-                    .padding(start = 10.dp, end = 10.dp, top = 180.dp)
+                    .padding(start = 10.dp, end = 10.dp, top = 110.dp)
             ) {
                 Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
