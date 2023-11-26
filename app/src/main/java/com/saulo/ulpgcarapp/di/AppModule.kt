@@ -7,16 +7,22 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.saulo.ulpgcarapp.core.Constants.CHAT
 import com.saulo.ulpgcarapp.core.Constants.PUBLISH
 import com.saulo.ulpgcarapp.core.Constants.USERS
 import com.saulo.ulpgcarapp.data.network.SearchApiRepository
 import com.saulo.ulpgcarapp.data.repository.AuthRepositoryImpl
+import com.saulo.ulpgcarapp.data.repository.ChatRepositoryImpl
 import com.saulo.ulpgcarapp.data.repository.PublishRepositoryImp
 import com.saulo.ulpgcarapp.data.repository.UsersRepositoryImpl
 import com.saulo.ulpgcarapp.domain.repository.AuthRepository
+import com.saulo.ulpgcarapp.domain.repository.ChatRepository
 import com.saulo.ulpgcarapp.domain.repository.PublishRepository
 import com.saulo.ulpgcarapp.domain.repository.UsersRepository
 import com.saulo.ulpgcarapp.domain.use_cases.auth.*
+import com.saulo.ulpgcarapp.domain.use_cases.chat.ChatUseCases
+import com.saulo.ulpgcarapp.domain.use_cases.chat.GetChatMessages
+import com.saulo.ulpgcarapp.domain.use_cases.chat.SendMessage
 import com.saulo.ulpgcarapp.domain.use_cases.publish.*
 import com.saulo.ulpgcarapp.domain.use_cases.routes.GetRouteUseCase
 import com.saulo.ulpgcarapp.domain.use_cases.routes.MatrixUseCase
@@ -51,6 +57,11 @@ object AppModule {
     fun providePublishRef(db: FirebaseFirestore): CollectionReference = db.collection(PUBLISH)
 
     @Provides
+    @Named(CHAT)
+    //fun provideChatRef(db: FirebaseFirestore): CollectionReference = db.collection(CHAT)
+    fun provideChatRef(@Named(PUBLISH) publishCollection: CollectionReference): CollectionReference = publishCollection.document().collection(CHAT)
+
+    @Provides
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
     @Provides
@@ -61,6 +72,9 @@ object AppModule {
 
     @Provides
     fun providePublishRepository(impl: PublishRepositoryImp): PublishRepository = impl
+
+    @Provides
+    fun provideChatRepository(impl: ChatRepositoryImpl): ChatRepository = impl
 
     @Provides
     fun provideAuthUseCases(repository: AuthRepository) = AuthUseCases(
@@ -93,6 +107,12 @@ object AppModule {
     fun provideRoutesUseCases(repository: SearchApiRepository) = RoutesUseCases(
         getrouteUseCase = GetRouteUseCase(repository),
         matrixUseCase = MatrixUseCase(repository)
+    )
+
+    @Provides
+    fun provideChatUseCases(repository: ChatRepository) = ChatUseCases(
+        sendMessage = SendMessage(repository),
+        getChatMessages = GetChatMessages(repository)
     )
 
 

@@ -4,6 +4,8 @@ object Constants {
 
     const val USERS = "Users"
     const val PUBLISH = "Publish"
+    const val CHAT = "Chat"
+
 
     const val API_KEY = "5b3ce3597851110001cf6248430006dcbe134f72aea0f41e3b68d35b"
 
