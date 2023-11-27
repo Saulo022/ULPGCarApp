@@ -1,5 +1,6 @@
 package com.saulo.ulpgcarapp.presentation.screens.chats
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -36,6 +37,7 @@ class ChatViewModel @Inject constructor(
         getChatMessages()
     }
 
+    @SuppressLint("SuspiciousIndentation")
     fun getChatMessages() {
         viewModelScope.launch {
         chatResponse = Response.Loading

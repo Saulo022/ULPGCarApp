@@ -1,5 +1,6 @@
 package com.saulo.ulpgcarapp.presentation.screens.chats.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +17,7 @@ import com.saulo.ulpgcarapp.domain.model.Publish
 import com.saulo.ulpgcarapp.presentation.components.DefaultButton
 import com.saulo.ulpgcarapp.presentation.components.DefaultTextField
 import com.saulo.ulpgcarapp.presentation.screens.chats.ChatViewModel
+import com.saulo.ulpgcarapp.presentation.screens.chats.components.chat_components.MessageBubble
 import com.saulo.ulpgcarapp.presentation.screens.login.LoginViewModel
 
 @Composable
@@ -29,10 +31,10 @@ fun ChatContent(
 
     Box(modifier = Modifier.fillMaxWidth()) {
 
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 150.dp)) {
 
             items(items = chatMesssages) {
-                Text(text = it.contenido)
+                MessageBubble(message = it.contenido, ownMessage = if (it.userId == (viewModel.currentUser?.uid  ?: "")) false else true, hora = it.horaSimple)
             }
         }
 

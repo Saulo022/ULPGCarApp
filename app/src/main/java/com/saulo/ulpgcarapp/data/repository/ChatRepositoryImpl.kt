@@ -1,5 +1,6 @@
 package com.saulo.ulpgcarapp.data.repository
 
+import android.util.Log
 import com.google.firebase.firestore.CollectionReference
 import com.saulo.ulpgcarapp.core.Constants
 import com.saulo.ulpgcarapp.domain.model.Message
@@ -34,13 +35,13 @@ class ChatRepositoryImpl @Inject constructor(
 
     override fun getChatMessages(publishId: String): Flow<Response<List<Message>>> = callbackFlow {
 
-        val snapshotListener = publishRef.document("KH4RDcjwA4u7JpNi5ONo").collection("Chat")
+        val snapshotListener = publishRef.document("KH4RDcjwA4u7JpNi5ONo").collection("Chat").orderBy("fecha").orderBy("hora")
             .addSnapshotListener { snapshot, e ->
 
                 val chatResponse = if (snapshot != null) {
                     val messages = snapshot.toObjects(Message::class.java)
                     snapshot.documents.forEachIndexed { index, document ->
-                        messages[index].userId = document.id
+                        messages[index].docuId = document.id
                     }
                     Response.Success(messages)
 

@@ -24,7 +24,8 @@ class SendMessage @Inject constructor(private val repository: ChatRepository){
             userId = userId,
             contenido = msg,
             hora = "$hour:$min:$sec:$milsec",
-            fecha = "$day/$month/$year"
+            fecha = "$day/$month/$year",
+            horaSimple = "$hour:$min"
         )
 
         return repository.sendMessage(message)
