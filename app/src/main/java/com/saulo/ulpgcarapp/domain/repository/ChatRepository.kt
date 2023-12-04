@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ChatRepository {
 
-    suspend fun sendMessage(msg: Message): Response<Boolean>
+    suspend fun sendMessage(msg: Message, publishId: String): Response<Boolean>
 
     fun getChatMessages(publishId: String): Flow<Response<List<Message>>>
 }

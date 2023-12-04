@@ -20,10 +20,10 @@ class ChatRepositoryImpl @Inject constructor(
     @Named(Constants.USERS) private val usersRef: CollectionReference
 ) : ChatRepository {
 
-    override suspend fun sendMessage(msg: Message): Response<Boolean> {
+    override suspend fun sendMessage(msg: Message, publishId: String): Response<Boolean> {
         return try {
 
-            publishRef.document("KH4RDcjwA4u7JpNi5ONo").collection("Chat").add(msg)
+            publishRef.document(publishId).collection("Chat").add(msg)
             Response.Success(true)
 
         } catch (e: Exception) {
@@ -35,7 +35,7 @@ class ChatRepositoryImpl @Inject constructor(
 
     override fun getChatMessages(publishId: String): Flow<Response<List<Message>>> = callbackFlow {
 
-        val snapshotListener = publishRef.document("KH4RDcjwA4u7JpNi5ONo").collection("Chat").orderBy("fecha").orderBy("hora")
+        val snapshotListener = publishRef.document(publishId).collection("Chat").orderBy("fecha").orderBy("hora")
             .addSnapshotListener { snapshot, e ->
 
                 val chatResponse = if (snapshot != null) {

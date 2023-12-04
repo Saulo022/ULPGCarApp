@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material3.Card
@@ -13,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
@@ -20,9 +22,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.saulo.ulpgcarapp.domain.model.Publish
+import com.saulo.ulpgcarapp.presentation.components.DefaultButton
 import com.saulo.ulpgcarapp.presentation.components.InformationPill
 import com.saulo.ulpgcarapp.presentation.navigation.DetailsScreen
 import com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.PublishRideViewModel
+import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
+import com.saulo.ulpgcarapp.presentation.ui.theme.Orange400
 
 @Composable
 fun YourRidesCard(
@@ -161,6 +166,29 @@ fun YourRidesCard(
                 )
                 Spacer(modifier = Modifier.width(40.dp))
                 InformationPill(text = "${publishRide.numeroPasajeros}")
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 5.dp), horizontalArrangement = Arrangement.End
+                ) {
+
+                    DefaultButton(modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .padding(vertical = 5.dp, horizontal = 5.dp),
+                        text = "Chat",
+                        icon = Icons.Default.Chat,
+                        color = Orange400,
+                        mainColor = Blue400,
+                        onClick = {
+                            navController.navigate(
+                                route = DetailsScreen.PublicationChat.passPublishRide(
+                                    publishRide.toJson()
+                                )
+                            )
+                        })
+
+                }
             }
 
         }

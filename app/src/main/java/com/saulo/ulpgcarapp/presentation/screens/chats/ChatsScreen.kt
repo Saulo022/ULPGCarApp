@@ -9,7 +9,7 @@ import com.saulo.ulpgcarapp.presentation.screens.chats.components.GetChatMessage
 import com.saulo.ulpgcarapp.presentation.screens.chats.components.SendMessage
 
 @Composable
-fun ChatsScreen(navController: NavHostController) {
+fun ChatsScreen(navController: NavHostController, id: String) {
 
     Scaffold(
         content = {

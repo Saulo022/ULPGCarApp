@@ -1,11 +1,14 @@
 package com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Map
@@ -28,10 +31,12 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.saulo.ulpgcarapp.R
 import com.saulo.ulpgcarapp.domain.model.Publish
+import com.saulo.ulpgcarapp.presentation.components.DefaultButton
 import com.saulo.ulpgcarapp.presentation.components.InformationPill
 import com.saulo.ulpgcarapp.presentation.navigation.DetailsScreen
 import com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.PublishRideViewModel
 import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
+import com.saulo.ulpgcarapp.presentation.ui.theme.Orange400
 import com.saulo.ulpgcarapp.presentation.ui.theme.Red200
 
 @Composable
@@ -93,10 +98,19 @@ fun RidesCard(
                             Color.Green
                         ),
                         modifier = Modifier.clickable {
-                            if (publishRide.pasajeros.size != 0){
-                                viewModel.getMatrixCoordinates(publishRide.origin,publishRide.pasajeros,publishRide.destination,publishRide)
+                            if (publishRide.pasajeros.size != 0) {
+                                viewModel.getMatrixCoordinates(
+                                    publishRide.origin,
+                                    publishRide.pasajeros,
+                                    publishRide.destination,
+                                    publishRide
+                                )
                             }
-                            navController.navigate(route = DetailsScreen.DriverRoute.passPublishRide(publishRide.toJson()))
+                            navController.navigate(
+                                route = DetailsScreen.DriverRoute.passPublishRide(
+                                    publishRide.toJson()
+                                )
+                            )
                         })
 
                     Spacer(modifier = Modifier.width(10.dp))
@@ -133,13 +147,14 @@ fun RidesCard(
 
                 Spacer(modifier = Modifier.width(10.dp))
 
-               InformationPill(text = publishRide.hora)
+                InformationPill(text = publishRide.hora)
             }
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 0.dp, end = 5.dp, top = 3.dp, bottom = 0.dp), horizontalArrangement = Arrangement.Start
+                    .padding(start = 0.dp, end = 5.dp, top = 3.dp, bottom = 0.dp),
+                horizontalArrangement = Arrangement.Start
             ) {
                 Text(
                     text = "Precio",
@@ -171,6 +186,29 @@ fun RidesCard(
                 )
                 Spacer(modifier = Modifier.width(40.dp))
                 InformationPill(text = "${publishRide.numeroPasajeros}")
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 5.dp), horizontalArrangement = Arrangement.End
+                ) {
+
+                    DefaultButton(modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .padding(vertical = 5.dp, horizontal = 5.dp),
+                        text = "Chat",
+                        icon = Icons.Default.Chat,
+                        color = Orange400,
+                        mainColor = Blue400,
+                        onClick = {
+                            navController.navigate(
+                                route = DetailsScreen.PublicationChat.passPublishRide(
+                                    publishRide.toJson()
+                                )
+                            )
+                        })
+
+                }
             }
 
         }

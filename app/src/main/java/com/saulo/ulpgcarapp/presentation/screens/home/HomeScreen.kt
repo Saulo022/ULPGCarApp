@@ -34,7 +34,6 @@ fun BottomBar(navController: NavHostController) {
         HomeBottomBarScreen.Search,
         HomeBottomBarScreen.YourRides,
         HomeBottomBarScreen.PublishRide,
-        HomeBottomBarScreen.Chats,
         HomeBottomBarScreen.Profile,
     )
 

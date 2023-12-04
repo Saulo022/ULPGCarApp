@@ -35,9 +35,6 @@ fun HomeBottomBarNavGraph(navController: NavHostController) {
             PublishRideScreen(navController)
         }
 
-        composable(route = HomeBottomBarScreen.Chats.route) {
-            ChatsScreen(navController)
-        }
 
         composable(route = HomeBottomBarScreen.Profile.route) {
             ProfileScreen(navController)
@@ -58,27 +55,22 @@ sealed class HomeBottomBarScreen(
 
     object Search : HomeBottomBarScreen(
         route = "search",
-        title = "Search",
+        title = "Buscar",
         icon = Icons.Default.Search
     )
 
     object YourRides : HomeBottomBarScreen(
         route = "your_rides",
-        title = "Your Rides",
+        title = "Tus viajes",
         icon = Icons.Default.DirectionsCar
     )
 
     object PublishRide : HomeBottomBarScreen(
         route = "publish_a_ride",
-        title = "Publish",
+        title = "Publicar",
         icon = Icons.Default.AddBox
     )
 
-    object Chats : HomeBottomBarScreen(
-        route = "chats",
-        title = "Chats",
-        icon = Icons.Default.Chat
-    )
 
     object Profile : HomeBottomBarScreen(
         route = "profile",

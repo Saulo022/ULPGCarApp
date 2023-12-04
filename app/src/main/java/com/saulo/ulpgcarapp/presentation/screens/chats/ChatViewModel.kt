@@ -1,9 +1,12 @@
 package com.saulo.ulpgcarapp.presentation.screens.chats
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.saulo.ulpgcarapp.domain.model.Message
@@ -21,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatViewModel @Inject constructor(
     private val chatUseCases: ChatUseCases,
-    private val authUseCases: AuthUseCases
+    private val authUseCases: AuthUseCases,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     //STATE FORM
@@ -33,7 +37,11 @@ class ChatViewModel @Inject constructor(
     var chatResponse by mutableStateOf<Response<List<Message>>?>(null)
     var messageResponse by mutableStateOf<Response<Boolean>?>(null)
 
+    val data = savedStateHandle.get<String>("id")
+    val publish = Publish.fromJson(data!!)
+
     init {
+        state = state.copy(rideId = publish.id)
         getChatMessages()
     }
 
@@ -41,7 +49,7 @@ class ChatViewModel @Inject constructor(
     fun getChatMessages() {
         viewModelScope.launch {
         chatResponse = Response.Loading
-            chatUseCases.getChatMessages("KH4RDcjwA4u7JpNi5ONo").collect(){
+            chatUseCases.getChatMessages(state.rideId).collect(){
                 chatResponse = it
             }
         }
@@ -51,11 +59,12 @@ class ChatViewModel @Inject constructor(
         state = state.copy(message = msg)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun senMessage() {
         viewModelScope.launch {
             val msg = state.message
             messageResponse = Response.Loading
-            val result = chatUseCases.sendMessage(currentUser?.uid ?: "",msg)
+            val result = chatUseCases.sendMessage(currentUser?.uid ?: "",msg, state.rideId)
             messageResponse = result
         }
     }

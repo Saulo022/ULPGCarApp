@@ -2,6 +2,7 @@ package com.saulo.ulpgcarapp.presentation.navigation
 
 import androidx.navigation.*
 import androidx.navigation.compose.composable
+import com.saulo.ulpgcarapp.presentation.screens.chats.ChatsScreen
 import com.saulo.ulpgcarapp.presentation.screens.driver_route.DriverRouteScreen
 import com.saulo.ulpgcarapp.presentation.screens.profile_edit.ProfileEditScreen
 import com.saulo.ulpgcarapp.presentation.screens.publish_new_ride.PublishNewRideScreen
@@ -62,6 +63,17 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
             }
         }
 
+        composable(
+            route = DetailsScreen.PublicationChat.route,
+            arguments = listOf(navArgument("id") {
+                type = NavType.StringType
+            })
+        ) {
+            it.arguments?.getString("id")?.let {
+                ChatsScreen(navController, it)
+            }
+        }
+
     }
 
 }
@@ -84,6 +96,10 @@ sealed class DetailsScreen(val route: String) {
 
     object UpdatePublishRide: DetailsScreen("publish/update/{publish}") {
         fun passPublishRide(publishRide: String) = "publish/update/$publishRide"
+    }
+
+    object PublicationChat: DetailsScreen("publish/chat/{id}") {
+        fun passPublishRide(id: String) = "publish/chat/$id"
     }
 
 }
