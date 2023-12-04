@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.saulo.ulpgcarapp.domain.model.Publish
 import com.saulo.ulpgcarapp.domain.model.Response
+import com.saulo.ulpgcarapp.domain.use_cases.auth.AuthUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.publish.PublishUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,7 +16,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 
-class SearchResultViewModel @Inject constructor(private val publishUseCases: PublishUseCases, private val savedStateHandle: SavedStateHandle): ViewModel() {
+class SearchResultViewModel @Inject constructor(
+    private val publishUseCases: PublishUseCases,
+    private val savedStateHandle: SavedStateHandle,
+    private val authUseCases: AuthUseCases
+) : ViewModel() {
 
     //STATE PUBLISH SCREEN
     var state by mutableStateOf(SearchResultState())
@@ -24,10 +29,14 @@ class SearchResultViewModel @Inject constructor(private val publishUseCases: Pub
     //ARGUMENTS
     val publishRides = savedStateHandle.get<String>("municipality")
 
+
     var publishRidesResponse by mutableStateOf<Response<List<Publish>>?>(null)
 
     var updatePublishRideResponse by mutableStateOf<Response<Boolean>?>(null)
         private set
+
+    //USER SESSION
+    val currentUser = authUseCases.getCurrentUser()
 
     init {
         state = state.copy(
@@ -45,4 +54,17 @@ class SearchResultViewModel @Inject constructor(private val publishUseCases: Pub
             }
         }
     }
+
+    fun checkRequestState(publishRide: Publish): String {
+        for (pasajero in publishRide.pasajeros) {
+            if (pasajero.idPassenger == currentUser?.uid){
+                if (pasajero.requestState == "Pendiente")
+                return "Pendiente"
+            } else if (pasajero.requestState == "Denegada"){
+                return "Denegada"
+            }
+        }
+        return ""
+    }
+
 }

@@ -34,6 +34,7 @@ import com.saulo.ulpgcarapp.presentation.navigation.DetailsScreen
 import com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.PublishRideViewModel
 import com.saulo.ulpgcarapp.presentation.screens.search_result.SearchResultViewModel
 import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
+import com.saulo.ulpgcarapp.presentation.ui.theme.Orange400
 import com.saulo.ulpgcarapp.presentation.ui.theme.Red200
 
 @SuppressLint("SuspiciousIndentation")
@@ -95,7 +96,7 @@ fun RidesResultsCard(
                         colorFilter = ColorFilter.tint(
                             Color.Red
                         ),
-                        modifier = Modifier.clickable {  })
+                        modifier = Modifier.clickable { })
                 }
             }
 
@@ -171,18 +172,22 @@ fun RidesResultsCard(
             ) {
                 DefaultButton(
                     modifier = Modifier,
-                    text = if (publishRide.numeroPasajeros <= 1) "No hay plazas disponibles" else "Solicitar plaza",
+                    text = if (publishRide.numeroPasajeros == 0) "No hay plazas disponibles" else if (viewModel.checkRequestState(
+                            publishRide
+                        ) == "Pendiente"
+                    ) "Solicitud pendiente" else if (viewModel.checkRequestState(publishRide) == "Denegada") "Solicitud denegada" else "Solicitar plaza",
                     onClick = {
-                        if (publishRide.numeroPasajeros <= 1) {
-                        } else
-                            navController.navigate(
+                        if (publishRide.numeroPasajeros == 0) else
+
+                        navController.navigate(
                             route = DetailsScreen.RequestRide.passPublishRide(
                                 publishRide.toJson()
                             )
                         )
                     },
-                    color = if (publishRide.numeroPasajeros <= 1) Color.Red else Color.Green,
-                    icon = null
+                    color = if (publishRide.numeroPasajeros == 0) Color.Red else if (viewModel.checkRequestState(publishRide) == "Denegada") Color.Magenta else Color.Green,
+                    icon = null,
+                    enabled = if (viewModel.checkRequestState(publishRide) == "Pendiente") false else true
                 )
             }
 

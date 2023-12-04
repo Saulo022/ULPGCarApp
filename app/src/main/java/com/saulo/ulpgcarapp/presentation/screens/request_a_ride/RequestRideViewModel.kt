@@ -90,7 +90,7 @@ class RequestRideViewModel @Inject constructor(
     fun onUpdateRide() {
         val passenger = Passenger (
             idPassenger = currentUser?.uid ?: "",
-            requestState = "Pendiente",
+            requestState = "pendiente",
             longitude = state.stopLongitude,
             latitude = state.stopLatitude
                 )
@@ -109,7 +109,7 @@ class RequestRideViewModel @Inject constructor(
             fecha = publish.fecha,
             numeroPasajeros = publish.numeroPasajeros,
             precioViaje = publish.precioViaje,
-            route = state.route
+            route = state.route,
         )
         updatePublishRide(publish)
     }
