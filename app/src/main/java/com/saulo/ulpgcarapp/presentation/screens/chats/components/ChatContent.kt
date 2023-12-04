@@ -8,7 +8,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -28,10 +31,11 @@ fun ChatContent(
 ) {
 
     val state = viewModel.state
+    val focusRequester = remember { FocusRequester() }
 
     Box(modifier = Modifier.fillMaxWidth()) {
 
-        LazyColumn(modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 150.dp)) {
+        LazyColumn(modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 150.dp).focusRequester(focusRequester)) {
 
             items(items = chatMesssages) {
                 MessageBubble(message = it.contenido, ownMessage = if (it.userId == (viewModel.currentUser?.uid  ?: "")) false else true, hora = it.horaSimple)
