@@ -1,5 +1,6 @@
 package com.saulo.ulpgcarapp.presentation.screens.search_result
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -55,14 +56,17 @@ class SearchResultViewModel @Inject constructor(
         }
     }
 
+
     fun checkRequestState(publishRide: Publish): String {
         for (pasajero in publishRide.pasajeros) {
             if (pasajero.idPassenger == currentUser?.uid){
-                if (pasajero.requestState == "Pendiente")
+                if (pasajero.requestState == "Pendiente") {
                 return "Pendiente"
-            } else if (pasajero.requestState == "Denegada"){
-                return "Denegada"
+                } else if (pasajero.requestState == "Aceptada"){
+                    return "Aceptada"
+                }
             }
+
         }
         return ""
     }

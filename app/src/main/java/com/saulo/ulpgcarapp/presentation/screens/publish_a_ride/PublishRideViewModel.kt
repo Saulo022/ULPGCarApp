@@ -56,7 +56,7 @@ class PublishRideViewModel @Inject constructor(
     fun getPublisRides() {
         viewModelScope.launch {
             publishRidesResponse = Response.Loading
-            publishUseCases.getPublishRidesById(currentUser?.uid ?: "").collect() {
+            publishUseCases.getPublishRidesByUserId(currentUser?.uid ?: "").collect() {
                 publishRidesResponse = it
             }
         }

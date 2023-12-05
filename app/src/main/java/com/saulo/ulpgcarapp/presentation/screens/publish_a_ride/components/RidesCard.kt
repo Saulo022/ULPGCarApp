@@ -8,10 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Chat
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.DirectionsCar
-import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -91,6 +88,23 @@ fun RidesCard(
                         .fillMaxWidth()
                         .padding(all = 5.dp), horizontalArrangement = Arrangement.End
                 ) {
+
+                    Image(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = "",
+                        colorFilter = ColorFilter.tint(
+                            Blue400
+                        ),
+                        modifier = Modifier.clickable {
+                            navController.navigate(
+                                route = DetailsScreen.PassengerList.passPublishRide(
+                                    publishRide.toJson()
+                                )
+                            )
+                        }
+                    )
+
+                    Spacer(modifier = Modifier.width(10.dp))
 
                     Image(imageVector = Icons.Default.DirectionsCar,
                         contentDescription = "",

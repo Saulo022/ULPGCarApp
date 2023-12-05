@@ -172,10 +172,7 @@ fun RidesResultsCard(
             ) {
                 DefaultButton(
                     modifier = Modifier,
-                    text = if (publishRide.numeroPasajeros == 0) "No hay plazas disponibles" else if (viewModel.checkRequestState(
-                            publishRide
-                        ) == "Pendiente"
-                    ) "Solicitud pendiente" else if (viewModel.checkRequestState(publishRide) == "Denegada") "Solicitud denegada" else "Solicitar plaza",
+                    text = if (publishRide.numeroPasajeros == 0) "No hay plazas disponibles" else if (viewModel.checkRequestState(publishRide) == "Pendiente") "Solicitud pendiente" else if (viewModel.checkRequestState(publishRide) == "Aceptada") "Solicitud aceptada" else "Solicitar plaza",
                     onClick = {
                         if (publishRide.numeroPasajeros == 0) else
 
@@ -187,7 +184,7 @@ fun RidesResultsCard(
                     },
                     color = if (publishRide.numeroPasajeros == 0) Color.Red else if (viewModel.checkRequestState(publishRide) == "Denegada") Color.Magenta else Color.Green,
                     icon = null,
-                    enabled = if (viewModel.checkRequestState(publishRide) == "Pendiente") false else true
+                    enabled = if (viewModel.checkRequestState(publishRide) == "Pendiente") false else if (viewModel.checkRequestState(publishRide) == "Aceptada") false else true
                 )
             }
 

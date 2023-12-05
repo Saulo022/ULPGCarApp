@@ -67,6 +67,22 @@ class PublishRepositoryImp @Inject constructor(
         }
     }
 
+    override suspend fun updatePassengerRequest(publish: Publish): Response<Boolean> {
+        return try {
+
+            val map: MutableMap<String, Any> = HashMap()
+            map["pasajeros"] = publish.pasajeros
+
+
+            publishRef.document(publish.id).update(map).await()
+            Response.Success(true)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Response.Failure(e)
+        }
+    }
+
     @OptIn(DelicateCoroutinesApi::class)
     override fun getPublishRides(): Flow<Response<List<Publish>>> = callbackFlow {
 
@@ -111,98 +127,129 @@ class PublishRepositoryImp @Inject constructor(
         }
     }
 
-    override fun getPublishRidesByUserId(idUser: String): Flow<Response<List<Publish>>> = callbackFlow {
-        val snapshotListener = publishRef.whereEqualTo("idUser", idUser).addSnapshotListener { snapshot, e ->
+    override fun getPublishRidesByUserId(idUser: String): Flow<Response<List<Publish>>> =
+        callbackFlow {
+            val snapshotListener =
+                publishRef.whereEqualTo("idUser", idUser).addSnapshotListener { snapshot, e ->
 
-            val publishResponse = if (snapshot != null) {
-                val publications = snapshot.toObjects(Publish::class.java)
-                snapshot.documents.forEachIndexed { index, document ->
-                    publications[index].id = document.id
-                }
-                Response.Success(publications)
-            } else {
-                Response.Failure(e)
-            }
-            trySend(publishResponse)
-
-        }
-        awaitClose {
-            snapshotListener.remove()
-        }
-    }
-
-    override fun getPublishRidesByPassengerId(idUser: String): Flow<Response<List<Publish>>> = callbackFlow {
-        val snapshotListener = publishRef.addSnapshotListener { snapshot, e ->
-
-            val publishResponse = if (snapshot != null) {
-                val publications = snapshot.toObjects(Publish::class.java)
-
-                val filteredPublish = publications.filter {
-                    it.pasajeros.any {
-                        it.idPassenger == idUser
+                    val publishResponse = if (snapshot != null) {
+                        val publications = snapshot.toObjects(Publish::class.java)
+                        snapshot.documents.forEachIndexed { index, document ->
+                            publications[index].id = document.id
+                        }
+                        Response.Success(publications)
+                    } else {
+                        Response.Failure(e)
                     }
-                }
+                    trySend(publishResponse)
 
-                filteredPublish.forEachIndexed { index, document ->
-                    publications[index].id = document.id
                 }
-                Response.Success(filteredPublish)
-            } else {
-                Response.Failure(e)
+            awaitClose {
+                snapshotListener.remove()
             }
-            trySend(publishResponse)
-
         }
-        awaitClose {
-            snapshotListener.remove()
-        }
-    }
 
-
-    @OptIn(DelicateCoroutinesApi::class)
-    override fun getPublishRidesByMunicipality(municipality: String): Flow<Response<List<Publish>>> = callbackFlow {
-        val snapshotListener = publishRef.whereEqualTo("municipio", municipality).addSnapshotListener { snapshot, e ->
-
-            GlobalScope.launch(Dispatchers.IO) {
+    override fun getPublishRidesByPassengerId(idUser: String): Flow<Response<List<Publish>>> =
+        callbackFlow {
+            val snapshotListener = publishRef.addSnapshotListener { snapshot, e ->
 
                 val publishResponse = if (snapshot != null) {
                     val publications = snapshot.toObjects(Publish::class.java)
-                    snapshot.documents.forEachIndexed { index, document ->
+
+                    val filteredPublish = publications.filter {
+                        it.pasajeros.any {
+                            it.idPassenger == idUser
+                        }
+                    }
+
+                    filteredPublish.forEachIndexed { index, document ->
                         publications[index].id = document.id
                     }
-                    val idUserArray = ArrayList<String>()
-
-                    publications.forEach {
-                        idUserArray.add(it.idUser)
-                    }
-
-                    //IDs SIN REPETIR
-                    val idUserList = idUserArray.toSet().toList()
-
-                    idUserList.map { id ->
-                        async {
-                            val user =
-                                usersRef.document(id).get().await().toObject(User::class.java)!!
-                            publications.forEach { publish ->
-                                if (publish.idUser == id) {
-                                    publish.user = user
-                                }
-                            }
-                        }
-                    }.forEach {
-                        it.await()
-                    }
-
-                    Response.Success(publications)
+                    Response.Success(filteredPublish)
                 } else {
                     Response.Failure(e)
                 }
                 trySend(publishResponse)
+
+            }
+            awaitClose {
+                snapshotListener.remove()
             }
         }
-        awaitClose {
-            snapshotListener.remove()
-        }
-    }
 
+
+    @OptIn(DelicateCoroutinesApi::class)
+    override fun getPublishRidesByMunicipality(municipality: String): Flow<Response<List<Publish>>> =
+        callbackFlow {
+            val snapshotListener = publishRef.whereEqualTo("municipio", municipality)
+                .addSnapshotListener { snapshot, e ->
+
+                    GlobalScope.launch(Dispatchers.IO) {
+
+                        val publishResponse = if (snapshot != null) {
+                            val publications = snapshot.toObjects(Publish::class.java)
+                            snapshot.documents.forEachIndexed { index, document ->
+                                publications[index].id = document.id
+                            }
+                            val idUserArray = ArrayList<String>()
+
+                            publications.forEach {
+                                idUserArray.add(it.idUser)
+                            }
+
+                            //IDs SIN REPETIR
+                            val idUserList = idUserArray.toSet().toList()
+
+                            idUserList.map { id ->
+                                async {
+                                    val user =
+                                        usersRef.document(id).get().await()
+                                            .toObject(User::class.java)!!
+                                    publications.forEach { publish ->
+                                        if (publish.idUser == id) {
+                                            publish.user = user
+                                        }
+                                    }
+                                }
+                            }.forEach {
+                                it.await()
+                            }
+
+                            Response.Success(publications)
+                        } else {
+                            Response.Failure(e)
+                        }
+                        trySend(publishResponse)
+                    }
+                }
+            awaitClose {
+                snapshotListener.remove()
+            }
+        }
+
+    override fun getPublishRideById(publishRide: Publish): Flow<Response<Publish?>> =
+        callbackFlow {
+            val snapshotListener =
+                publishRef.whereEqualTo("id", publishRide.id).addSnapshotListener { snapshot, e ->
+
+                    val publishResponse = try {
+                        if (snapshot != null && !snapshot.isEmpty) {
+                            val document = snapshot.documents[0]
+                            val publication = document.toObject(Publish::class.java)
+                            publication?.id = document.id
+                            Response.Success(publication)
+                        } else {
+                            Response.Success(null)
+                        }
+                    } catch (exception: Exception) {
+                        Response.Failure(exception)
+                    }
+                    trySend(publishResponse)
+                }
+            awaitClose { snapshotListener.remove() }
+
+        }
 }
+
+
+

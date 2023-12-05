@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
@@ -38,8 +39,8 @@ fun MessageBubble(
                 .background(if (ownMessage) Blue300 else Orange400)
                 .padding(16.dp)
         ) {
-            Text(text = message)
-            Text(text = hora, fontSize = 11.sp, fontFamily = FontFamily.Cursive, fontStyle = FontStyle.Italic)
+            Text(text = message, color = if (ownMessage) Color.White else Color.Black)
+            Text(text = hora, fontSize = 11.sp, fontFamily = FontFamily.Cursive, fontStyle = FontStyle.Italic, color = if (ownMessage) Color.White else Color.Black)
         }
     }
 }

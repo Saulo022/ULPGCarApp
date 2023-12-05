@@ -96,11 +96,13 @@ object AppModule {
     fun providePublishUseCases(repository: PublishRepository) = PublishUseCases(
         publish = PublishRide(repository),
         getPublishRides = GetPublishRides(repository),
-        getPublishRidesById = GetPublishRidesById(repository),
+        getPublishRidesByUserId = GetPublishRidesByUserId(repository),
         getPublishRidesByPassengerId = GetPublishRidesByPassengerId(repository),
         getPublishRidesByMunicipality = GetPublishRidesByMunicipality(repository),
         deletePublishRide = DeletePublishRide(repository),
-        updatePublishRide = UpdatePublishRide(repository)
+        updatePublishRide = UpdatePublishRide(repository),
+        updatePassengerRequest = UpdatePassengerRequest(repository),
+        getPublishRideById = GetPublishRideById(repository)
     )
 
     @Provides

@@ -90,7 +90,7 @@ class RequestRideViewModel @Inject constructor(
     fun onUpdateRide() {
         val passenger = Passenger (
             idPassenger = currentUser?.uid ?: "",
-            requestState = "pendiente",
+            requestState = "Pendiente",
             longitude = state.stopLongitude,
             latitude = state.stopLatitude
                 )
