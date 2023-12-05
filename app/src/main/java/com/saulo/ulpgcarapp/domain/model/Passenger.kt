@@ -8,5 +8,7 @@ data class Passenger(
     var rating: Double  = 0.0,
     var requestState: String = "",
     var longitude: String = "",
-    var latitude: String = ""
+    var latitude: String = "",
+    var placeName: String = "",
+    var expectedTime: Double = 0.0
 )

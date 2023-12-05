@@ -112,19 +112,12 @@ fun RidesCard(
                             Color.Green
                         ),
                         modifier = Modifier.clickable {
-                            if (publishRide.pasajeros.size != 0) {
-                                viewModel.getMatrixCoordinates(
-                                    publishRide.origin,
-                                    publishRide.pasajeros,
-                                    publishRide.destination,
-                                    publishRide
-                                )
-                            }
                             navController.navigate(
                                 route = DetailsScreen.DriverRoute.passPublishRide(
                                     publishRide.toJson()
                                 )
                             )
+
                         })
 
                     Spacer(modifier = Modifier.width(10.dp))

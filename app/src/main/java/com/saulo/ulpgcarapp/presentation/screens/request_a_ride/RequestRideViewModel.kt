@@ -7,11 +7,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.saulo.ulpgcarapp.core.Constants
+import com.saulo.ulpgcarapp.data.network.response.Matrix
+import com.saulo.ulpgcarapp.domain.model.Location
 import com.saulo.ulpgcarapp.domain.model.Passenger
 import com.saulo.ulpgcarapp.domain.model.Publish
 import com.saulo.ulpgcarapp.domain.model.Response
 import com.saulo.ulpgcarapp.domain.use_cases.auth.AuthUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.publish.PublishUseCases
+import com.saulo.ulpgcarapp.domain.use_cases.routes.RoutesUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.searches.SearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -22,6 +25,7 @@ class RequestRideViewModel @Inject constructor(
     private val searchUseCase: SearchUseCase,
     private val authUseCases: AuthUseCases,
     private val publishUseCases: PublishUseCases,
+    private val routeUseCase: RoutesUseCases,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -59,6 +63,7 @@ class RequestRideViewModel @Inject constructor(
 
     fun onCoordinatesInput(longitude: String, latitude: String) {
         state = state.copy(stopLongitude = longitude, stopLatitude = latitude)
+        getMatrix(publish.origin, longitude,latitude)
     }
 
     fun onSearchSelected() {
@@ -79,6 +84,16 @@ class RequestRideViewModel @Inject constructor(
         state = state.copy(stopLocation = "")
     }
 
+    fun getMatrix(origin: Location,longitude: String, latitude: String)  {
+        viewModelScope.launch {
+            val matrixCoordinates: MutableList<List<Double>> = mutableListOf()
+            matrixCoordinates.add(listOf(origin.longitude.toDouble(),origin.latitude.toDouble()))
+            matrixCoordinates.add(listOf(longitude.toDouble(),latitude.toDouble()))
+            val result = routeUseCase.matrixUseCase(matrix = Matrix(locations = matrixCoordinates))
+            state.stopTime = result[0][1]
+        }
+    }
+
     fun updatePublishRide(publish: Publish) {
         viewModelScope.launch {
             requestPublishRideResponse = Response.Loading
@@ -92,10 +107,13 @@ class RequestRideViewModel @Inject constructor(
             idPassenger = currentUser?.uid ?: "",
             requestState = "Pendiente",
             longitude = state.stopLongitude,
-            latitude = state.stopLatitude
+            latitude = state.stopLatitude,
+            placeName = state.stopLocation,
+            expectedTime = state.stopTime
                 )
 
         state.pasajeros.add(passenger)
+        state.pasajeros.sortBy { it.expectedTime }
         state.route.add("${state.stopLongitude},${state.stopLatitude}")
 
         val freeplaces = (publish.numeroPasajeros - (state.pasajeros.size))

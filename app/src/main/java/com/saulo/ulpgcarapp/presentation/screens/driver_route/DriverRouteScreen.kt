@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.saulo.ulpgcarapp.presentation.screens.driver_route.components.DriverRouteContent
 import com.saulo.ulpgcarapp.presentation.screens.driver_route.components.GetDriverRoute
+import com.saulo.ulpgcarapp.presentation.screens.driver_route.components.GetPublishRideById
 
 @Composable
 fun DriverRouteScreen(navController: NavHostController, publishRide: String) {

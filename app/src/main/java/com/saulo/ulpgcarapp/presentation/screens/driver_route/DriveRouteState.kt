@@ -6,6 +6,7 @@ import com.saulo.ulpgcarapp.data.network.response.RouteResponse
 
 import com.saulo.ulpgcarapp.domain.model.Location
 import com.saulo.ulpgcarapp.domain.model.Passenger
+import com.saulo.ulpgcarapp.domain.model.Publish
 
 data class DriveRouteState(
     var origin: Location = Location("","",""),
@@ -23,5 +24,7 @@ data class DriveRouteState(
     val matrixCoordinates: MutableList<List<Double>> = mutableListOf(),
     val matrixTime: List<Double> = emptyList(),
     val listOrderedStops: MutableList<List<Double>> = mutableListOf(),
-    var optimalRoute: List<String> = emptyList()
+
+    var optimalRoute: MutableList<String> = mutableListOf(),
+
 )
