@@ -1,5 +1,6 @@
 package com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.components
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -54,12 +55,13 @@ fun RidesCard(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
 
-                if (publishRide.image != "") {
+                if (publishRide.user?.image != "") {
+                    Log.d("Saulo", "foto2 + ${publishRide.user?.image}")
                     AsyncImage(
                         modifier = Modifier
                             .size(70.dp)
                             .clip(CircleShape),
-                        model = publishRide.image,
+                        model = publishRide.user?.image,
                         contentDescription = "User image",
                         contentScale = ContentScale.Crop
                     )

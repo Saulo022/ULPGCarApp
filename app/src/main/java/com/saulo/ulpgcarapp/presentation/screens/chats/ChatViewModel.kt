@@ -37,7 +37,7 @@ class ChatViewModel @Inject constructor(
     var chatResponse by mutableStateOf<Response<List<Message>>?>(null)
     var messageResponse by mutableStateOf<Response<Boolean>?>(null)
 
-    val data = savedStateHandle.get<String>("id")
+    val data = savedStateHandle.get<String>("publish")
     val publish = Publish.fromJson(data!!)
 
     init {

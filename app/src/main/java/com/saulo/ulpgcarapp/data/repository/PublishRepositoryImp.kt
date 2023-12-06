@@ -126,32 +126,64 @@ class PublishRepositoryImp @Inject constructor(
             snapshotListener.remove()
         }
     }
-
+    @OptIn(DelicateCoroutinesApi::class)
     override fun getPublishRidesByUserId(idUser: String): Flow<Response<List<Publish>>> =
         callbackFlow {
             val snapshotListener =
                 publishRef.whereEqualTo("idUser", idUser).addSnapshotListener { snapshot, e ->
+
+                    GlobalScope.launch(Dispatchers.IO) {
+
 
                     val publishResponse = if (snapshot != null) {
                         val publications = snapshot.toObjects(Publish::class.java)
                         snapshot.documents.forEachIndexed { index, document ->
                             publications[index].id = document.id
                         }
+
+                        val idUserArray = ArrayList<String>()
+
+                        publications.forEach {
+                            idUserArray.add(it.idUser)
+                        }
+
+                        //IDs SIN REPETIR
+                        val idUserList = idUserArray.toSet().toList()
+
+                        idUserList.map { id ->
+                            async {
+                                val user =
+                                    usersRef.document(id).get().await()
+                                        .toObject(User::class.java)!!
+                                publications.forEach { publish ->
+                                    if (publish.idUser == id) {
+                                        publish.user = user
+                                    }
+                                }
+                            }
+                        }.forEach {
+                            it.await()
+                        }
+
                         Response.Success(publications)
                     } else {
                         Response.Failure(e)
                     }
                     trySend(publishResponse)
-
+                    }
                 }
             awaitClose {
                 snapshotListener.remove()
             }
         }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun getPublishRidesByPassengerId(idUser: String): Flow<Response<List<Publish>>> =
         callbackFlow {
             val snapshotListener = publishRef.addSnapshotListener { snapshot, e ->
+
+                GlobalScope.launch(Dispatchers.IO) {
+
 
                 val publishResponse = if (snapshot != null) {
                     val publications = snapshot.toObjects(Publish::class.java)
@@ -165,12 +197,37 @@ class PublishRepositoryImp @Inject constructor(
                     filteredPublish.forEachIndexed { index, document ->
                         publications[index].id = document.id
                     }
+
+                    val idUserArray = ArrayList<String>()
+
+                    publications.forEach {
+                        idUserArray.add(it.idUser)
+                    }
+
+                    //IDs SIN REPETIR
+                    val idUserList = idUserArray.toSet().toList()
+
+                    idUserList.map { id ->
+                        async {
+                            val user =
+                                usersRef.document(id).get().await()
+                                    .toObject(User::class.java)!!
+                            publications.forEach { publish ->
+                                if (publish.idUser == id) {
+                                    publish.user = user
+                                }
+                            }
+                        }
+                    }.forEach {
+                        it.await()
+                    }
+
                     Response.Success(filteredPublish)
                 } else {
                     Response.Failure(e)
                 }
                 trySend(publishResponse)
-
+                }
             }
             awaitClose {
                 snapshotListener.remove()

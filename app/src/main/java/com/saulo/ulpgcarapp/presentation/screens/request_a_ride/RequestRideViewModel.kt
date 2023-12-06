@@ -120,8 +120,7 @@ class RequestRideViewModel @Inject constructor(
             longitude = state.stopLongitude,
             latitude = state.stopLatitude,
             placeName = state.stopLocation,
-            expectedTime = state.stopTime,
-            passegerImage = userData.image
+            expectedTime = state.stopTime
                 )
 
         state.pasajeros.add(passenger)

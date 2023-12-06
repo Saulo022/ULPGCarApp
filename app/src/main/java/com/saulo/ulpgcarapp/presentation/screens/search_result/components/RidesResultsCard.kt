@@ -1,6 +1,7 @@
 package com.saulo.ulpgcarapp.presentation.screens.search_result.components
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -56,12 +57,13 @@ fun RidesResultsCard(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
 
-                if (publishRide.image != "") {
+                if (publishRide.user?.image != "") {
+                    Log.d("Saulo", "foto1 + ${publishRide.user?.image}")
                     AsyncImage(
                         modifier = Modifier
                             .size(70.dp)
                             .clip(CircleShape),
-                        model = publishRide.image,
+                        model = publishRide.user?.image,
                         contentDescription = "User image",
                         contentScale = ContentScale.Crop
                     )

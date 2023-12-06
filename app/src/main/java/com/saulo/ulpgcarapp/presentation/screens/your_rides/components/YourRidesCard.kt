@@ -55,12 +55,12 @@ fun YourRidesCard(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
 
-                if (publishRide.image != "") {
+                if (publishRide.user?.image != "") {
                     AsyncImage(
                         modifier = Modifier
                             .size(70.dp)
                             .clip(CircleShape),
-                        model = publishRide.image,
+                        model = publishRide.user?.image,
                         contentDescription = "User image",
                         contentScale = ContentScale.Crop
                     )

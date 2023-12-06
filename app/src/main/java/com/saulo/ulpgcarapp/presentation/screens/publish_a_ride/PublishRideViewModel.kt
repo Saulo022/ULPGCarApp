@@ -21,8 +21,7 @@ import javax.inject.Inject
 class PublishRideViewModel @Inject constructor(
     private val publishUseCases: PublishUseCases,
     private val routeUseCase: RoutesUseCases,
-    private val authUseCases: AuthUseCases,
-    private val usersUseCases: UsersUseCases
+    private val authUseCases: AuthUseCases
 ) : ViewModel() {
 
     //STATE PUBLISH SCREEN
@@ -39,12 +38,10 @@ class PublishRideViewModel @Inject constructor(
     var matrixTime: List<Double> = emptyList()
     var orderedStopsList: MutableList<String> = mutableListOf()
 
-    var userData by mutableStateOf(User())
-        private set
+
 
     init {
         getPublisRides()
-        getUserById()
     }
 
     fun delete(idPost: String) {
@@ -199,13 +196,6 @@ class PublishRideViewModel @Inject constructor(
         Log.d("Saulo", "PublishRideViewModelPublish777 + ${updatePublish.route}")
     }
 
-    private fun getUserById() {
-        viewModelScope.launch {
-            usersUseCases.getUserById(currentUser!!.uid).collect() {
-                userData = it
-            }
-        }
-    }
 
 
 }

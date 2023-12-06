@@ -41,15 +41,14 @@ fun DriverRouteContent(viewModel: DriveRouteViewModel = hiltViewModel()) {
             var i = 0
             for (latLng in latLngList){
                 val optimalRoute: MutableList<Passenger> = viewModel.getlocations()
-                val numeroRedondeado = (optimalRoute[i].expectedTime/60).roundToLong()
+                var numeroRedondeado = (optimalRoute[i].expectedTime/60).roundToLong()
                 Marker(
                     state = MarkerState(latLng),
                     title = optimalRoute[i].placeName,
-                    snippet = numeroRedondeado.toString() + " minutos aproximadamente",
+                    snippet = if (optimalRoute[i].expectedTime == 0.0) "Inicio del trayecto" else numeroRedondeado.toString() + " minutos aproximadamente",
                     icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
                 )
                 i++
-                Log.d("Saulo", "MatrixCoordinates789 + ${i}")
             }
 
             Polyline(points = viewModel.state.polyline, color = Color.Green)

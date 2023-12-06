@@ -66,11 +66,11 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
 
         composable(
             route = DetailsScreen.PublicationChat.route,
-            arguments = listOf(navArgument("id") {
+            arguments = listOf(navArgument("publish") {
                 type = NavType.StringType
             })
         ) {
-            it.arguments?.getString("id")?.let {
+            it.arguments?.getString("publish")?.let {
                 ChatsScreen(navController, it)
             }
         }
@@ -110,8 +110,8 @@ sealed class DetailsScreen(val route: String) {
         fun passPublishRide(publishRide: String) = "publish/update/$publishRide"
     }
 
-    object PublicationChat: DetailsScreen("publish/chat/{id}") {
-        fun passPublishRide(id: String) = "publish/chat/$id"
+    object PublicationChat: DetailsScreen("publish/chat/{publish}") {
+        fun passPublishRide(publishRide: String) = "publish/chat/$publishRide"
     }
 
     object PassengerList: DetailsScreen("publish/passengers/{publish}") {
