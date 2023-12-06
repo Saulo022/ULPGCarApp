@@ -7,13 +7,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.saulo.ulpgcarapp.data.network.response.Matrix
-import com.saulo.ulpgcarapp.domain.model.Location
-import com.saulo.ulpgcarapp.domain.model.Passenger
-import com.saulo.ulpgcarapp.domain.model.Publish
-import com.saulo.ulpgcarapp.domain.model.Response
+import com.saulo.ulpgcarapp.domain.model.*
 import com.saulo.ulpgcarapp.domain.use_cases.auth.AuthUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.publish.PublishUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.routes.RoutesUseCases
+import com.saulo.ulpgcarapp.domain.use_cases.users.UsersUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -23,7 +21,8 @@ import javax.inject.Inject
 class PublishRideViewModel @Inject constructor(
     private val publishUseCases: PublishUseCases,
     private val routeUseCase: RoutesUseCases,
-    private val authUseCases: AuthUseCases
+    private val authUseCases: AuthUseCases,
+    private val usersUseCases: UsersUseCases
 ) : ViewModel() {
 
     //STATE PUBLISH SCREEN
@@ -40,9 +39,12 @@ class PublishRideViewModel @Inject constructor(
     var matrixTime: List<Double> = emptyList()
     var orderedStopsList: MutableList<String> = mutableListOf()
 
+    var userData by mutableStateOf(User())
+        private set
 
     init {
         getPublisRides()
+        getUserById()
     }
 
     fun delete(idPost: String) {
@@ -197,7 +199,13 @@ class PublishRideViewModel @Inject constructor(
         Log.d("Saulo", "PublishRideViewModelPublish777 + ${updatePublish.route}")
     }
 
-
+    private fun getUserById() {
+        viewModelScope.launch {
+            usersUseCases.getUserById(currentUser!!.uid).collect() {
+                userData = it
+            }
+        }
+    }
 
 
 }

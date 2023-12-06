@@ -51,15 +51,15 @@ fun RidesCard(
             .padding(bottom = 10.dp)
     ) {
         Column(modifier = Modifier.padding(all = 10.dp)) {
-            /*
+
             Row(verticalAlignment = Alignment.CenterVertically) {
 
-                if (publishRide.user?.image != "") {
+                if (publishRide.image != "") {
                     AsyncImage(
                         modifier = Modifier
                             .size(70.dp)
                             .clip(CircleShape),
-                        model = publishRide.user?.image,
+                        model = publishRide.image,
                         contentDescription = "User image",
                         contentScale = ContentScale.Crop
                     )
@@ -70,18 +70,6 @@ fun RidesCard(
                         contentDescription = ""
                     )
                 }
-                Spacer(modifier = Modifier.width(20.dp))
-
-                Text(text = publishRide.user?.username ?: "", fontWeight = FontWeight.Bold, fontStyle = FontStyle.Italic, fontSize = 20.sp)
-            }
-                 */
-            Row() {
-
-                Text(
-                    text = "Origen",
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(all = 10.dp)
-                )
 
                 Row(
                     modifier = Modifier
@@ -129,6 +117,18 @@ fun RidesCard(
                         ),
                         modifier = Modifier.clickable { viewModel.delete(publishRide.id) })
                 }
+
+            }
+
+            Row() {
+
+                Text(
+                    text = "Origen",
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(all = 10.dp)
+                )
+
+
             }
 
             InformationPill(text = publishRide.origin.label)

@@ -3,6 +3,7 @@ package com.saulo.ulpgcarapp.presentation.screens.your_rides.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
@@ -13,27 +14,34 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.saulo.ulpgcarapp.domain.model.Publish
 import com.saulo.ulpgcarapp.presentation.components.DefaultButton
 import com.saulo.ulpgcarapp.presentation.components.InformationPill
 import com.saulo.ulpgcarapp.presentation.navigation.DetailsScreen
 import com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.PublishRideViewModel
+import com.saulo.ulpgcarapp.presentation.screens.your_rides.YourRidesViewModel
 import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
 import com.saulo.ulpgcarapp.presentation.ui.theme.Orange400
+import com.saulo.ulpgcarapp.R
 
 @Composable
 fun YourRidesCard(
     publishRide: Publish,
     navController: NavHostController,
-    viewModel: PublishRideViewModel = hiltViewModel(),
     modifier: Modifier
 ) {
 
@@ -44,15 +52,15 @@ fun YourRidesCard(
             .padding(bottom = 10.dp)
     ) {
         Column(modifier = Modifier.padding(all = 10.dp)) {
-            /*
+
             Row(verticalAlignment = Alignment.CenterVertically) {
 
-                if (publishRide.user?.image != "") {
+                if (publishRide.image != "") {
                     AsyncImage(
                         modifier = Modifier
                             .size(70.dp)
                             .clip(CircleShape),
-                        model = publishRide.user?.image,
+                        model = publishRide.image,
                         contentDescription = "User image",
                         contentScale = ContentScale.Crop
                     )
@@ -66,8 +74,9 @@ fun YourRidesCard(
                 Spacer(modifier = Modifier.width(20.dp))
 
                 Text(text = publishRide.user?.username ?: "", fontWeight = FontWeight.Bold, fontStyle = FontStyle.Italic, fontSize = 20.sp)
+
             }
-                 */
+
             Row() {
 
                 Text(
@@ -88,20 +97,8 @@ fun YourRidesCard(
                             Color.Green
                         ),
                         modifier = Modifier.clickable {
-                            if (publishRide.pasajeros.size != 0){
-                                viewModel.getMatrixCoordinates(publishRide.origin,publishRide.pasajeros,publishRide.destination,publishRide)
-                            }
                             navController.navigate(route = DetailsScreen.DriverRoute.passPublishRide(publishRide.toJson()))
                         })
-
-                    Spacer(modifier = Modifier.width(10.dp))
-
-                    Image(imageVector = Icons.Default.Delete,
-                        contentDescription = "",
-                        colorFilter = ColorFilter.tint(
-                            Color.Red
-                        ),
-                        modifier = Modifier.clickable { viewModel.delete(publishRide.id) })
                 }
             }
 

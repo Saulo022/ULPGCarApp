@@ -16,9 +16,11 @@ import com.saulo.ulpgcarapp.core.Constants.RADIUS
 import com.saulo.ulpgcarapp.domain.model.Location
 import com.saulo.ulpgcarapp.domain.model.Publish
 import com.saulo.ulpgcarapp.domain.model.Response
+import com.saulo.ulpgcarapp.domain.model.User
 import com.saulo.ulpgcarapp.domain.use_cases.auth.AuthUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.publish.PublishUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.searches.SearchUseCase
+import com.saulo.ulpgcarapp.domain.use_cases.users.UsersUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,7 +29,8 @@ import javax.inject.Inject
 class PublishNewRideViewModel @Inject constructor(
     private val searchUseCase: SearchUseCase,
     private val publishUseCases: PublishUseCases,
-    private val authUseCases: AuthUseCases
+    private val authUseCases: AuthUseCases,
+    private val usersUseCases: UsersUseCases
 ) :
     ViewModel() {
 
@@ -36,6 +39,9 @@ class PublishNewRideViewModel @Inject constructor(
         private set
 
     var publishARideResponse by mutableStateOf<Response<Boolean>?>(null)
+        private set
+
+    var userData by mutableStateOf(User())
         private set
 
     //USER SESSION
@@ -63,6 +69,16 @@ class PublishNewRideViewModel @Inject constructor(
     val isLoading: LiveData<Boolean> = _isLoading
 
 
+    init {
+        getUserById()
+    }
+    private fun getUserById() {
+        viewModelScope.launch {
+            usersUseCases.getUserById(currentUser!!.uid).collect() {
+                userData = it
+            }
+        }
+    }
     //Metodos de ida
     fun onSearchInput(label:String, longitude: String, latitude: String) {
         val location = Location(label, longitude, latitude)
@@ -139,7 +155,8 @@ class PublishNewRideViewModel @Inject constructor(
             numeroPasajeros = state.passengers,
             precioViaje = state.price,
             idUser = currentUser?.uid ?: "",
-            route = state.optimalRoute
+            route = state.optimalRoute,
+            image = userData.image
         )
         publishARide(publish)
     }

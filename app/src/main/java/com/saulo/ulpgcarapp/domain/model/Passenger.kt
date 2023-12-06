@@ -10,5 +10,6 @@ data class Passenger(
     var longitude: String = "",
     var latitude: String = "",
     var placeName: String = "",
-    var expectedTime: Double = 0.0
+    var expectedTime: Double = 0.0,
+    var passegerImage: String = "",
 )

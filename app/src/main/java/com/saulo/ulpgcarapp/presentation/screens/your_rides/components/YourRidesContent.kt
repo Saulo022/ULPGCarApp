@@ -8,14 +8,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.saulo.ulpgcarapp.domain.model.Publish
 import com.saulo.ulpgcarapp.presentation.screens.publish_a_ride.components.RidesCard
+import com.saulo.ulpgcarapp.presentation.screens.your_rides.YourRidesViewModel
 
 @Composable
 fun YourRidesContent(
     publishRides: List<Publish>,
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: YourRidesViewModel = hiltViewModel()
 ) {
 
     LazyColumn(
