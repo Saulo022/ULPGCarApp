@@ -86,19 +86,6 @@ fun RidesResultsCard(
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(all = 10.dp)
                 )
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 5.dp), horizontalArrangement = Arrangement.End
-                ) {
-                    Image(imageVector = Icons.Default.Delete,
-                        contentDescription = "",
-                        colorFilter = ColorFilter.tint(
-                            Color.Red
-                        ),
-                        modifier = Modifier.clickable { })
-                }
             }
 
             InformationPill(text = publishRide.origin.label)

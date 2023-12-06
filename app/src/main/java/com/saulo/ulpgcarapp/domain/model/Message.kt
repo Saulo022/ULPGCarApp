@@ -8,7 +8,9 @@ data class Message(
     val fecha: String = "",
     val hora: String = "",
     val horaSimple: String = "",
-    var docuId: String = ""
+    var docuId: String = "",
+    var imagen: String = "",
+    var name: String = ""
 )
 
 data class UserDto(val name: String, val id: String)

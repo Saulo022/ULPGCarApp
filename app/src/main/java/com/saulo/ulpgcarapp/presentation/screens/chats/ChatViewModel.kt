@@ -12,9 +12,11 @@ import androidx.lifecycle.viewModelScope
 import com.saulo.ulpgcarapp.domain.model.Message
 import com.saulo.ulpgcarapp.domain.model.Publish
 import com.saulo.ulpgcarapp.domain.model.Response
+import com.saulo.ulpgcarapp.domain.model.User
 import com.saulo.ulpgcarapp.domain.use_cases.auth.AuthUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.chat.ChatUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.chat.SendMessage
+import com.saulo.ulpgcarapp.domain.use_cases.users.UsersUseCases
 import com.saulo.ulpgcarapp.presentation.screens.login.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -25,8 +27,12 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor(
     private val chatUseCases: ChatUseCases,
     private val authUseCases: AuthUseCases,
+    private val usersUseCases: UsersUseCases,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    var userData by mutableStateOf(User())
+        private set
 
     //STATE FORM
     var state by mutableStateOf(ChatState())
@@ -41,8 +47,16 @@ class ChatViewModel @Inject constructor(
     val publish = Publish.fromJson(data!!)
 
     init {
-        state = state.copy(rideId = publish.id)
+        state = state.copy(
+            rideId = publish.id,
+            origin = publish.origin.label,
+            destination = publish.destination.label,
+            date = publish.fecha,
+            time = publish.hora,
+            participants = publish.pasajeros.size+1,
+        )
         getChatMessages()
+        getUserById()
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -64,10 +78,17 @@ class ChatViewModel @Inject constructor(
         viewModelScope.launch {
             val msg = state.message
             messageResponse = Response.Loading
-            val result = chatUseCases.sendMessage(currentUser?.uid ?: "",msg, state.rideId)
+            val result = chatUseCases.sendMessage(currentUser?.uid ?: "",msg, state.rideId, userData.image, userData.username)
             messageResponse = result
         }
     }
 
+    private fun getUserById() {
+        viewModelScope.launch {
+            usersUseCases.getUserById(currentUser!!.uid).collect() {
+                userData = it
+            }
+        }
+    }
 
 }

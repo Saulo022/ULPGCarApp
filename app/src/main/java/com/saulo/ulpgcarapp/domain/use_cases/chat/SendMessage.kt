@@ -14,7 +14,7 @@ import javax.inject.Inject
 class SendMessage @Inject constructor(private val repository: ChatRepository){
 
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend operator fun invoke(userId: String, msg:String, publishId: String): Response<Boolean> {
+    suspend operator fun invoke(userId: String, msg:String, publishId: String, photo:String, name: String): Response<Boolean> {
         /*val calendar = Calendar.getInstance()
 
         val hour = calendar.get(Calendar.HOUR)
@@ -44,10 +44,12 @@ class SendMessage @Inject constructor(private val repository: ChatRepository){
             contenido = msg,
             hora = horaFormateada,
             fecha = fechaFormateada,
-            horaSimple = horaSimpleFormateada
+            horaSimple = horaSimpleFormateada,
+            imagen = photo,
+            name = name
         )
 
-        return repository.sendMessage(message, publishId)
+        return repository.sendMessage(message, publishId, photo, name)
     }
 
 }

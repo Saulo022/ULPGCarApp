@@ -20,7 +20,7 @@ class ChatRepositoryImpl @Inject constructor(
     @Named(Constants.USERS) private val usersRef: CollectionReference
 ) : ChatRepository {
 
-    override suspend fun sendMessage(msg: Message, publishId: String): Response<Boolean> {
+    override suspend fun sendMessage(msg: Message, publishId: String, photo: String, name: String): Response<Boolean> {
         return try {
 
             publishRef.document(publishId).collection("Chat").add(msg)
