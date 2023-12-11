@@ -58,7 +58,7 @@ fun SearchBarContent(navController: NavHostController, viewmodel: SearchViewMode
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = "Search a ride",
+                    text = "Busca un viaje",
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp
@@ -79,7 +79,7 @@ fun SearchBarContent(navController: NavHostController, viewmodel: SearchViewMode
                 Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
                     Text(
-                        text = "Elija un municipio desde el que desea salir o al que desea llegar",
+                        text = "Elija un municipio desde el que desee salir",
                         modifier = Modifier.padding(all = 20.dp),
                         fontStyle = FontStyle.Italic,
                         fontWeight = FontWeight.Bold,

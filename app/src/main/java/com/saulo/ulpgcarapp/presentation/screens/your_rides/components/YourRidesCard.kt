@@ -42,8 +42,10 @@ import com.saulo.ulpgcarapp.R
 fun YourRidesCard(
     publishRide: Publish,
     navController: NavHostController,
-    modifier: Modifier
+    modifier: Modifier,
+    viewModel: YourRidesViewModel = hiltViewModel()
 ) {
+    var pasajero = viewModel.findCurrentUser(publishRide)
 
     Card(
         elevation = CardDefaults.cardElevation(),
@@ -73,7 +75,30 @@ fun YourRidesCard(
                 }
                 Spacer(modifier = Modifier.width(20.dp))
 
-                Text(text = publishRide.user?.username ?: "", fontWeight = FontWeight.Bold, fontStyle = FontStyle.Italic, fontSize = 20.sp)
+                Text(
+                    text = publishRide.user?.username ?: "",
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Italic,
+                    fontSize = 20.sp
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 5.dp), horizontalArrangement = Arrangement.End
+                ) {
+                    if (pasajero != null) {
+                        Column() {
+                            Text(text = "Solicitud", fontStyle = FontStyle.Italic, fontSize = 20.sp)
+                            Text(
+                                text = pasajero.requestState,
+                                fontStyle = FontStyle.Italic,
+                                fontSize = 20.sp,
+                                color = if (pasajero.requestState == "Pendiente") Color.Gray else Color.Green
+                            )
+                        }
+                    }
+                }
 
             }
 
@@ -90,15 +115,26 @@ fun YourRidesCard(
                         .fillMaxWidth()
                         .padding(all = 5.dp), horizontalArrangement = Arrangement.End
                 ) {
+                    if (pasajero != null) {
 
-                    Image(imageVector = Icons.Default.DirectionsCar,
-                        contentDescription = "",
-                        colorFilter = ColorFilter.tint(
-                            Color.Green
-                        ),
-                        modifier = Modifier.clickable {
-                            navController.navigate(route = DetailsScreen.DriverRoute.passPublishRide(publishRide.toJson()))
-                        })
+                        if (pasajero.requestState == "Pendiente") {
+
+                        } else {
+
+                            Image(imageVector = Icons.Default.DirectionsCar,
+                                contentDescription = "",
+                                colorFilter = ColorFilter.tint(
+                                    Color.Green
+                                ),
+                                modifier = Modifier.clickable {
+                                    navController.navigate(
+                                        route = DetailsScreen.DriverRoute.passPublishRide(
+                                            publishRide.toJson()
+                                        )
+                                    )
+                                })
+                        }
+                    }
                 }
             }
 
@@ -131,7 +167,8 @@ fun YourRidesCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 0.dp, end = 5.dp, top = 3.dp, bottom = 0.dp), horizontalArrangement = Arrangement.Start
+                    .padding(start = 0.dp, end = 5.dp, top = 3.dp, bottom = 0.dp),
+                horizontalArrangement = Arrangement.Start
             ) {
                 Text(
                     text = "Precio",
@@ -170,21 +207,26 @@ fun YourRidesCard(
                         .padding(all = 5.dp), horizontalArrangement = Arrangement.End
                 ) {
 
-                    DefaultButton(modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .padding(vertical = 5.dp, horizontal = 5.dp),
-                        text = "Chat",
-                        icon = Icons.Default.Chat,
-                        color = Orange400,
-                        mainColor = Blue400,
-                        onClick = {
-                            navController.navigate(
-                                route = DetailsScreen.PublicationChat.passPublishRide(
-                                    publishRide.toJson()
-                                )
-                            )
-                        })
+                    if (pasajero != null) {
 
+                        if (pasajero.requestState == "Pendiente") {
+                        } else {
+                            DefaultButton(modifier = Modifier
+                                .clip(RoundedCornerShape(20.dp))
+                                .padding(vertical = 5.dp, horizontal = 5.dp),
+                                text = "Chat",
+                                icon = Icons.Default.Chat,
+                                color = Orange400,
+                                mainColor = Blue400,
+                                onClick = {
+                                    navController.navigate(
+                                        route = DetailsScreen.PublicationChat.passPublishRide(
+                                            publishRide.toJson()
+                                        )
+                                    )
+                                })
+                        }
+                    }
                 }
             }
 

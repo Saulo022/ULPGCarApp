@@ -6,14 +6,12 @@ import java.nio.charset.StandardCharsets
 
 data class Publish(
     var id: String = "",
-    //var origen: Location = Location(),
-    //var destino: Location = Location(),
     var origin: Location = Location(),
     var destination: Location = Location(),
     var municipio: String = "",
     var numeroPasajeros: Int = 1,
     var precioViaje: Int = 1,
-    //var optimalRoute: List<String> = emptyList(),
+    var plazasDisponibles: Int = 0,
     var route: MutableList<String> = mutableListOf(),
     var pasajeros: MutableList<Passenger> = mutableListOf(),
     var valoracion: String = "",
@@ -22,10 +20,11 @@ data class Publish(
     var hora: String = "",
     var idUser: String = "",
     var user: User? = null,
-    var image: String = ""
+    var image: String = "",
+
 ) {
 fun toJson(): String = Gson().toJson(Publish(
-    id, origin, destination, municipio, numeroPasajeros, precioViaje, route, pasajeros, valoracion, estado, fecha, hora,idUser,
+    id, origin, destination, municipio, numeroPasajeros, precioViaje, plazasDisponibles,route, pasajeros, valoracion, estado, fecha, hora,idUser,
     User(
         id = user?.id ?: "",
         username = user?.username ?: "",

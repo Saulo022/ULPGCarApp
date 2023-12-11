@@ -34,7 +34,8 @@ class PassengerListViewModel @Inject constructor(
 
     init {
         state = state.copy(
-            pasajeros = publish.pasajeros
+            pasajeros = publish.pasajeros,
+            availableSeats = publish.plazasDisponibles
         )
 
         getPublishRideById(publish)
@@ -70,13 +71,15 @@ class PassengerListViewModel @Inject constructor(
                 state.pasajeros.remove(pasajero)
             }
         }
+        state = state.copy(availableSeats = state.availableSeats+1)
         onUpdateRide()
     }
 
     fun onUpdateRide() {
         val publish = Publish(
             id = publish.id,
-            pasajeros = state.pasajeros
+            pasajeros = state.pasajeros,
+            plazasDisponibles = state.availableSeats
         )
         updatePublishRide(publish)
     }

@@ -76,8 +76,17 @@ fun PassengerCard(
                 Text(text = publishRide.user?.username ?: "", fontWeight = FontWeight.Bold, fontStyle = FontStyle.Italic, fontSize = 20.sp)
             }
                  */
-            Text(text = passenger.name)
-            Text(text = passenger.requestState)
+            Row() {
+                Text(text = "Nombre:", fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(text = passenger.name)
+            }
+            Row() {
+                Text(text = "Estado de la solicitud:", fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(text = passenger.requestState)
+            }
+
 
             if (passenger.requestState == "Pendiente") {
 

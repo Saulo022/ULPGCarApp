@@ -1,5 +1,8 @@
 package com.saulo.ulpgcarapp.core
 
+import com.saulo.ulpgcarapp.domain.model.Campus
+import com.saulo.ulpgcarapp.domain.model.Faculty_College
+
 object Constants {
 
     const val USERS = "Users"
@@ -17,7 +20,7 @@ object Constants {
 
     const val COUNTRY = "ES"
 
-    //list of municipalities in las palmas
+    //list of municipalities in Las Palmas
     val municipalities  = listOf(
         "Agaete",
         "Agüimes",
@@ -26,7 +29,7 @@ object Constants {
         "Firgas",
         "Gáldar",
         "Ingenio",
-        "Las Palmas de Gran Canaria",
+        "Las Palmas",
         "Mogán",
         "Moya",
         "San Bartolomé de Tirajana",
@@ -41,4 +44,18 @@ object Constants {
         "Valleseco",
         "Valsequillo"
     )
+
+    val facultiesCollegesOfTafira: MutableList<Faculty_College> = mutableListOf(
+        Faculty_College(name = "Escuela de Arquitectura", longitude = "-15.453853294616849", latitude = "28.072779650727743"),
+        Faculty_College(name = "Escuela de Ingeniería de Telecomunicación y Electrónica", longitude = "-15.453920211318598", latitude = "28.07162418905613"),
+        Faculty_College(name = "Facultad de Ciencias Jurídicas", longitude = "-15.44926385362118", latitude = "28.07953806299269")
+    )
+
+
+    val campuses: MutableList<Campus> = mutableListOf(
+        Campus(name = "Campus de Tafira", longitude = "-15.450042679042715", latitude = "28.077989738893347", faculties_colleges = facultiesCollegesOfTafira),
+        Campus(name = "Campus Universitario del Obelisco", longitude = "-15.42465211153699", latitude = "28.112021289365412")
+    )
+
+
 }

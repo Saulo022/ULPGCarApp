@@ -1,22 +1,22 @@
 package com.saulo.ulpgcarapp.presentation.screens.publish_new_ride
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.saulo.ulpgcarapp.core.Constants
 import com.saulo.ulpgcarapp.core.Constants.API_KEY
 import com.saulo.ulpgcarapp.core.Constants.COUNTRY
 import com.saulo.ulpgcarapp.core.Constants.LATITUDE
 import com.saulo.ulpgcarapp.core.Constants.LONGITUDE
 import com.saulo.ulpgcarapp.core.Constants.RADIUS
-import com.saulo.ulpgcarapp.domain.model.Location
-import com.saulo.ulpgcarapp.domain.model.Publish
-import com.saulo.ulpgcarapp.domain.model.Response
-import com.saulo.ulpgcarapp.domain.model.User
+import com.saulo.ulpgcarapp.domain.model.*
 import com.saulo.ulpgcarapp.domain.use_cases.auth.AuthUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.publish.PublishUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.searches.SearchUseCase
@@ -37,6 +37,10 @@ class PublishNewRideViewModel @Inject constructor(
     //STATE NEW PUBLISH SCREEN
     var state by mutableStateOf(PublishNewRideState())
         private set
+
+
+    private val _campusLocation = MutableLiveData<Campus>()
+    val campusLocation: LiveData<Campus> = _campusLocation
 
     var publishARideResponse by mutableStateOf<Response<Boolean>?>(null)
         private set
@@ -68,9 +72,11 @@ class PublishNewRideViewModel @Inject constructor(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    var listOfCampuses = Constants.campuses
 
     init {
         getUserById()
+
     }
     private fun getUserById() {
         viewModelScope.launch {
@@ -156,7 +162,8 @@ class PublishNewRideViewModel @Inject constructor(
             precioViaje = state.price,
             idUser = currentUser?.uid ?: "",
             route = state.optimalRoute,
-            image = userData.image
+            image = userData.image,
+            plazasDisponibles = state.passengers
         )
         publishARide(publish)
     }
@@ -222,5 +229,16 @@ class PublishNewRideViewModel @Inject constructor(
         }
     }
 
+    fun onMenuInput(campusName: String) {
+        for (campus in Constants.campuses) {
+            if (campus.name == campusName){
+                _campusLocation.value = campus
+                Log.d("Saulo", "EYY11 + ${_campusLocation.value?.name}")
+                Log.d("Saulo", "EYY22 + ${campusLocation.value?.name}")
+            }
+        }
+        Log.d("Saulo", "EYY33 + ${_campusLocation.value?.name}")
+        Log.d("Saulo", "EYY44 + ${campusLocation.value?.name}")
+    }
 
 }

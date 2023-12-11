@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.saulo.ulpgcarapp.domain.model.Passenger
 import com.saulo.ulpgcarapp.domain.model.Publish
 import com.saulo.ulpgcarapp.domain.model.Response
 import com.saulo.ulpgcarapp.domain.model.User
@@ -45,6 +46,15 @@ class YourRidesViewModel @Inject constructor(
                 yoursRidesResponse = it
             }
         }
+    }
+
+    fun findCurrentUser(publishRide: Publish): Passenger? {
+        for (pasajero in publishRide.pasajeros) {
+            if (pasajero.idPassenger == currentUser?.uid) {
+                return pasajero
+            }
+        }
+        return null
     }
 
 }

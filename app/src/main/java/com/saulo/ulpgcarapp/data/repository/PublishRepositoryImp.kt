@@ -56,6 +56,7 @@ class PublishRepositoryImp @Inject constructor(
             map["route"] = publish.route
             map["pasajeros"] = publish.pasajeros
             map["precioViaje"] = publish.precioViaje
+            map["plazasDisponibles"] = publish.plazasDisponibles
 
 
             publishRef.document(publish.id).update(map).await()
@@ -72,7 +73,7 @@ class PublishRepositoryImp @Inject constructor(
 
             val map: MutableMap<String, Any> = HashMap()
             map["pasajeros"] = publish.pasajeros
-
+            map["plazasDisponibles"] = publish.plazasDisponibles
 
             publishRef.document(publish.id).update(map).await()
             Response.Success(true)
@@ -294,6 +295,7 @@ class PublishRepositoryImp @Inject constructor(
                             val document = snapshot.documents[0]
                             val publication = document.toObject(Publish::class.java)
                             publication?.id = document.id
+
                             Response.Success(publication)
                         } else {
                             Response.Success(null)

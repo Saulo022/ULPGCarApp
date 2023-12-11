@@ -12,6 +12,7 @@ data class RequestRideState(
     var searchList: List<Feature> = emptyList(),
     var pasajeros: MutableList<Passenger> = mutableListOf(),
     var stopTime: Double = 0.0,
+    var availableSeat: Int = 0,
 
     //RECIEVE PARAMETERS
     var search: Location = Location("","",""),

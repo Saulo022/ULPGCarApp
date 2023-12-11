@@ -43,7 +43,9 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
 
     val state = viewModel.state
 
-    Box(modifier = Modifier.fillMaxWidth().padding(top = 50.dp)) {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .padding(top = 50.dp)) {
 
         Box(
             modifier = Modifier
@@ -95,7 +97,7 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                     SearchBar(
                         query = state.search.label,
                         onQueryChange = {
-                            viewModel.onSearchInput(it,"","")
+                            viewModel.onSearchInput(it, "", "")
                             viewModel.onSearchSelected()
                         },
                         onSearch = {

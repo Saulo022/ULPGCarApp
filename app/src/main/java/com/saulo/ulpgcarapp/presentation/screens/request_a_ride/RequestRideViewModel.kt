@@ -55,7 +55,8 @@ class RequestRideViewModel @Inject constructor(
             dateChoose = publish.fecha,
             passengers = publish.numeroPasajeros,
             price = publish.precioViaje,
-            route = publish.route
+            route = publish.route,
+            availableSeat = publish.plazasDisponibles
         )
         getUserById()
     }
@@ -120,14 +121,15 @@ class RequestRideViewModel @Inject constructor(
             longitude = state.stopLongitude,
             latitude = state.stopLatitude,
             placeName = state.stopLocation,
-            expectedTime = state.stopTime
+            expectedTime = state.stopTime,
+            name = userData.username
                 )
 
         state.pasajeros.add(passenger)
         state.pasajeros.sortBy { it.expectedTime }
         state.route.add("${state.stopLongitude},${state.stopLatitude}")
 
-        val freeplaces = (publish.numeroPasajeros - (state.pasajeros.size))
+        state = state.copy(availableSeat = state.availableSeat-1)
 
         val publish = Publish(
             id = publish.id,
@@ -137,9 +139,10 @@ class RequestRideViewModel @Inject constructor(
             municipio = publish.municipio,
             hora = publish.hora,
             fecha = publish.fecha,
-            numeroPasajeros = freeplaces,
+            numeroPasajeros = publish.numeroPasajeros,
             precioViaje = publish.precioViaje,
             route = state.route,
+            plazasDisponibles = state.availableSeat
         )
         updatePublishRide(publish)
     }

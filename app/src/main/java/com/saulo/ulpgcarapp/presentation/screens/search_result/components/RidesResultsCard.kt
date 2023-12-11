@@ -149,7 +149,7 @@ fun RidesResultsCard(
                     modifier = Modifier.padding(start = 0.dp)
                 )
                 Spacer(modifier = Modifier.width(40.dp))
-                InformationPill(text = "${publishRide.numeroPasajeros}")
+                InformationPill(text = "${publishRide.plazasDisponibles}")
             }
 
             Row(

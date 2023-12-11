@@ -142,7 +142,7 @@ class SignupViewModel @Inject constructor(
             emailErrMsg = ""
         } else {
             isEmailValid = false
-            emailErrMsg = "El email no es valido"
+            emailErrMsg = "El email no es válido"
         }
 
         enabledLoginButton()

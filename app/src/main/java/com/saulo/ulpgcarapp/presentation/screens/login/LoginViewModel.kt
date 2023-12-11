@@ -73,7 +73,7 @@ class LoginViewModel @Inject constructor(private val authUseCases: AuthUseCases)
             emailErrMsg = ""
         } else {
             isEmailValid = false
-            emailErrMsg = "El email no es valido"
+            emailErrMsg = "El email no es válido"
         }
 
         enabledLoginButton()
