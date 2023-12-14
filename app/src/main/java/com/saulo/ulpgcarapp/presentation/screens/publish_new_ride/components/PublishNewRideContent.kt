@@ -80,8 +80,8 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                 Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
                     Text(
-                        modifier = Modifier.padding(top = 20.dp),
-                        text = "Publish",
+                        modifier = Modifier.padding(top = 15.dp),
+                        text = "Trayecto",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -208,7 +208,7 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                     Spacer(modifier = Modifier.height(5.dp))
 
                     Text(
-                        text = "Elige fecha, hora y número de pasajeros",
+                        text = "Elija fecha, hora y número de pasajeros",
                         fontSize = 12.sp,
                         color = Color.Gray
                     )
@@ -304,7 +304,7 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                     }
 
                     Text(
-                        text = "Elige un precio para tu viaje",
+                        text = "Elija un precio para tu viaje",
                         fontSize = 12.sp,
                         color = Color.Gray
                     )

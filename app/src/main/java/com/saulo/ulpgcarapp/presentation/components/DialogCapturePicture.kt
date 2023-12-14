@@ -29,7 +29,7 @@ fun DialogCapturePicture(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Selecciona una opcion",
+                        text = "Selecciona una opción",
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                     Row(
@@ -44,7 +44,7 @@ fun DialogCapturePicture(
                                 pickImage()
                             },
                         ) {
-                            Text("Galeria")
+                            Text("Galería")
                         }
                         TextButton(
                             onClick = {
@@ -52,7 +52,7 @@ fun DialogCapturePicture(
                                 takePhoto()
                             },
                         ) {
-                            Text("Camera")
+                            Text("Cámara")
                         }
                     }
 

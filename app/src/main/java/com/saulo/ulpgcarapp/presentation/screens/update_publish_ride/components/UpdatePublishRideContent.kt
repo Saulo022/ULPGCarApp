@@ -53,41 +53,18 @@ fun UpdatePublishRideContent(viewModel: UpdatePublishRideViewModel = hiltViewMod
                 .background(Blue400)
         ) {
 
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                Image(
-                    modifier = Modifier
-                        .height(70.dp)
-                        .padding(top = 30.dp),
-                    painter = painterResource(id = R.drawable.configcar),
-                    contentDescription = "Publish Ride Image"
-                )
-
-                Spacer(modifier = Modifier.height(5.dp))
-
-                Text(
-                    text = "Publish a ride",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                )
-
-            }
         }
 
 
         Card(
             modifier = Modifier
-                .padding(start = 10.dp, end = 10.dp, top = 105.dp, bottom = 10.dp)
+                .padding(start = 10.dp, end = 10.dp, top = 90.dp, bottom = 10.dp)
         ) {
             Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
                 Text(
                     modifier = Modifier.padding(top = 20.dp),
-                    text = "Publish",
+                    text = "Trayecto",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -211,7 +188,7 @@ fun UpdatePublishRideContent(viewModel: UpdatePublishRideViewModel = hiltViewMod
                 Spacer(modifier = Modifier.height(5.dp))
 
                 Text(
-                    text = "Elige fecha, hora y número de pasajeros",
+                    text = "Elija fecha, hora y número de pasajeros",
                     fontSize = 12.sp,
                     color = Color.Gray
                 )
@@ -277,7 +254,7 @@ fun UpdatePublishRideContent(viewModel: UpdatePublishRideViewModel = hiltViewMod
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 20.dp)
+                    modifier = Modifier.padding(bottom = 10.dp)
                 ) {
                     DefaultButton(
                         modifier = Modifier
@@ -307,14 +284,16 @@ fun UpdatePublishRideContent(viewModel: UpdatePublishRideViewModel = hiltViewMod
                 }
 
                 Text(
-                    text = "Elige un precio para tu viaje",
+                    text = "Elija un precio para tu viaje",
                     fontSize = 12.sp,
                     color = Color.Gray
                 )
 
+                Spacer(modifier = Modifier.height(10.dp))
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 20.dp)
+                    modifier = Modifier.padding(bottom = 10.dp)
                 ) {
                     DefaultButton(
                         modifier = Modifier

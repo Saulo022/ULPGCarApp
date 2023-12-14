@@ -178,7 +178,7 @@ fun RidesCard(
                     color = Color.Black
                 )
                 Text(
-                    text = "Pasajeros",
+                    text = "Plazas disponibles",
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(all = 10.dp)
                 )
@@ -194,7 +194,7 @@ fun RidesCard(
                     modifier = Modifier.padding(start = 0.dp)
                 )
                 Spacer(modifier = Modifier.width(40.dp))
-                InformationPill(text = "${publishRide.numeroPasajeros}")
+                InformationPill(text = "${publishRide.plazasDisponibles}/${publishRide.numeroPasajeros}")
 
                 Row(
                     modifier = Modifier
