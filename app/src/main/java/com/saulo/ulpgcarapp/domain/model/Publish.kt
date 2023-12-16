@@ -18,13 +18,14 @@ data class Publish(
     var estado: String = "",
     var fecha: String = "",
     var hora: String = "",
+    var plate: String = "",
     var idUser: String = "",
     var user: User? = null,
     var image: String = "",
 
 ) {
 fun toJson(): String = Gson().toJson(Publish(
-    id, origin, destination, municipio, numeroPasajeros, precioViaje, plazasDisponibles,route, pasajeros, valoracion, estado, fecha, hora,idUser,
+    id, origin, destination, municipio, numeroPasajeros, precioViaje, plazasDisponibles,route, pasajeros, valoracion, estado, fecha, hora, plate,idUser,
     User(
         id = user?.id ?: "",
         username = user?.username ?: "",

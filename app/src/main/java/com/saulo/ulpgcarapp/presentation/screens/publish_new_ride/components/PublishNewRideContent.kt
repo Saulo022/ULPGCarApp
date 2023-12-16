@@ -1,9 +1,7 @@
 package com.saulo.ulpgcarapp.presentation.screens.publish_new_ride.components
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -27,6 +25,7 @@ import com.maxkeppeler.sheets.clock.ClockDialog
 import com.maxkeppeler.sheets.clock.models.ClockSelection
 import com.saulo.ulpgcarapp.R
 import com.saulo.ulpgcarapp.presentation.components.DefaultButton
+import com.saulo.ulpgcarapp.presentation.components.DefaultTextField
 import com.saulo.ulpgcarapp.presentation.screens.publish_new_ride.PublishNewRideViewModel
 import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
 import com.saulo.ulpgcarapp.presentation.ui.theme.Orange400
@@ -61,8 +60,8 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
 
                 Image(
                     modifier = Modifier
-                        .height(65.dp)
-                        .padding(top = 15.dp),
+                        .height(55.dp)
+                        .padding(top = 10.dp),
                     painter = painterResource(id = R.drawable.configcar),
                     contentDescription = "Publish Ride Image"
                 )
@@ -72,15 +71,15 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
         }
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
             Card(
                 modifier = Modifier
-                    .padding(start = 10.dp, end = 10.dp, top = 75.dp, bottom = 10.dp)
+                    .padding(start = 10.dp, end = 10.dp, top = 60.dp, bottom = 5.dp)
+
             ) {
                 Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
                     Text(
-                        modifier = Modifier.padding(top = 15.dp),
+                        modifier = Modifier.padding(top = 5.dp),
                         text = "Trayecto",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
@@ -152,7 +151,7 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                     SearchBar(
                         query = state.searchReturn.label,
                         onQueryChange = {
-                            viewModel.onSearchReturnInput(it,"","")
+                            viewModel.onSearchReturnInput(it, "", "")
                             viewModel.onSearchReturnSelected()
                         },
                         onSearch = {
@@ -190,7 +189,8 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                                             viewModel.onSearchReturnInput(
                                                 result.properties.label,
                                                 result.geometry.coordinates[0].toString(),
-                                                result.geometry.coordinates[1].toString())
+                                                result.geometry.coordinates[1].toString()
+                                            )
                                             viewModel.getMatrix(
                                                 result.geometry.coordinates[0].toString(),
                                                 result.geometry.coordinates[1].toString()
@@ -202,17 +202,10 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                         }
                     }
 
-                    Text(
-                        modifier = Modifier.padding(top = 20.dp),
-                        text = "Salida",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-
                     Spacer(modifier = Modifier.height(5.dp))
 
                     Text(
-                        text = "Elija fecha, hora y número de pasajeros",
+                        text = "Elija fecha, hora y especifique la matrícula del vehículo",
                         fontSize = 12.sp,
                         color = Color.Gray
                     )
@@ -232,22 +225,18 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
 
                         DefaultButton(
                             modifier = Modifier
-                                .height(50.dp)
+                                .height(45.dp)
                                 .width(70.dp),
                             text = "",
                             onClick = { calendarState.show() },
                             icon = Icons.Default.DateRange
                         )
 
-                        Spacer(modifier = Modifier.width(10.dp))
+                        Spacer(modifier = Modifier.width(5.dp))
 
                         Text(text = viewModel.state.dateChoose)
-                    }
 
-                    Spacer(modifier = Modifier.height(10.dp))
-
-
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Spacer(modifier = Modifier.width(15.dp))
 
                         val clockState = rememberSheetState()
 
@@ -260,7 +249,7 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
 
                         DefaultButton(
                             modifier = Modifier
-                                .height(50.dp)
+                                .height(45.dp)
                                 .width(70.dp),
                             text = "",
                             onClick = { clockState.show() },
@@ -268,13 +257,29 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                         )
 
 
-                        Spacer(modifier = Modifier.width(10.dp))
+                        Spacer(modifier = Modifier.width(5.dp))
 
                         Text(text = viewModel.state.timeChoose)
-
                     }
 
+
                     Spacer(modifier = Modifier.height(10.dp))
+
+                    DefaultTextField(
+                        modifier = Modifier.padding(top = 5.dp),
+                        value = state.plate,
+                        onValueChange = { viewModel.onPlateInput(it)},
+                        label = "Matrícula del vehículo",
+                        icon = Icons.Default.DirectionsCar,
+                        errorMsg = viewModel.plateErrMsg,
+                        validateField = { viewModel.validatePlate()  }
+                    )
+
+                    Text(
+                        text = "Indique el número máximo de pasajeros en su viaje",
+                        fontSize = 12.sp,
+                        color = Color.Gray
+                    )
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -286,7 +291,7 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                                 .width(70.dp),
                             text = "",
                             onClick = { viewModel.removePassenger() },
-                            icon = Icons.Default.Remove,
+                            icon = Icons.Default.PersonRemove,
                             enabled = viewModel.isEnabledRemovePassengerButton
                         )
 
@@ -302,7 +307,7 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                                 .width(70.dp),
                             text = "",
                             onClick = { viewModel.addPassenger() },
-                            icon = Icons.Default.Add,
+                            icon = Icons.Default.PersonAdd,
                             enabled = viewModel.isEnabledAddPassengerButton
                         )
                     }

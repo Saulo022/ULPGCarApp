@@ -72,6 +72,12 @@ class PublishNewRideViewModel @Inject constructor(
     //STATE BUTTON LOWER PRICE
     var isEnabledLowerPriceButton = false
 
+    //PLATE
+    var isPlateValid by mutableStateOf(false)
+        private set
+    var plateErrMsg by mutableStateOf("")
+        private set
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -164,6 +170,21 @@ class PublishNewRideViewModel @Inject constructor(
         }
     }
 
+    fun onPlateInput(plate: String) {
+        state = state.copy(plate = plate)
+    }
+
+    fun validatePlate() {
+        if (state.plate.length >= 7) {
+            isPlateValid = true
+            plateErrMsg = ""
+        } else {
+            isPlateValid = false
+            plateErrMsg = "Al menos 7 caracteres"
+        }
+
+    }
+
     fun onNewRide() {
         val location = Location(
             state.searchReturn.label,
@@ -190,7 +211,8 @@ class PublishNewRideViewModel @Inject constructor(
             idUser = currentUser?.uid ?: "",
             route = state.optimalRoute,
             image = userData.image,
-            plazasDisponibles = state.passengers
+            plazasDisponibles = state.passengers,
+            plate = state.plate
         )
         publishARide(publish)
     }
@@ -202,7 +224,8 @@ class PublishNewRideViewModel @Inject constructor(
             timeChoose = "",
             dateChoose = "",
             passengers = 1,
-            price = 1
+            price = 1,
+            plate = ""
         )
         publishARideResponse = null
     }

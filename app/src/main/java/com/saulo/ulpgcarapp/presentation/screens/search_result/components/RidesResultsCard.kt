@@ -114,6 +114,16 @@ fun RidesResultsCard(
                 InformationPill(text = publishRide.hora)
             }
 
+            Text(
+                text = "Matrícula del vehículo",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(all = 10.dp)
+            )
+
+            Row() {
+                InformationPill(text = publishRide.plate)
+            }
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

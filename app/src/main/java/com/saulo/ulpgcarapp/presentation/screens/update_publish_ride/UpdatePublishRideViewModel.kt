@@ -10,11 +10,13 @@ import com.saulo.ulpgcarapp.core.Constants.COUNTRY
 import com.saulo.ulpgcarapp.core.Constants.LATITUDE
 import com.saulo.ulpgcarapp.core.Constants.LONGITUDE
 import com.saulo.ulpgcarapp.core.Constants.RADIUS
+import com.saulo.ulpgcarapp.data.network.response.Matrix
 import com.saulo.ulpgcarapp.domain.model.Location
 import com.saulo.ulpgcarapp.domain.model.Publish
 import com.saulo.ulpgcarapp.domain.model.Response
 import com.saulo.ulpgcarapp.domain.use_cases.auth.AuthUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.publish.PublishUseCases
+import com.saulo.ulpgcarapp.domain.use_cases.routes.RoutesUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.searches.SearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -25,6 +27,7 @@ class UpdatePublishRideViewModel @Inject constructor(
     private val searchUseCase: SearchUseCase,
     private val publishUseCases: PublishUseCases,
     private val authUseCases: AuthUseCases,
+    private val routeUseCase: RoutesUseCases,
     private val savedStateHandle: SavedStateHandle
 ) :
     ViewModel() {
@@ -61,6 +64,12 @@ class UpdatePublishRideViewModel @Inject constructor(
     //STATE BUTTON LOWER PRICE
     var isEnabledLowerPriceButton = true
 
+    //PLATE
+    var isPlateValid by mutableStateOf(false)
+        private set
+    var plateErrMsg by mutableStateOf("")
+        private set
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -72,7 +81,9 @@ class UpdatePublishRideViewModel @Inject constructor(
             timeChoose = publish.hora,
             dateChoose = publish.fecha,
             passengers = publish.numeroPasajeros,
-            price = publish.precioViaje
+            price = publish.precioViaje,
+            plate = publish.plate,
+            availableSeat = publish.plazasDisponibles
         )
         Log.d("Saulo", "onSearchSelected: OK +  ${publish.id}")
 
@@ -83,7 +94,7 @@ class UpdatePublishRideViewModel @Inject constructor(
 
     //Metodos de ida
     fun onSearchInput(label:String, longitude: String, latitude: String) {
-        val location = Location(label, longitude, latitude)
+        val location = Location(label, longitude, latitude,0.0)
         state = state.copy(search = location)
         Log.d("Publish2", "PublishRideContent + $state")
     }
@@ -155,7 +166,9 @@ class UpdatePublishRideViewModel @Inject constructor(
             hora = state.timeChoose,
             numeroPasajeros = state.passengers,
             precioViaje = state.price,
-            idUser = currentUser?.uid ?: ""
+            idUser = currentUser?.uid ?: "",
+            plate = state.plate,
+            plazasDisponibles = state.availableSeat
         )
         updatePublishRide(publish)
     }
@@ -182,6 +195,21 @@ class UpdatePublishRideViewModel @Inject constructor(
     //Metodo para elegir hora del viaje
     fun onClockSelected(timeChoose: String) {
         state = state.copy(timeChoose = timeChoose)
+    }
+
+    fun onPlateInput(plate: String) {
+        state = state.copy(plate = plate)
+    }
+
+    fun validatePlate() {
+        if (state.plate.length >= 7) {
+            isPlateValid = true
+            plateErrMsg = ""
+        } else {
+            isPlateValid = false
+            plateErrMsg = "Al menos 7 caracteres"
+        }
+
     }
 
     //Metodos para el numero de pasajeros
@@ -221,5 +249,14 @@ class UpdatePublishRideViewModel @Inject constructor(
         }
     }
 
+    fun getMatrix(longitude: String, latitude: String) {
+        viewModelScope.launch {
+            val matrixCoordinates: MutableList<List<Double>> = mutableListOf()
+            matrixCoordinates.add(listOf(state.search.longitude.toDouble(), state.search.latitude.toDouble()))
+            matrixCoordinates.add(listOf(longitude.toDouble(), latitude.toDouble()))
+            val result = routeUseCase.matrixUseCase(matrix = Matrix(locations = matrixCoordinates))
+            state.stopTime = result[0][1]
+        }
+    }
 
 }

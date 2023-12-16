@@ -57,6 +57,7 @@ class PublishRepositoryImp @Inject constructor(
             map["pasajeros"] = publish.pasajeros
             map["precioViaje"] = publish.precioViaje
             map["plazasDisponibles"] = publish.plazasDisponibles
+            map["plate"] = publish.plate
 
 
             publishRef.document(publish.id).update(map).await()

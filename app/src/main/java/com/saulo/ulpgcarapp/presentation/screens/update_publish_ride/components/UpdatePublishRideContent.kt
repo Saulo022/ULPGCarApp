@@ -27,6 +27,7 @@ import com.maxkeppeler.sheets.clock.ClockDialog
 import com.maxkeppeler.sheets.clock.models.ClockSelection
 import com.saulo.ulpgcarapp.R
 import com.saulo.ulpgcarapp.presentation.components.DefaultButton
+import com.saulo.ulpgcarapp.presentation.components.DefaultTextField
 import com.saulo.ulpgcarapp.presentation.screens.publish_new_ride.PublishNewRideViewModel
 import com.saulo.ulpgcarapp.presentation.screens.update_publish_ride.UpdatePublishRideViewModel
 import com.saulo.ulpgcarapp.presentation.ui.theme.Blue400
@@ -52,18 +53,16 @@ fun UpdatePublishRideContent(viewModel: UpdatePublishRideViewModel = hiltViewMod
                 .height(280.dp)
                 .background(Blue400)
         ) {
-
         }
-
 
         Card(
             modifier = Modifier
-                .padding(start = 10.dp, end = 10.dp, top = 90.dp, bottom = 10.dp)
+                .padding(start = 10.dp, end = 10.dp, top = 70.dp, bottom = 5.dp)
         ) {
             Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
                 Text(
-                    modifier = Modifier.padding(top = 20.dp),
+                    modifier = Modifier.padding(top = 10.dp),
                     text = "Trayecto",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -171,6 +170,9 @@ fun UpdatePublishRideContent(viewModel: UpdatePublishRideViewModel = hiltViewMod
                                             result.properties.label,
                                             result.geometry.coordinates[0].toString(),
                                             result.geometry.coordinates[1].toString())
+                                        viewModel.getMatrix(
+                                            result.geometry.coordinates[0].toString(),
+                                            result.geometry.coordinates[1].toString())
                                         active2 = false
                                     },
                             )
@@ -178,17 +180,10 @@ fun UpdatePublishRideContent(viewModel: UpdatePublishRideViewModel = hiltViewMod
                     }
                 }
 
-                Text(
-                    modifier = Modifier.padding(top = 20.dp),
-                    text = "Salida",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
                 Spacer(modifier = Modifier.height(5.dp))
 
                 Text(
-                    text = "Elija fecha, hora y número de pasajeros",
+                    text = "Elija fecha, hora y especifique la matrícula del vehículo",
                     fontSize = 12.sp,
                     color = Color.Gray
                 )
@@ -215,15 +210,11 @@ fun UpdatePublishRideContent(viewModel: UpdatePublishRideViewModel = hiltViewMod
                         icon = Icons.Default.DateRange
                     )
 
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Spacer(modifier = Modifier.width(5.dp))
 
                     Text(text = viewModel.state.dateChoose)
-                }
 
-                Spacer(modifier = Modifier.height(10.dp))
-
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Spacer(modifier = Modifier.width(15.dp))
 
                     val clockState = rememberSheetState()
 
@@ -247,10 +238,25 @@ fun UpdatePublishRideContent(viewModel: UpdatePublishRideViewModel = hiltViewMod
                     Spacer(modifier = Modifier.width(10.dp))
 
                     Text(text = viewModel.state.timeChoose)
-
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
+
+                DefaultTextField(
+                    modifier = Modifier.padding(top = 5.dp),
+                    value = state.plate,
+                    onValueChange = { viewModel.onPlateInput(it)},
+                    label = "Matrícula del vehículo",
+                    icon = Icons.Default.DirectionsCar,
+                    errorMsg = viewModel.plateErrMsg,
+                    validateField = { viewModel.validatePlate()  }
+                )
+
+                Text(
+                    text = "Indique el número máximo de pasajeros en su viaje",
+                    fontSize = 12.sp,
+                    color = Color.Gray
+                )
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -262,7 +268,7 @@ fun UpdatePublishRideContent(viewModel: UpdatePublishRideViewModel = hiltViewMod
                             .width(70.dp),
                         text = "",
                         onClick = { viewModel.removePassenger() },
-                        icon = Icons.Default.Remove,
+                        icon = Icons.Default.PersonRemove,
                         enabled = viewModel.isEnabledRemovePassengerButton
                     )
 
@@ -278,7 +284,7 @@ fun UpdatePublishRideContent(viewModel: UpdatePublishRideViewModel = hiltViewMod
                             .width(70.dp),
                         text = "",
                         onClick = { viewModel.addPassenger() },
-                        icon = Icons.Default.Add,
+                        icon = Icons.Default.PersonAdd,
                         enabled = viewModel.isEnabledAddPassengerButton
                     )
                 }

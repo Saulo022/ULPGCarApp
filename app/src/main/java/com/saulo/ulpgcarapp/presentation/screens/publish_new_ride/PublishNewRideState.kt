@@ -20,5 +20,6 @@ data class PublishNewRideState (
     var image: String = "",
     var campuses: Campus = Constants.campuses[0],
     var stopTime: Double = 0.0,
+    var plate: String = ""
 )
 

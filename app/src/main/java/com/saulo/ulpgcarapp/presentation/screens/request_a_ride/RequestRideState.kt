@@ -13,6 +13,7 @@ data class RequestRideState(
     var pasajeros: MutableList<Passenger> = mutableListOf(),
     var stopTime: Double = 0.0,
     var availableSeat: Int = 0,
+    var plate: String = "",
 
     //RECIEVE PARAMETERS
     var search: Location = Location("","",""),

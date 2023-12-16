@@ -56,7 +56,8 @@ class RequestRideViewModel @Inject constructor(
             passengers = publish.numeroPasajeros,
             price = publish.precioViaje,
             route = publish.route,
-            availableSeat = publish.plazasDisponibles
+            availableSeat = publish.plazasDisponibles,
+            plate = publish.plate
         )
         getUserById()
     }
@@ -142,7 +143,8 @@ class RequestRideViewModel @Inject constructor(
             numeroPasajeros = publish.numeroPasajeros,
             precioViaje = publish.precioViaje,
             route = state.route,
-            plazasDisponibles = state.availableSeat
+            plazasDisponibles = state.availableSeat,
+            plate = state.plate
         )
         updatePublishRide(publish)
     }
