@@ -81,34 +81,26 @@ fun YourRidesCard(
                     fontStyle = FontStyle.Italic,
                     fontSize = 20.sp
                 )
+            }
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 5.dp), horizontalArrangement = Arrangement.End
-                ) {
-                    if (pasajero != null) {
-                        Column() {
-                            Text(text = "Solicitud", fontStyle = FontStyle.Italic, fontSize = 20.sp)
-                            Text(
-                                text = pasajero.requestState,
-                                fontStyle = FontStyle.Italic,
-                                fontSize = 20.sp,
-                                color = if (pasajero.requestState == "Pendiente") Color.Gray else Color.Green
-                            )
-                        }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 5.dp), horizontalArrangement = Arrangement.Start
+            ) {
+                if (pasajero != null) {
+                    Row() {
+                        Text(text = "Solicitud", fontStyle = FontStyle.Italic, fontSize = 20.sp)
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = pasajero.requestState,
+                            fontStyle = FontStyle.Italic,
+                            fontSize = 20.sp,
+                            color = if (pasajero.requestState == "Pendiente") Color.Gray else Color.Green
+                        )
                     }
                 }
 
-            }
-
-            Row() {
-
-                Text(
-                    text = "Origen",
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(all = 10.dp)
-                )
 
                 Row(
                     modifier = Modifier
@@ -136,6 +128,17 @@ fun YourRidesCard(
                         }
                     }
                 }
+            }
+
+            Row() {
+
+                Text(
+                    text = "Origen",
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(all = 10.dp)
+                )
+
+
             }
 
             InformationPill(text = publishRide.origin.label)
