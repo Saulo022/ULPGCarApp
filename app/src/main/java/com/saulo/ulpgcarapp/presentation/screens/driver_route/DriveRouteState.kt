@@ -27,4 +27,7 @@ data class DriveRouteState(
 
     var optimalRoute: MutableList<String> = mutableListOf(),
 
+    var routeTimes: MutableList<Double> = mutableListOf(),
+    var stopTime: Double = 0.0,
+
 )
