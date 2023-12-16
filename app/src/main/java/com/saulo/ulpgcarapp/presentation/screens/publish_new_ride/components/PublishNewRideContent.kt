@@ -191,6 +191,10 @@ fun PublishNewRideContent(viewModel: PublishNewRideViewModel = hiltViewModel()) 
                                                 result.properties.label,
                                                 result.geometry.coordinates[0].toString(),
                                                 result.geometry.coordinates[1].toString())
+                                            viewModel.getMatrix(
+                                                result.geometry.coordinates[0].toString(),
+                                                result.geometry.coordinates[1].toString()
+                                            )
                                             active2 = false
                                         },
                                 )

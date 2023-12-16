@@ -81,7 +81,7 @@ class DriveRouteViewModel @Inject constructor(
             longitude = publish.destination.longitude,
             latitude = publish.destination.latitude,
             placeName = publish.destination.label,
-            expectedTime = 0.0
+            expectedTime = publish.destination.expectedTime
         )
 
         route.add(driverDestination)

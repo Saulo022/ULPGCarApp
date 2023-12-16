@@ -18,6 +18,7 @@ data class PublishNewRideState (
     var price: Int = 1,
     var optimalRoute: MutableList<String> = mutableListOf(),
     var image: String = "",
-    var campuses: Campus = Constants.campuses[0]
+    var campuses: Campus = Constants.campuses[0],
+    var stopTime: Double = 0.0,
 )
 

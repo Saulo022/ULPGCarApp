@@ -1,10 +1,10 @@
 package com.saulo.ulpgcarapp.domain.use_cases.searches
 
-import com.saulo.ulpgcarapp.data.network.SearchApiRepository
+import com.saulo.ulpgcarapp.data.network.RouteApiRepository
 import com.saulo.ulpgcarapp.data.network.response.Feature
 import javax.inject.Inject
 
-class SearchUseCase @Inject constructor(private val repository: SearchApiRepository) {
+class SearchUseCase @Inject constructor(private val repository: RouteApiRepository) {
 
     suspend operator fun invoke(
         apiKey: String,

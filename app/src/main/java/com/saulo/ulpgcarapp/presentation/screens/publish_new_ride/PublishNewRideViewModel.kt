@@ -16,9 +16,11 @@ import com.saulo.ulpgcarapp.core.Constants.COUNTRY
 import com.saulo.ulpgcarapp.core.Constants.LATITUDE
 import com.saulo.ulpgcarapp.core.Constants.LONGITUDE
 import com.saulo.ulpgcarapp.core.Constants.RADIUS
+import com.saulo.ulpgcarapp.data.network.response.Matrix
 import com.saulo.ulpgcarapp.domain.model.*
 import com.saulo.ulpgcarapp.domain.use_cases.auth.AuthUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.publish.PublishUseCases
+import com.saulo.ulpgcarapp.domain.use_cases.routes.RoutesUseCases
 import com.saulo.ulpgcarapp.domain.use_cases.searches.SearchUseCase
 import com.saulo.ulpgcarapp.domain.use_cases.users.UsersUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,6 +32,7 @@ class PublishNewRideViewModel @Inject constructor(
     private val searchUseCase: SearchUseCase,
     private val publishUseCases: PublishUseCases,
     private val authUseCases: AuthUseCases,
+    private val routeUseCase: RoutesUseCases,
     private val usersUseCases: UsersUseCases
 ) :
     ViewModel() {
@@ -78,6 +81,7 @@ class PublishNewRideViewModel @Inject constructor(
         getUserById()
 
     }
+
     private fun getUserById() {
         viewModelScope.launch {
             usersUseCases.getUserById(currentUser!!.uid).collect() {
@@ -85,9 +89,10 @@ class PublishNewRideViewModel @Inject constructor(
             }
         }
     }
+
     //Metodos de ida
-    fun onSearchInput(label:String, longitude: String, latitude: String) {
-        val location = Location(label, longitude, latitude)
+    fun onSearchInput(label: String, longitude: String, latitude: String) {
+        val location = Location(label, longitude, latitude, 0.0)
         state = state.copy(search = location)
     }
 
@@ -96,7 +101,7 @@ class PublishNewRideViewModel @Inject constructor(
     }
 
     fun onSearchDelete() {
-        state = state.copy(search = Location("","",""))
+        state = state.copy(search = Location("", "", "", 0.0))
     }
 
     fun onSearchSelected() {
@@ -114,13 +119,15 @@ class PublishNewRideViewModel @Inject constructor(
     }
 
     //Metodos de vuelta
-    fun onSearchReturnInput(label:String, longitude: String, latitude: String) {
+    fun onSearchReturnInput(label: String, longitude: String, latitude: String) {
         val location = Location(label, longitude, latitude)
         state = state.copy(searchReturn = location)
     }
 
+
+
     fun onSearchReturnDelete() {
-        state = state.copy(searchReturn = Location("","",""))
+        state = state.copy(searchReturn = Location("", "", "", 0.0))
     }
 
     fun onSearchReturnSelected() {
@@ -138,6 +145,7 @@ class PublishNewRideViewModel @Inject constructor(
         }
     }
 
+
     fun publishARide(publish: Publish) {
         viewModelScope.launch {
             publishARideResponse = Response.Loading
@@ -146,11 +154,30 @@ class PublishNewRideViewModel @Inject constructor(
         }
     }
 
+    fun getMatrix(longitude: String, latitude: String) {
+        viewModelScope.launch {
+            val matrixCoordinates: MutableList<List<Double>> = mutableListOf()
+            matrixCoordinates.add(listOf(state.search.longitude.toDouble(), state.search.latitude.toDouble()))
+            matrixCoordinates.add(listOf(longitude.toDouble(), latitude.toDouble()))
+            val result = routeUseCase.matrixUseCase(matrix = Matrix(locations = matrixCoordinates))
+            state.stopTime = result[0][1]
+        }
+    }
+
     fun onNewRide() {
+        val location = Location(
+            state.searchReturn.label,
+            state.searchReturn.longitude,
+            state.searchReturn.latitude,
+            state.stopTime
+        )
+        state = state.copy(searchReturn = location)
+
         val locations: MutableList<String> = mutableListOf()
         locations.add("${state.search.longitude},${state.search.latitude}")
         locations.add("${state.searchReturn.longitude},${state.searchReturn.latitude}")
         state = state.copy(optimalRoute = locations)
+
 
         val publish = Publish(
             origin = state.search,
@@ -170,8 +197,8 @@ class PublishNewRideViewModel @Inject constructor(
 
     fun clearForm() {
         state = state.copy(
-            search = Location("","",""),
-            searchReturn = Location("","",""),
+            search = Location("", "", ""),
+            searchReturn = Location("", "", ""),
             timeChoose = "",
             dateChoose = "",
             passengers = 1,
@@ -231,7 +258,7 @@ class PublishNewRideViewModel @Inject constructor(
 
     fun onMenuInput(campusName: String) {
         for (campus in Constants.campuses) {
-            if (campus.name == campusName){
+            if (campus.name == campusName) {
                 _campusLocation.value = campus
                 Log.d("Saulo", "EYY11 + ${_campusLocation.value?.name}")
                 Log.d("Saulo", "EYY22 + ${campusLocation.value?.name}")

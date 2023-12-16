@@ -7,7 +7,7 @@ import com.saulo.ulpgcarapp.data.network.response.SearchResponse
 import retrofit2.Response
 import retrofit2.http.*
 
-interface SearchApiClient {
+interface RouteApiClient {
 
     @GET("/geocode/search")
     suspend fun search(

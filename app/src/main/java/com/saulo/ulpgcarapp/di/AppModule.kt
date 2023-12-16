@@ -10,7 +10,7 @@ import com.google.firebase.storage.StorageReference
 import com.saulo.ulpgcarapp.core.Constants.CHAT
 import com.saulo.ulpgcarapp.core.Constants.PUBLISH
 import com.saulo.ulpgcarapp.core.Constants.USERS
-import com.saulo.ulpgcarapp.data.network.SearchApiRepository
+import com.saulo.ulpgcarapp.data.network.RouteApiRepository
 import com.saulo.ulpgcarapp.data.repository.AuthRepositoryImpl
 import com.saulo.ulpgcarapp.data.repository.ChatRepositoryImpl
 import com.saulo.ulpgcarapp.data.repository.PublishRepositoryImp
@@ -106,7 +106,7 @@ object AppModule {
     )
 
     @Provides
-    fun provideRoutesUseCases(repository: SearchApiRepository) = RoutesUseCases(
+    fun provideRoutesUseCases(repository: RouteApiRepository) = RoutesUseCases(
         getrouteUseCase = GetRouteUseCase(repository),
         matrixUseCase = MatrixUseCase(repository)
     )

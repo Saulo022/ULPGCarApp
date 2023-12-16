@@ -1,6 +1,6 @@
 package com.saulo.ulpgcarapp.di
 
-import com.saulo.ulpgcarapp.data.network.SearchApiClient
+import com.saulo.ulpgcarapp.data.network.RouteApiClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,8 +24,8 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideSearchApiClient(retrofit: Retrofit): SearchApiClient {
-        return retrofit.create(SearchApiClient::class.java)
+    fun provideSearchApiClient(retrofit: Retrofit): RouteApiClient {
+        return retrofit.create(RouteApiClient::class.java)
     }
 
 }

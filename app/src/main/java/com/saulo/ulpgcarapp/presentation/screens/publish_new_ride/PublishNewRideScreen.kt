@@ -28,5 +28,4 @@ fun PublishNewRideScreen(navController: NavHostController) {
     )
 
     PublishNewRide()
-
 }

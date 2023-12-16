@@ -102,6 +102,7 @@ fun RidesCard(
                             Color.Green
                         ),
                         modifier = Modifier.clickable {
+
                             navController.navigate(
                                 route = DetailsScreen.DriverRoute.passPublishRide(
                                     publishRide.toJson()
