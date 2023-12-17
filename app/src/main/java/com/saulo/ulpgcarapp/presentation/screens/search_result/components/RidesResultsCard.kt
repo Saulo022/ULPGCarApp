@@ -172,7 +172,7 @@ fun RidesResultsCard(
                     modifier = Modifier,
                     text = if (viewModel.checkRequestState(publishRide) == "Pendiente") "Solicitud pendiente" else if (viewModel.checkRequestState(publishRide) == "Aceptada") "Solicitud aceptada" else "Solicitar plaza",
                     onClick = {
-                        if (publishRide.numeroPasajeros == 0) else
+                        if (publishRide.plazasDisponibles == 0) else
 
                         navController.navigate(
                             route = DetailsScreen.RequestRide.passPublishRide(
@@ -180,7 +180,7 @@ fun RidesResultsCard(
                             )
                         )
                     },
-                    color = if (publishRide.numeroPasajeros == 0) Color.Red else if (viewModel.checkRequestState(publishRide) == "Denegada") Color.Magenta else Color.Green,
+                    color = if (publishRide.plazasDisponibles == 0) Color.Red else if (viewModel.checkRequestState(publishRide) == "Denegada") Color.Magenta else Color.Green,
                     icon = null,
                     enabled = if (viewModel.checkRequestState(publishRide) == "Pendiente") false else if (viewModel.checkRequestState(publishRide) == "Aceptada") false  else if (publishRide.idUser == viewModel.currentUser?.uid) false else true
                 )
